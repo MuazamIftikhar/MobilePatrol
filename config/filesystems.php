@@ -56,10 +56,6 @@ return [
             'host'     => 'ftp.cybermeteors.com',
             'username' => 'root@square.cybermeteors.com',
             'password' => 'Redrose125@#',
-            'passive'  => true,
-            'ssl'      => true,
-            'timeout'  => 30,
-            'root'     => '/',
         ]
 
     ],
