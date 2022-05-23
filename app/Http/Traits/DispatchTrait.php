@@ -22,7 +22,7 @@ trait DispatchTrait {
         $save_dispatch->site_secure_note=$site_secure_note;
         $save_dispatch->dispatch_report_note=$dispatch_report_note;
         $save_dispatch->save();
-        return back();
+        return $save_dispatch;
     }
     
     public function create_dispatch_report_images($dispatch_report_id,$type,$image)
