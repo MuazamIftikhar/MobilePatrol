@@ -50,7 +50,8 @@ class AttendanceController extends Controller
 
     public function check_guard_time_out(Request $request){
         try{
-            $attendance=$this->check_time_out($request->schedule_id);
+            $guard_id=Guard::where('user_id',$request->user()->id)->first()->id;
+            $attendance=$this->check_time_out($guard_id);
             if (count($attendance) > 0){
                 return $this->returnApiResponse(200, 'success', array('check_time_out' => true));
             }else{
