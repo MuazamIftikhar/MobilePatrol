@@ -16,7 +16,7 @@ class DispatchController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function save_dispatch_report(Request $request)
     {
         try{
             $dispatch_report=$this->create_dispatch_report($request->inspection,$request->incident,$request->person_on_site,$request->site_secure,
