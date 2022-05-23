@@ -3,8 +3,6 @@
 namespace App\Http\Traits;
 
 use App\Models\Attendance;
-use App\Models\Guard;
-use App\Models\Schedule;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;

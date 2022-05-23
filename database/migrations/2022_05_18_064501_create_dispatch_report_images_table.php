@@ -15,6 +15,7 @@ class CreateDispatchReportImagesTable extends Migration
     {
         Schema::create('dispatch_report_images', function (Blueprint $table) {
             $table->id();
+            $table->integer('dispatch_report_id');
             $table->string('type');
             $table->text('images');
             $table->timestamps();
