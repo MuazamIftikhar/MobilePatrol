@@ -18,21 +18,22 @@ class AttendanceController extends Controller
 
     public function save_guard_attendance(Request $request){
         try{
+            $guard_id=Guard::where('user_id',$request->user()->id)->first()->id;
             if ($request->schedule_id == null){
-                $attendance=$this->check_time_out($request->user()->id);
+                $attendance=$this->check_time_out($guard_id);
                 if (count($attendance) > 0){
-                    $attendance_id=$this->get_attendance_id($request->user()->id);
+                    $attendance_id=$this->get_attendance_id($guard_id);
                     $this->edit_guard_attendance_api($attendance_id);
                     return $this->returnApiResponse(201, 'success', array('response' => 'Guard Time Out Successfully'));
                 }else {
-                    $admin_id = Guard::where('user_id',$request->user()->id)->first()->admin_id;
-                    $this->create_guard_attendance_api($request->user()->id, null, null, $admin_id);
+                    $admin_id = Guard::where('id',$guard_id)->first()->admin_id;
+                    $this->create_guard_attendance_api($guard_id, null, null, $admin_id);
                     return $this->returnApiResponse(200, 'success', array('response' => 'Guard Time In Successfully'));
                 }
             }else{
-                $attendance=$this->check_time_out($request->user()->id);
+                $attendance=$this->check_time_out($guard_id);
                 if (count($attendance) > 0){
-                    $attendance_id=$this->get_attendance_id($request->user()->id);
+                    $attendance_id=$this->get_attendance_id($guard_id);
                     $this->edit_guard_attendance_api($attendance_id);
                     return $this->returnApiResponse(201, 'success', array('response' => 'Guard Time Out Successfully'));
                 }else{
