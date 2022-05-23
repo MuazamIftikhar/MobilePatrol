@@ -3,6 +3,7 @@
 namespace App\Http\Traits;
 
 use App\Models\DailyReport;
+use App\Models\DispatchReport;
 use App\Models\DispatchReportImages;
 
 trait DispatchTrait {
@@ -10,7 +11,7 @@ trait DispatchTrait {
     public function create_dispatch_report($inspection,$incident,$person_on_site,$site_secure,
                 $inspection_note,$incident_note,$person_on_site_note,$site_secure_note,
                 $dispatch_report_note){
-        $save_dispatch=new DailyReport();
+        $save_dispatch=new DispatchReport();
         $save_dispatch->inspection=$inspection;
         $save_dispatch->incident=$incident;
         $save_dispatch->person_on_site=$person_on_site;
