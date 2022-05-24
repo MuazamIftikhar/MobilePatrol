@@ -50,6 +50,20 @@ trait AttendanceTrait{
         return $attendance;
     }
 
+    public function getGuardAttendance($guard_id,$from,$to){
+        $attendance = Attendance::whereHas('guards', function ($query) use ($guard_id) {
+            $query->where('id', $guard_id);
+        })->with(array('guards'))->whereBetween('date', [$from, $to])->get();
+        return $attendance;
+    }
+    public function getAllGuardAttendance(){
+        $admin_id = $this->getAdminID(Auth::user()->id);
+        $attendance = Attendance::whereHas('admin',function ($query) use ($admin_id){
+            $query->where('admin_id',$admin_id);
+        })->with(array('admin','guards'))->get();
+        return $attendance;
+    }
+
 
     // Function for the Api
     public function check_time_out($guard_id){

@@ -28,7 +28,7 @@ class ReportController extends Controller
         }else{
             $attendance=$this->showAllGuardAttendance();
         }
-        $guard = $this->showAdminGuard();
+        $guard = $this->getAdminGuard();
         return view('manager.report.attendance', ['attendance'=>$attendance,'guard' =>$guard])->with('title', 'Manage Reports');
     }
 
@@ -39,20 +39,16 @@ class ReportController extends Controller
      */
     public function generatePDF(Request $request)
     {
-        $user_id=$request->guard_id;
-        if ($user_id != null){
-            dd($user_id);
-            $attendance=$this->showGuardAttendance($user_id,$request->from,$request->to);
+        $guard_id = $request->guard_id;
+        if ($guard_id != null){
+            $attendance=$this->getGuardAttendance($guard_id,$request->from,$request->to);
         }else{
-            $attendance=$this->showAllGuardAttendance($user_id);
+            $attendance=$this->getAllGuardAttendance();
         }
         $data = [
-
             'attendance' => $attendance
         ];
-
         $pdf = PDF::loadView('manager.report.pdf.attendance', $data);
-
         return $pdf->download('attendance.pdf');
 
     }

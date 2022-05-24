@@ -21,19 +21,21 @@
 </head>
 <body>
 
-<h2>HTML Table</h2>
+<h2>Attendance Report</h2>
 
 <table>
     <tr>
+        <th>Guard Name</th>
         <th>Time In</th>
         <th>Time Out</th>
         <th>Date</th>
     </tr>
     @foreach($attendance as $a)
     <tr>
+        <td>{{$a->guards->guard_name}}</td>
         <td>{{$a->local_time_in}}</td>
         <td>{{$a->local_time_out}}</td>
-        <td>{{$a->local_date}}</td>
+        <td>{{$a->date}}</td>
     </tr>
         @endforeach
 </table>
