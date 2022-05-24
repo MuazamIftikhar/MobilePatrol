@@ -19,8 +19,7 @@ class AttendanceController extends Controller
     public function save_guard_attendance(Request $request){
         try{
             $guard_id=Guard::where('user_id',$request->user()->id)->first()->id;
-            if ($request->schedule_id == null){
-                $attendance=$this->check_time_out($guard_id);
+            $attendance=$this->check_time_out($guard_id);
                 if (count($attendance) > 0){
                     $attendance_id=$this->get_attendance_id($guard_id);
                     $this->edit_guard_attendance_api($attendance_id);
@@ -30,8 +29,15 @@ class AttendanceController extends Controller
                     $this->create_guard_attendance_api($guard_id, null, null, $admin_id);
                     return $this->returnApiResponse(200, 'success', array('response' => 'Guard Time In Successfully'));
                 }
-            }else{
-                $attendance=$this->check_time_out($guard_id);
+        }catch(\Exception $e){
+            return $this->returnApiResponse('401','danger',array('error'=>$e->getMessage()));
+        }
+    }
+
+    public function save_guard_attendance_by_schedule(Request $request){
+        try{
+            $guard_id=Guard::where('user_id',$request->user()->id)->first()->id;
+            $attendance=$this->check_time_out_by_schedule($guard_id,$request->schedule_id);
                 if (count($attendance) > 0){
                     $attendance_id=$this->get_attendance_id($guard_id);
                     $this->edit_guard_attendance_api($attendance_id);
@@ -42,7 +48,6 @@ class AttendanceController extends Controller
                     $this->create_guard_attendance_api($guard_id, $client_id, $schedule_id, $admin_id);
                     return $this->returnApiResponse(200, 'success', array('response' => 'Guard Time In Successfully'));
                 }
-            }
         }catch(\Exception $e){
             return $this->returnApiResponse('401','danger',array('error'=>$e->getMessage()));
         }
@@ -51,7 +56,11 @@ class AttendanceController extends Controller
     public function check_guard_time_out(Request $request){
         try{
             $guard_id=Guard::where('user_id',$request->user()->id)->first()->id;
-            $attendance=$this->check_time_out($guard_id);
+            if ($request->schedule_id == null){
+                $attendance=$this->check_time_out($guard_id);
+            }else{
+                $attendance=$this->check_time_out_by_schedule($guard_id,$request->schedule_id);
+            }
             if (count($attendance) > 0){
                 return $this->returnApiResponse(200, 'success', array('check_time_out' => true));
             }else{
@@ -67,7 +76,6 @@ class AttendanceController extends Controller
             $date = Carbon::parse($request->date)->toDateString();
             $guard=$this->get_guard_table_row($request->user()->id);
             $attendance=$this->guard_attendance($guard->id,$date);
-            //return $this->returnApiResponse(200, 'success', array('attendance' => $guard));
             return $this->returnApiResponse(200, 'success', array('attendance' => $attendance));
         }catch(\Exception $e){
             return $this->returnApiResponse('401','danger',array('error'=>$e->getMessage()));

@@ -36,6 +36,8 @@ Route::middleware(['auth:api','cors'])->group(function () {
         ->name('get_guard_schedules');
     Route::post('create_guard_attendance',[\App\Http\Controllers\Api\AttendanceController::class,'save_guard_attendance'])
         ->name('create_guard_attendance');
+    Route::post('create_guard_attendance_by_schedule',[\App\Http\Controllers\Api\AttendanceController::class,'save_guard_attendance_by_schedule'])
+        ->name('create_guard_attendance_by_schedule');
     Route::post('check_guard_time_out',[\App\Http\Controllers\Api\AttendanceController::class,'check_guard_time_out'])
         ->name('check_guard_time_out');
     Route::post('get_guard_attendance',[\App\Http\Controllers\Api\AttendanceController::class,'get_guard_attendance'])

@@ -17144,8 +17144,19 @@ __webpack_require__.r(__webpack_exports__);
           id: 2,
           name: "option 2"
         }]
-      }, //                    {name: "select", id: 5 ,label : "Enter Text" , required : "true"  , option :[{id :1 ,name: "option 1"},{id :2 , name: "option 2" }]},
-      //                    {name: "file", id: 6 ,label : "Enter file" , required : "true" , placeholder : "Enter file"},
+      }, {
+        name: "select",
+        id: 5,
+        label: "Enter Text",
+        required: "true",
+        option: [{
+          id: 1,
+          name: "option 1"
+        }, {
+          id: 2,
+          name: "option 2"
+        }]
+      }, //                    {name: "file", id: 6 ,label : "Enter file" , required : "true" , placeholder : "Enter file"},
       {
         name: "textarea",
         id: 7,
