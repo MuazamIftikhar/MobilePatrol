@@ -4,6 +4,7 @@ namespace App\Http\Traits;
 
 use App\Models\DailyReport;
 use App\Models\DailyReportImages;
+use Illuminate\Support\Facades\Auth;
 
 trait DailyReportTrait {
 
@@ -23,5 +24,17 @@ trait DailyReportTrait {
         $save->daily_report_id = $report_id;
         $save->images = $image;
         $save->save();
+    }
+
+    public function showAllDailyReportByClientId($client_id){
+        $admin_id = $this->getAdminID(Auth::user()->id);
+        $daily_report=DailyReport::whereHas('admin',function ($query) use ($admin_id){
+            $query->where('admin_id',$admin_id);
+        })->with(array('admin'))->with(array('admin','guards'))->where('client_id',$client_id)->paginate(10);
+        return $daily_report;
+    }
+
+    public function showDailyReportByGuardID(){
+
     }
 }

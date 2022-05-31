@@ -113,11 +113,6 @@ Route::middleware(['auth','cors'])->group(function () {
         ->name('edit_guard_attendance')->middleware('role:manager');
 
 
-    #--------------------Manager Accounts --------------- Manage Reports ------------------------------#
-    Route::get('manager/manage/report', [App\Http\Controllers\Manager\ReportController::class, 'index'])
-        ->name('manage_report')->middleware('role:manager');
-    Route::get('generate/pdf', [\App\Http\Controllers\Manager\ReportController::class, 'generatePDF'])->name('generate_attendance_pdf');
-
 
     #--------------------Manager Accounts --------------- Manage Patrol ------------------------------#
     Route::get('manager/mobile/patrol', [App\Http\Controllers\Manager\MobilePatrolController::class, 'index'])
@@ -138,5 +133,27 @@ Route::middleware(['auth','cors'])->group(function () {
         ->name('create_mobile_patrol_report')->middleware('role:manager');
     Route::post('manager/save/mobile/patrol/report', [App\Http\Controllers\Manager\MobilePatrolController::class, 'save_mobile_patrol_report'])
         ->name('save_mobile_patrol_report')->middleware('role:manager');
+
+
+
+    #--------------------Manager Accounts --------------- Manage Reports ------------------------------#
+    Route::get('manager/manage/report', [App\Http\Controllers\Manager\ReportController::class, 'index'])
+        ->name('manage_report')->middleware('role:manager');
+    Route::get('manager/manage/report/shifts', [App\Http\Controllers\Manager\ReportController::class, 'shift_report'])
+        ->name('shift_report')->middleware('role:manager');
+    Route::get('manager/manage/report/clients', [App\Http\Controllers\Manager\ReportController::class, 'client_report'])
+        ->name('client_report')->middleware('role:manager');
+    #--------------------Not Completer ------------------------------#
+    Route::get('manager/manage/reports/by/clients/incident/{client_id}/{hash}', [App\Http\Controllers\Manager\ReportController::class, 'reports_by_clients_incident'])
+        ->name('reports_by_clients_incident')->middleware('role:manager');
+    Route::get('manager/manage/reports/by/clients/visitor/{client_id}/{hash}', [App\Http\Controllers\Manager\ReportController::class, 'reports_by_clients_visitor'])
+        ->name('reports_by_clients_visitor')->middleware('role:manager');
+    Route::get('manager/manage/daily/reports/by/clients/{client_id}/{hash}', [App\Http\Controllers\Manager\ReportController::class, 'daily_reports_by_clients'])
+        ->name('daily_reports_by_clients')->middleware('role:manager');
+
+
+    #--------------------Manager Accounts --------------- Generate Reports ------------------------------#
+    Route::get('generate/pdf', [\App\Http\Controllers\Manager\ReportController::class, 'generatePDF'])
+        ->name('generate_attendance_pdf');
 
 });

@@ -101,4 +101,16 @@ trait ScheduleTrait {
         $schedule = Schedule::where('id',$id)->first();
         return $schedule;
     }
+
+    public function showGuardSchedule($guard_id,$from_date_time,$to_date_time){
+        $schedule=Schedule::whereBetween('from_date_time', [$from_date_time, $to_date_time])
+            ->orWhereBetween('to_date_time', [$from_date_time, $to_date_time])
+            ->where('guard_id',$guard_id)->with(array('client','guards'))->paginate(5);
+        return $schedule;
+    }
+    public function showAllGuardSchedule(){
+        $schedule=Schedule::with(array('client','guards'))->paginate(5);
+        return $schedule;
+
+    }
 }

@@ -429,6 +429,22 @@
                                             <span class="menu-text">Attendance</span>
                                         </a>
                                     </li>
+                                    <li class="menu-item {{Route::currentRouteName() == 'shift_report' ? 'menu-item-active' : ''}}" aria-haspopup="true">
+                                        <a href="{{route('shift_report')}}" class="menu-link">
+                                            <i class="menu-bullet menu-bullet-dot">
+                                                <span></span>
+                                            </i>
+                                            <span class="menu-text">Shifts</span>
+                                        </a>
+                                    </li>
+                                    <li class="menu-item {{Route::currentRouteName() == 'client_report' ? 'menu-item-active' : ''}}" aria-haspopup="true">
+                                        <a href="{{route('client_report')}}" class="menu-link">
+                                            <i class="menu-bullet menu-bullet-dot">
+                                                <span></span>
+                                            </i>
+                                            <span class="menu-text">By Client Site</span>
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                         </li>
