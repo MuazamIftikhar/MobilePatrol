@@ -10,12 +10,9 @@
                     <!--begin::Page Title-->
                     <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">{{$title}}</h5>
                 </div>
-                <!--end::Info-->
-                <!--begin::Toolbar-->
                 <div class="d-flex align-items-center">
 
                 </div>
-                <!--end::Toolbar-->
             </div>
         </div>
         <!--end::Subheader-->
@@ -40,7 +37,7 @@
                                 <p style="margin: 10px; font-size: 16px">You are going to generate <b class="text-primary">Visitor</b> report for Client <b class="text-primary"> {{ $client->client_name }}</b> of Address <b class="text-primary">{{$client->client_address}}</b></p>
                             </div>
                             <div class="card-body p-5">
-                                <form method="get"  action="{{route('daily_reports_by_clients',['client_id'=>$client->id,'hash'=>md5($client->id)])}}" >
+                                <form method="get"  action="{{route('reports_by_clients_attendance',['client_id'=>$client->id,'hash'=>md5($client->id)])}}" >
                                     <div class="row">
                                         <div class="col-lg-3">
                                             <div class="form-group">
@@ -60,7 +57,6 @@
                                                        class="form-control">
                                             </div>
                                         </div>
-
                                         <div class="col-lg-3">
                                             <div class="form-group">
                                                 <label>To Date</label>
@@ -75,10 +71,7 @@
                                             </div>
                                         </div>
                                     </div>
-
-
                                 </form>
-
                             </div>
                         </div>
                     </div>
@@ -101,16 +94,25 @@
                                         <thead>
                                         <tr>
                                             <th>Guard Name</th>
-                                            <th>Description</th>
+                                            <th>Guard Email</th>
+                                            <th>Time In</th>
+                                            <th>Time Out</th>
                                             <th>Date</th>
+                                            <th>Action</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        @foreach($daily_report as $s)
+                                        @foreach($attendance as $g)
                                             <tr>
-                                                <td>{{$s->guards->guard_name}}</td>
-                                                <td>{{$s->description}}</td>
-                                                <td>{{$s->date}}</td>
+                                                <td>{{$g->guards->guard_name}}</td>
+                                                <td>{{$g->guards->guard_email}}</td>
+                                                <td>{{$g->local_time_in}}</td>
+                                                <td>{{$g->local_time_out}}</td>
+                                                <td>{{$g->date}}</td>
+                                                <td>
+                                                    <a href="{{route('edit_timing',['id' => $g->id,'hash' => md5($g->id)])}}" class="btn btn-warning btn-sm"><i class="fa fa-edit fa-1x"></i></a>
+                                                    <a href="{{route('delete_timing',['id' => $g->id,'hash' => md5($g->id)])}}" class="btn btn-danger btn-sm"><i class="fa fa-trash fa-1x"></i></a>
+                                                </td>
                                             </tr>
                                         @endforeach
                                         </tbody>
@@ -119,7 +121,7 @@
                             </div>
                             <div class="card-footer">
                                 <div class="float-right">
-                                    {{$daily_report->links('vendor.pagination.bootstrap-4')}}
+                                    {{$attendance->links('vendor.pagination.bootstrap-4')}}
                                 </div>
                             </div>
 
@@ -127,13 +129,7 @@
                         </div>
                         <!--end::Mixed Widget 1-->
                     </div>
-
                 </div>
-                <!--end::Row-->
-                <!--begin::Row-->
-
-                <!--end::Row-->
-                <!--end::Dashboard-->
             </div>
             <!--end::Container-->
         </div>

@@ -4,10 +4,12 @@ namespace App\Http\Traits;
 
 use App\Models\DailyReport;
 use App\Models\DailyReportImages;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 trait DailyReportTrait {
 
+    use PhpFunctionsTrait;
     public function save_daily_report_trait($guard_id,$client_id,$schedule_id,$admin_id,$description){
         $save = new DailyReport();
         $save->guard_id = $guard_id;
@@ -15,6 +17,7 @@ trait DailyReportTrait {
         $save->schedule_id = $schedule_id;
         $save->admin_id = $admin_id;
         $save->description = $description;
+        $save->date=$this->convertHtmlDateTimeToDbFormat(Carbon::now(),Carbon::now()->timezone);
         $save->save();
         return $save;
     }
@@ -29,12 +32,16 @@ trait DailyReportTrait {
     public function showAllDailyReportByClientId($client_id){
         $admin_id = $this->getAdminID(Auth::user()->id);
         $daily_report=DailyReport::whereHas('admin',function ($query) use ($admin_id){
-            $query->where('admin_id',$admin_id);
+            $query->where('id',$admin_id);
         })->with(array('admin'))->with(array('admin','guards'))->where('client_id',$client_id)->paginate(10);
         return $daily_report;
     }
 
-    public function showDailyReportByGuardID(){
-
+    public function showDailyReportByGuardID($guard_id,$from,$to,$client_id){
+        $admin_id = $this->getAdminID(Auth::user()->id);
+        $daily_report=DailyReport::whereHas('admin',function ($query) use ($admin_id,$guard_id){
+            $query->where('id',$admin_id);
+        })->with(array('admin'))->with(array('admin','guards'))->where('guard_id',$guard_id)->whereBetween('date', [$from, $to])->where('client_id',$client_id)->paginate(10);
+        return $daily_report;
     }
 }

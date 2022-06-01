@@ -150,6 +150,10 @@ Route::middleware(['auth','cors'])->group(function () {
         ->name('reports_by_clients_visitor')->middleware('role:manager');
     Route::get('manager/manage/daily/reports/by/clients/{client_id}/{hash}', [App\Http\Controllers\Manager\ReportController::class, 'daily_reports_by_clients'])
         ->name('daily_reports_by_clients')->middleware('role:manager');
+    Route::get('manager/manage/reports/by/clients/attendance/{client_id}/{hash}', [App\Http\Controllers\Manager\ReportController::class, 'reports_by_clients_attendance'])
+        ->name('reports_by_clients_attendance')->middleware('role:manager');
+    Route::get('manager/manage/reports/by/clients/form/{client_id}/{hash}', [App\Http\Controllers\Manager\ReportController::class, 'reports_by_clients_forms'])
+        ->name('reports_by_clients_forms')->middleware('role:manager');
 
 
     #--------------------Manager Accounts --------------- Generate Reports ------------------------------#

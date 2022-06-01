@@ -3,6 +3,8 @@
 namespace App\Http\Traits;
 
 use App\Models\Form;
+use App\Models\FormValue;
+use App\Models\FormValuePicture;
 
 trait FormTrait {
 
@@ -26,6 +28,12 @@ trait FormTrait {
         }else{
             return true;
         }
+    }
+
+    public function showAllGuardForm($form_id){
+        $form=FormValue::where('form_id',$form_id)->paginate(10);
+        return $form;
+
     }
 
     public function update_forms($id,$form_name,$description,$form_element){

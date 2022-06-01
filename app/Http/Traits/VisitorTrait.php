@@ -37,7 +37,7 @@ trait VisitorTrait {
     public function showAllVisitorsByClientID($client_id){
         $admin_id = $this->getAdminID(Auth::user()->id);
         $visitor = Visitor::whereHas('admin',function ($query) use ($admin_id){
-            $query->where('admin_id',$admin_id);
+            $query->where('id',$admin_id);
         })->with(array('admin'))->where('client_id',$client_id)->paginate(10);
         return $visitor;
     }
@@ -45,7 +45,7 @@ trait VisitorTrait {
     public function showVisitorsByGuardID($guard_id,$from,$to,$client_id){
         $admin_id = $this->getAdminID(Auth::user()->id);
         $visitor = Visitor::whereHas('admin',function ($query) use ($admin_id){
-            $query->where('admin_id',$admin_id);
+            $query->where('id',$admin_id);
         })->with(array('admin'))->where('guard_id',$guard_id)->whereBetween('time_in', [$from, $to])->where('client_id',$client_id)->paginate(10);
         return $visitor;
     }

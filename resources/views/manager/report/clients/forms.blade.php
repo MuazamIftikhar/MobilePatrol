@@ -36,11 +36,8 @@
                     <div class="col-lg-8 ">
                         <!--begin::Mixed Widget 1-->
                         <div class="card card-custom card-stretch gutter-b">
-                            <div class="card-header">
-                                <p style="margin: 10px; font-size: 16px">You are going to generate <b class="text-primary">Visitor</b> report for Client <b class="text-primary"> {{ $client->client_name }}</b> of Address <b class="text-primary">{{$client->client_address}}</b></p>
-                            </div>
                             <div class="card-body p-5">
-                                <form method="get"  action="{{route('daily_reports_by_clients',['client_id'=>$client->id,'hash'=>md5($client->id)])}}" >
+                                <form method="get" action="{{route('shift_report')}}">
                                     <div class="row">
                                         <div class="col-lg-3">
                                             <div class="form-group">
@@ -71,7 +68,8 @@
 
                                         <div class="col-lg-3">
                                             <div class="form-group">
-                                                <button type="submit" class="btn btn-success form-control mt-8">Search</button>
+                                                <button type="submit" class="btn btn-success form-control mt-8">Search
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -89,7 +87,9 @@
                             <div class="card-header border-0  py-5">
                                 <h3 class="card-title font-weight-bolder">{{$title}}</h3>
                                 <div class="card-toolbar">
-                                    <a class="btn btn-primary" href="{{route('generate_attendance_pdf',['guard_id'=>request()->guard_id,'from'=>request()->from,'to'=>request()->to])}}">Export Pdf</a>
+                                    <a class="btn btn-primary"
+                                       href="{{route('generate_attendance_pdf',['guard_id'=>request()->guard_id,'from'=>request()->from,'to'=>request()->to])}}">Export
+                                        Pdf</a>
                                 </div>
                             </div>
                             <!--end::Header-->
@@ -100,17 +100,28 @@
                                     <table class="table table-separate table-head-custom kt_datatable">
                                         <thead>
                                         <tr>
+                                            <th>Client Name</th>
+                                            <th>shift Date</th>
                                             <th>Guard Name</th>
-                                            <th>Description</th>
-                                            <th>Date</th>
+                                            <th>Time</th>
+                                            <th>Action</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        @foreach($daily_report as $s)
+                                        @foreach($shifts as $s)
                                             <tr>
+                                                <td>{{$s->client->client_name}}</td>
+                                                <td>{{$s->only_date}}</td>
                                                 <td>{{$s->guards->guard_name}}</td>
-                                                <td>{{$s->description}}</td>
-                                                <td>{{$s->date}}</td>
+                                                <td>{{$s->local_from_date_time}} - {{$s->local_to_date_time}}</td>
+                                                <td>
+                                                    <a href="{{route('edit_timing',['id' => $s->id,'hash' => md5($s->id)])}}"
+                                                       class="btn btn-warning btn-sm"><i
+                                                                class="fa fa-edit fa-1x"></i></a>
+                                                    <a href="{{route('delete_timing',['id' => $s->id,'hash' => md5($s->id)])}}"
+                                                       class="btn btn-danger btn-sm"><i
+                                                                class="fa fa-trash fa-1x"></i></a>
+                                                </td>
                                             </tr>
                                         @endforeach
                                         </tbody>
@@ -119,21 +130,12 @@
                             </div>
                             <div class="card-footer">
                                 <div class="float-right">
-                                    {{$daily_report->links('vendor.pagination.bootstrap-4')}}
+                                    {{$shifts->links('vendor.pagination.bootstrap-4')}}
                                 </div>
                             </div>
-
-                            <!--end::Body-->
                         </div>
-                        <!--end::Mixed Widget 1-->
                     </div>
-
                 </div>
-                <!--end::Row-->
-                <!--begin::Row-->
-
-                <!--end::Row-->
-                <!--end::Dashboard-->
             </div>
             <!--end::Container-->
         </div>
