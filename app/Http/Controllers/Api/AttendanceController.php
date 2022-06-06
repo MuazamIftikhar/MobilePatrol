@@ -18,15 +18,14 @@ class AttendanceController extends Controller
 
     public function save_guard_attendance(Request $request){
         try{
-            $guard_id=Guard::where('user_id',$request->user()->id)->first()->id;
-            $attendance=$this->check_time_out($guard_id);
+            $guard=Guard::where('user_id',$request->user()->id)->first();
+            $attendance=$this->check_time_out($guard->id);
                 if (count($attendance) > 0){
-                    $attendance_id=$this->get_attendance_id($guard_id);
+                    $attendance_id=$this->get_attendance_id($guard->id);
                     $this->edit_guard_attendance_api($attendance_id);
                     return $this->returnApiResponse(201, 'success', array('response' => 'Guard Time Out Successfully'));
                 }else {
-                    $admin_id = Guard::where('id',$guard_id)->first()->admin_id;
-                    $this->create_guard_attendance_api($guard_id, null, null, $admin_id);
+                    $this->create_guard_attendance_api($guard->id, null, null, $guard->admin_id);
                     return $this->returnApiResponse(200, 'success', array('response' => 'Guard Time In Successfully'));
                 }
         }catch(\Exception $e){
@@ -36,10 +35,10 @@ class AttendanceController extends Controller
 
     public function save_guard_attendance_by_schedule(Request $request){
         try{
-            $guard_id=Guard::where('user_id',$request->user()->id)->first()->id;
-            $attendance=$this->check_time_out_by_schedule($guard_id,$request->schedule_id);
+            $guard=$this->get_guard_table_row($request->user()->id);
+            $attendance=$this->check_time_out_by_schedule($guard->id,$request->schedule_id);
                 if (count($attendance) > 0){
-                    $attendance_id=$this->get_attendance_id($guard_id);
+                    $attendance_id=$this->get_attendance_id($guard->id);
                     $this->edit_guard_attendance_api($attendance_id);
                     return $this->returnApiResponse(201, 'success', array('response' => 'Guard Time Out Successfully'));
                 }else{

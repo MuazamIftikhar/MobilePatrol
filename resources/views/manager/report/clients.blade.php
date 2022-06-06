@@ -78,7 +78,7 @@
                                                                 Forms:</li>
                                                             <li class="navi-item">
                                                                 @foreach($form as $f)
-                                                                <a href="#" class="navi-link">
+                                                                <a href="{{route('reports_by_clients_forms',['form_id' => $f->id])}}" class="navi-link">
                                                                     <span class="navi-icon">
                                                                         <i class=" menu-bullet-dot"></i>
                                                                     </span>

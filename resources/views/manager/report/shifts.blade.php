@@ -101,7 +101,7 @@
                                             <th>shift Date</th>
                                             <th>Guard Name</th>
                                             <th>Time</th>
-                                            <th>Action</th>
+                                            <th>Reports</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -112,8 +112,33 @@
                                                 <td>{{$s->guards->guard_name}}</td>
                                                 <td>{{$s->local_from_date_time}} - {{$s->local_to_date_time}}</td>
                                                 <td>
-                                                    <a href="{{route('edit_timing',['id' => $s->id,'hash' => md5($s->id)])}}" class="btn btn-warning btn-sm"><i class="fa fa-edit fa-1x"></i></a>
-                                                    <a href="{{route('delete_timing',['id' => $s->id,'hash' => md5($s->id)])}}" class="btn btn-danger btn-sm"><i class="fa fa-trash fa-1x"></i></a>
+                                                    <a href="{{route('reports_by_clients_incident',['client_id' => $s->id,'hash' => md5($s->id)])}}" class="btn btn-sm btn-primary">Incident Report</a>
+                                                    <a href="{{route('daily_reports_by_clients',['client_id' => $s->id,'hash' => md5($s->id)])}}" class="btn btn-success btn-sm">Daily Report</a>
+                                                    <a href="{{route('reports_by_clients_visitor',['client_id' => $s->id,'hash' => md5($s->id)])}}" class="btn btn-danger btn-sm">Visitor Report</a>
+                                                    <a href="{{route('reports_by_clients_attendance',['client_id' => $s->id,'hash' => md5($s->id)])}}" class="btn btn-warning btn-sm">Attendance Report</a>
+                                                    <a href="#" class="btn btn-secondary btn-sm">QR Report</a>
+                                                    <a href="javascript:;" class="btn btn-sm btn-clean btn-icon mr-2"
+                                                       data-toggle="dropdown" aria-expanded="false"> <span
+                                                                class="svg-icon svg-icon-md">
+                                                            <i class="la la-bars"></i>
+                                                        </span>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right" style="display: none;">
+                                                        <ul class="navi flex-column navi-hover py-2">
+                                                            <li class="navi-header font-weight-bolder text-uppercase font-size-xs text-primary pb-2">
+                                                                Forms:</li>
+                                                            <li class="navi-item">
+                                                                @foreach($form as $f)
+                                                                    <a href="{{route('reports_by_clients_forms',['form_id' => $f->id])}}" class="navi-link">
+                                                                    <span class="navi-icon">
+                                                                        <i class=" menu-bullet-dot"></i>
+                                                                    </span>
+                                                                        <span class="navi-text">{{$f->name}}</span>
+                                                                    </a>
+                                                                @endforeach
+                                                            </li>
+                                                        </ul>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         @endforeach

@@ -5,6 +5,7 @@ namespace App\Http\Traits;
 use App\Models\Form;
 use App\Models\FormValue;
 use App\Models\FormValuePicture;
+use Carbon\Carbon;
 
 trait FormTrait {
 
@@ -54,10 +55,25 @@ trait FormTrait {
             }
             $update = Form::where('id',$form_id)->update(['status' => $statuss]);
             return $status;
+    }
 
+    public function save_forms_value_trait($guard_id,$form_id,$form_element){
+        $save_form=new FormValue();
+        $save_form->guard_id=$guard_id;
+        $save_form->form_id=$form_id;
+        $save_form->form_element=$form_element;
+        $save_form->date=$this->convertHtmlDateTimeToDbFormat(Carbon::now(),Carbon::now()->timezone);;
+        $save_form->save();
+        return $save_form;
 
     }
 
+    public function save_forms_value_image_trait($form_id,$image) {
+        $form_images=new FormValuePicture();
+        $form_images->form_value_id=$form_id;
+        $form_images->images=$image;
+        $form_images->save();
+    }
 
 
 }

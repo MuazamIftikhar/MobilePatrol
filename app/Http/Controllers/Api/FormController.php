@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Traits\AccountsTrait;
+use App\Http\Traits\FormTrait;
+use App\Http\Traits\GuardTrait;
 use App\Http\Traits\ImageUplaodTrait;
 use App\Http\Traits\PhpFunctionsTrait;
 use App\Http\Traits\ResponseTrait;
@@ -10,11 +13,12 @@ use App\Models\Form;
 use App\Models\FormValue;
 use App\Models\FormValuePicture;
 use App\Models\SaveForm;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class FormController extends Controller
 {
-    use PhpFunctionsTrait,ResponseTrait,ImageUplaodTrait;
+    use PhpFunctionsTrait , ResponseTrait , ImageUplaodTrait , AccountsTrait , FormTrait;
     /**
      * Display a listing of the resource.
      *
@@ -38,24 +42,18 @@ class FormController extends Controller
     public function save_forms_value(Request $request)
     {
         try{
-        $save_form=new FormValue();
-        $save_form->user_id=$request->user()->id;
-        $save_form->form_id=$request->form_id;
-        $save_form->form_element=$request->form_element;
-        $save_form->save();
-        if($request->hasFile('photos')){
-            foreach ($request->photos as $photo){
-                $image = $this->uploadImage($photo);
-                $form_images=new FormValuePicture();
-                $form_images->form_value_id=$save_form->id;
-                $form_images->images=$image;
-                $form_images->save();
+            $guard=$this->get_guard_table_row($request->user()->id);
+            $save_form=$this->save_forms_value_trait($guard->id,$request->form_id,$request->form_element);
+            if($request->hasFile('photos')){
+                foreach ($request->photos as $photo){
+                    $image = $this->uploadImage($photo);
+                    $save_image=$this->save_forms_value_image_trait($save_form->id,$image);
+                }
             }
+            return $this->returnApiResponse(200, 'success', array('response' => 'Form Value saved Successfully'));
+        } catch (\Exception $e) {
+            return $this->returnApiResponse(401, 'danger', array('error' => $e->getMessage()));
         }
-    return $this->returnApiResponse(200, 'success', array('response' => 'Form Value saved Successfully'));
-} catch (\Exception $e) {
-    return $this->returnApiResponse(401, 'danger', array('error' => $e->getMessage()));
-}
 
     }
 

@@ -18,7 +18,7 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-Route::middleware(['auth','cors'])->group(function () {
+Route::middleware(['auth', 'cors'])->group(function () {
 //Route::group(['middleware' => 'auth','cors'], function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     #------------------------- Admin Accounts Methods ----------------#
@@ -113,7 +113,6 @@ Route::middleware(['auth','cors'])->group(function () {
         ->name('edit_guard_attendance')->middleware('role:manager');
 
 
-
     #--------------------Manager Accounts --------------- Manage Patrol ------------------------------#
     Route::get('manager/mobile/patrol', [App\Http\Controllers\Manager\MobilePatrolController::class, 'index'])
         ->name('mobile_patrol')->middleware('role:manager');
@@ -135,7 +134,6 @@ Route::middleware(['auth','cors'])->group(function () {
         ->name('save_mobile_patrol_report')->middleware('role:manager');
 
 
-
     #--------------------Manager Accounts --------------- Manage Reports ------------------------------#
     Route::get('manager/manage/report', [App\Http\Controllers\Manager\ReportController::class, 'index'])
         ->name('manage_report')->middleware('role:manager');
@@ -143,7 +141,7 @@ Route::middleware(['auth','cors'])->group(function () {
         ->name('shift_report')->middleware('role:manager');
     Route::get('manager/manage/report/clients', [App\Http\Controllers\Manager\ReportController::class, 'client_report'])
         ->name('client_report')->middleware('role:manager');
-    #--------------------Not Completer ------------------------------#
+    #--------------------Not Complete ------------------------------#
     Route::get('manager/manage/reports/by/clients/incident/{client_id}/{hash}', [App\Http\Controllers\Manager\ReportController::class, 'reports_by_clients_incident'])
         ->name('reports_by_clients_incident')->middleware('role:manager');
     Route::get('manager/manage/reports/by/clients/visitor/{client_id}/{hash}', [App\Http\Controllers\Manager\ReportController::class, 'reports_by_clients_visitor'])
@@ -152,8 +150,19 @@ Route::middleware(['auth','cors'])->group(function () {
         ->name('daily_reports_by_clients')->middleware('role:manager');
     Route::get('manager/manage/reports/by/clients/attendance/{client_id}/{hash}', [App\Http\Controllers\Manager\ReportController::class, 'reports_by_clients_attendance'])
         ->name('reports_by_clients_attendance')->middleware('role:manager');
-    Route::get('manager/manage/reports/by/clients/form/{client_id}/{hash}', [App\Http\Controllers\Manager\ReportController::class, 'reports_by_clients_forms'])
+    Route::get('manager/manage/reports/by/clients/form/{form_id}', [App\Http\Controllers\Manager\ReportController::class, 'reports_by_clients_forms'])
         ->name('reports_by_clients_forms')->middleware('role:manager');
+    #--------------------Not Complete ------------------------------#
+    Route::get('manager/manage/reports/by/schedule/incident/{client_id}/{hash}', [App\Http\Controllers\Manager\ReportController::class, 'reports_by_schedule_incident'])
+        ->name('reports_by_schedule_incident')->middleware('role:manager');
+    Route::get('manager/manage/reports/by/schedule/visitor/{client_id}/{hash}', [App\Http\Controllers\Manager\ReportController::class, 'reports_by_schedule_visitor'])
+        ->name('reports_by_schedule_visitor')->middleware('role:manager');
+    Route::get('manager/manage/daily/reports/by/schedule/{client_id}/{hash}', [App\Http\Controllers\Manager\ReportController::class, 'daily_reports_by_schedule'])
+        ->name('daily_reports_by_schedule')->middleware('role:manager');
+    Route::get('manager/manage/reports/by/schedule/attendance/{client_id}/{hash}', [App\Http\Controllers\Manager\ReportController::class, 'reports_by_schedule_attendance'])
+        ->name('reports_by_schedule_attendance')->middleware('role:manager');
+    Route::get('manager/manage/reports/by/schedule/form/{form_id}', [App\Http\Controllers\Manager\ReportController::class, 'reports_by_schedule_forms'])
+        ->name('reports_by_schedule_forms')->middleware('role:manager');
 
 
     #--------------------Manager Accounts --------------- Generate Reports ------------------------------#

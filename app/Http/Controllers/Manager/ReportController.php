@@ -47,7 +47,8 @@ class ReportController extends Controller
             $shifts = $this->showAllGuardSchedule();
         }
         $guard = $this->getAdminGuard();
-        return view('manager.report.shifts', ['shifts' => $shifts, 'guard' => $guard])->with('title', 'Manage Reports');
+        $form=Form::all();
+        return view('manager.report.shifts', ['shifts' => $shifts, 'guard' => $guard,'form'=>$form])->with('title', 'Manage Reports');
     }
 
     public function client_report()
@@ -113,13 +114,14 @@ class ReportController extends Controller
     {
         $guard_id = $request->guard_id;
         $client = Client::where('id', $request->client_id)->first();
+        $form_input=Form::where('id',$request->form_id)->first();
         if ($guard_id != null) {
-            $attendance = $this->showAttendanceReportByGuardID($guard_id, $request->from, $request->to, $request->client_id);
+            $form = $this->showAttendanceReportByGuardID($guard_id, $request->from, $request->to, $request->client_id);
         } else {
             $form = $this->showAllGuardForm($request->form_id);
         }
         $guard = $this->getAdminGuard();
-        return view('manager.report.clients.forms', ['form' => $form, 'guard' => $guard, 'client' => $client])
+        return view('manager.report.clients.forms', ['form_input' => $form_input,'form' => $form, 'guard' => $guard, 'client' => $client])
             ->with('title', 'Manage Daily Reports');
     }
 

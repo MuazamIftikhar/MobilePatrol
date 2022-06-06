@@ -100,28 +100,18 @@
                                     <table class="table table-separate table-head-custom kt_datatable">
                                         <thead>
                                         <tr>
-                                            <th>Client Name</th>
-                                            <th>shift Date</th>
-                                            <th>Guard Name</th>
-                                            <th>Time</th>
-                                            <th>Action</th>
+                                            @foreach(json_decode($form_input->form_element) as $f)
+                                            <th>{{$f->name}}</th>
+                                            @endforeach
+
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        @foreach($shifts as $s)
+                                        @foreach($form as $f)
                                             <tr>
-                                                <td>{{$s->client->client_name}}</td>
-                                                <td>{{$s->only_date}}</td>
-                                                <td>{{$s->guards->guard_name}}</td>
-                                                <td>{{$s->local_from_date_time}} - {{$s->local_to_date_time}}</td>
-                                                <td>
-                                                    <a href="{{route('edit_timing',['id' => $s->id,'hash' => md5($s->id)])}}"
-                                                       class="btn btn-warning btn-sm"><i
-                                                                class="fa fa-edit fa-1x"></i></a>
-                                                    <a href="{{route('delete_timing',['id' => $s->id,'hash' => md5($s->id)])}}"
-                                                       class="btn btn-danger btn-sm"><i
-                                                                class="fa fa-trash fa-1x"></i></a>
-                                                </td>
+                                                @foreach(json_decode($f->form_element) as $f)
+                                                <td>{{$f->value}}</td>
+                                                @endforeach
                                             </tr>
                                         @endforeach
                                         </tbody>
@@ -130,7 +120,7 @@
                             </div>
                             <div class="card-footer">
                                 <div class="float-right">
-                                    {{$shifts->links('vendor.pagination.bootstrap-4')}}
+                                    {{$form->links('vendor.pagination.bootstrap-4')}}
                                 </div>
                             </div>
                         </div>

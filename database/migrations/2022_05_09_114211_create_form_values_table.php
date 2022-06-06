@@ -18,6 +18,7 @@ class CreateFormValuesTable extends Migration
             $table->integer('user_id');
             $table->integer('form_id');
             $table->json('form_element');
+            $table->date('date');
             $table->timestamps();
         });
     }
