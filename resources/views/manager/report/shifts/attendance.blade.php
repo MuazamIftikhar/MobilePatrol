@@ -33,11 +33,8 @@
                     <div class="col-lg-8 ">
                         <!--begin::Mixed Widget 1-->
                         <div class="card card-custom card-stretch gutter-b">
-                            <div class="card-header">
-                                <p style="margin: 10px; font-size: 16px">You are going to generate <b class="text-primary">Visitor</b> report for Client <b class="text-primary"> {{ $client->client_name }}</b> of Address <b class="text-primary">{{$client->client_address}}</b></p>
-                            </div>
                             <div class="card-body p-5">
-                                <form method="get"  action="{{route('reports_by_clients_attendance',['client_id'=>$client->id,'hash'=>md5($client->id)])}}" >
+                                <form method="get"  action="{{route('reports_by_schedule_attendance',['schedule_id'=>$schedule->id,'hash'=>md5($schedule->id)])}}" >
                                     <div class="row">
                                         <div class="col-lg-3">
                                             <div class="form-group">
@@ -82,7 +79,8 @@
                             <div class="card-header border-0  py-5">
                                 <h3 class="card-title font-weight-bolder">{{$title}}</h3>
                                 <div class="card-toolbar">
-                                    <a class="btn btn-primary" href="{{route('generate_client_attendance_pdf',['guard_id'=>request()->guard_id,'from'=>request()->from,'to'=>request()->to])}}">Export Pdf</a>
+                                    <a class="btn btn-primary" href="{{route('generate_schedule_attendance_pdf',['guard_id'=>request()->guard_id,
+                                    'from'=>request()->from,'to'=>request()->to,'schedule_id'=>$schedule->id])}}">Export Pdf</a>
                                 </div>
                             </div>
                             <!--end::Header-->

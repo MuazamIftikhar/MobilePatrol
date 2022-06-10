@@ -85,9 +85,6 @@
                             <!--begin::Header-->
                             <div class="card-header border-0  py-5">
                                 <h3 class="card-title font-weight-bolder">{{$title}}</h3>
-                                <div class="card-toolbar">
-                                    <a class="btn btn-primary" href="{{route('generate_attendance_pdf',['guard_id'=>request()->guard_id,'from'=>request()->from,'to'=>request()->to])}}">Export Pdf</a>
-                                </div>
                             </div>
                             <!--end::Header-->
 
@@ -112,10 +109,10 @@
                                                 <td>{{$s->guards->guard_name}}</td>
                                                 <td>{{$s->local_from_date_time}} - {{$s->local_to_date_time}}</td>
                                                 <td>
-                                                    <a href="{{route('reports_by_clients_incident',['client_id' => $s->id,'hash' => md5($s->id)])}}" class="btn btn-sm btn-primary">Incident Report</a>
-                                                    <a href="{{route('daily_reports_by_clients',['client_id' => $s->id,'hash' => md5($s->id)])}}" class="btn btn-success btn-sm">Daily Report</a>
-                                                    <a href="{{route('reports_by_clients_visitor',['client_id' => $s->id,'hash' => md5($s->id)])}}" class="btn btn-danger btn-sm">Visitor Report</a>
-                                                    <a href="{{route('reports_by_clients_attendance',['client_id' => $s->id,'hash' => md5($s->id)])}}" class="btn btn-warning btn-sm">Attendance Report</a>
+                                                    <a href="{{route('reports_by_schedule_incident',['schedule_id' => $s->id,'hash' => md5($s->id)])}}" class="btn btn-sm btn-primary">Incident Report</a>
+                                                    <a href="{{route('daily_reports_by_schedule',['schedule_id' => $s->id,'hash' => md5($s->id)])}}" class="btn btn-success btn-sm">Daily Report</a>
+                                                    <a href="{{route('reports_by_schedule_visitor',['schedule_id' => $s->id,'hash' => md5($s->id)])}}" class="btn btn-danger btn-sm">Visitor Report</a>
+                                                    <a href="{{route('reports_by_schedule_attendance',['schedule_id' => $s->id,'hash' => md5($s->id)])}}" class="btn btn-warning btn-sm">Attendance Report</a>
                                                     <a href="#" class="btn btn-secondary btn-sm">QR Report</a>
                                                     <a href="javascript:;" class="btn btn-sm btn-clean btn-icon mr-2"
                                                        data-toggle="dropdown" aria-expanded="false"> <span

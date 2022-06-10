@@ -13,7 +13,7 @@ class Visitor extends Model
 
     use HasFactory, AttendanceTrait, ScheduleTrait;
 
-    public $appends = ['local_time','local_time_out'];
+    public $appends = ['local_time_in','local_time_out'];
 
     public function visitor_report_images(){
         return $this->hasMany(VisitorImages::class);
@@ -31,7 +31,7 @@ class Visitor extends Model
         return $this->belongsTo(Admin::class);
     }
 
-    public function getLocalTimeAttribute(){
+    public function getLocalTimeInAttribute(){
         if($this->time_in != null) {
             return $this->convertDateTimeToDbFormat($this->convertWithRespectToTimeZone(Carbon::parse($this->time_in)->toDateTimeString(), $this->admin_id));
         }else{

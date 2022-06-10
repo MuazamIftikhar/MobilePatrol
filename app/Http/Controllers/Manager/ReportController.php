@@ -13,8 +13,11 @@ use App\Http\Traits\ScheduleTrait;
 use App\Http\Traits\VisitorTrait;
 use App\Models\Client;
 use App\Models\Form;
+use App\Models\Schedule;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ReportController extends Controller
 {
@@ -47,15 +50,15 @@ class ReportController extends Controller
             $shifts = $this->showAllGuardSchedule();
         }
         $guard = $this->getAdminGuard();
-        $form=Form::all();
-        return view('manager.report.shifts', ['shifts' => $shifts, 'guard' => $guard,'form'=>$form])->with('title', 'Manage Reports');
+        $form = Form::all();
+        return view('manager.report.shifts', ['shifts' => $shifts, 'guard' => $guard, 'form' => $form])->with('title', 'Manage Reports');
     }
 
     public function client_report()
     {
         $clients = $this->showAdminClient();
-        $form=Form::all();
-        return view('manager.report.clients', ['clients' => $clients,'form'=>$form])->with('title', 'Manage Client  Reports');
+        $form = Form::all();
+        return view('manager.report.clients', ['clients' => $clients, 'form' => $form])->with('title', 'Manage Client  Reports');
     }
 
     public function reports_by_clients_incident(Request $request)
@@ -79,7 +82,21 @@ class ReportController extends Controller
             $visitor = $this->showAllVisitorsByClientID($request->client_id);
         }
         $guard = $this->getAdminGuard();
-        return view('manager.report.clients.visitor', ['visitor' => $visitor, 'guard' => $guard, 'client' => $client])->with('title', 'Manage Visitor Reports');
+        return view('manager.report.clients.visitor', ['visitor' => $visitor, 'guard' => $guard, 'client' => $client])
+            ->with('title', 'Manage Visitor Reports');
+    }
+
+    public function reports_by_schedule_visitor(Request $request)
+    {
+        $guard_id = $request->guard_id;
+        $schedule = Schedule::where('id', $request->schedule_id)->first();
+        if ($guard_id != null) {
+            $visitor = $this->showVisitorsByScheduleAndGuardID($guard_id, $request->from, $request->to, $request->schedule_id);
+        } else {
+            $visitor = $this->showAllVisitorsByScheduleID($request->schedule_id);
+        }
+        $guard = $this->getAdminGuard();
+        return view('manager.report.shifts.visitor', ['visitor' => $visitor, 'guard' => $guard, 'schedule' => $schedule])->with('title', 'Manage Visitor Reports');
     }
 
 
@@ -96,6 +113,19 @@ class ReportController extends Controller
         return view('manager.report.clients.daily', ['daily_report' => $daily_report, 'guard' => $guard, 'client' => $client])->with('title', 'Manage Daily Reports');
     }
 
+    public function daily_reports_by_schedule(Request $request)
+    {
+        $guard_id = $request->guard_id;
+        $schedule = Schedule::where('id', $request->schedule_id)->first();
+        if ($guard_id != null) {
+            $daily_report = $this->showDailyReportByGuardAndScheduleID($guard_id, $request->from, $request->to, $request->schedule_id);
+        } else {
+            $daily_report = $this->showAllDailyReportByScheduleId($request->schedule_id);
+        }
+        $guard = $this->getAdminGuard();
+        return view('manager.report.shifts.daily', ['daily_report' => $daily_report, 'guard' => $guard, 'schedule' => $schedule])->with('title', 'Manage Daily Reports');
+    }
+
 
     public function reports_by_clients_attendance(Request $request)
     {
@@ -110,18 +140,30 @@ class ReportController extends Controller
         return view('manager.report.clients.attendance', ['attendance' => $attendance, 'guard' => $guard, 'client' => $client])->with('title', 'Manage Daily Reports');
     }
 
+    public function reports_by_schedule_attendance(Request $request)
+    {
+        $guard_id = $request->guard_id;
+        $schedule = Schedule::where('id', $request->schedule_id)->first();
+        if ($guard_id != null) {
+            $attendance = $this->showAttendanceReportByGuardAndScheduleID($guard_id, $request->from, $request->to, $request->schedule_id);
+        } else {
+            $attendance = $this->showAllAttendanceReportByScheduleId($request->schedule_id);
+        }
+        $guard = $this->getAdminGuard();
+        return view('manager.report.shifts.attendance', ['attendance' => $attendance, 'guard' => $guard, 'schedule' => $schedule])->with('title', 'Manage Daily Reports');
+    }
+
     public function reports_by_clients_forms(Request $request)
     {
         $guard_id = $request->guard_id;
-        $client = Client::where('id', $request->client_id)->first();
-        $form_input=Form::where('id',$request->form_id)->first();
+        $form_input = Form::where('id', $request->form_id)->first();
         if ($guard_id != null) {
             $form = $this->showAttendanceReportByGuardID($guard_id, $request->from, $request->to, $request->client_id);
         } else {
             $form = $this->showAllGuardForm($request->form_id);
         }
         $guard = $this->getAdminGuard();
-        return view('manager.report.clients.forms', ['form_input' => $form_input,'form' => $form, 'guard' => $guard, 'client' => $client])
+        return view('manager.report.clients.forms', ['form_input' => $form_input, 'form' => $form, 'guard' => $guard])
             ->with('title', 'Manage Daily Reports');
     }
 
@@ -130,53 +172,70 @@ class ReportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function generatePDF(Request $request)
+//    public function generate_client_attendance_pdf(Request $request)
+//    {
+//        $guard_id = $request->guard_id;
+//        $company_setting=$this->getCompanyDetails(Auth::user()->id);
+//        if ($guard_id != null) {
+//            $attendance = $this->getGuardAttendance($guard_id, $request->from, $request->to);
+//        } else {
+//            $attendance = $this->getAllGuardAttendance();
+//        }
+//        $data = [
+//            'attendance' => $attendance,
+//            'company_setting' => $company_setting
+//        ];
+//        $pdf = PDF::loadView('manager.report.pdf.attendance', $data);
+//        return $pdf->download(Carbon::now()->toFormattedDateString().'-AttendanceReport.pdf');
+//    }
+
+    public function generate_client_attendance_pdf(Request $request)
     {
         $guard_id = $request->guard_id;
+        $company_setting=$this->getCompanyDetails(Auth::user()->id);
         if ($guard_id != null) {
-            $attendance = $this->getGuardAttendance($guard_id, $request->from, $request->to);
+            $attendance = $this->getAttendanceReportByGuardAndClientID($guard_id, $request->from, $request->to,$request->client_id);
         } else {
-            $attendance = $this->getAllGuardAttendance();
+            $attendance = $this->getAllAttendanceReportByClientId($request->client_id);
         }
         $data = [
-            'attendance' => $attendance
+            'attendance' => $attendance,
+            'company_setting' => $company_setting
         ];
         $pdf = PDF::loadView('manager.report.pdf.attendance', $data);
-        return $pdf->download('attendance.pdf');
+        return $pdf->download(Carbon::now()->toFormattedDateString().'-AttendanceReport.pdf');
     }
 
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+    public function generate_schedule_attendance_pdf(Request $request){
+        $guard_id = $request->guard_id;
+        $company_setting=$this->getCompanyDetails(Auth::user()->id);
+        if ($guard_id != null) {
+            $attendance = $this->getAttendanceReportByGuardAndScheduleID($guard_id, $request->from, $request->to,$request->schedule_id);
+        } else {
+            $attendance = $this->getAllAttendanceReportByScheduleId($request->schedule_id);
+        }
+        $data = [
+            'attendance' => $attendance,
+            'company_setting' => $company_setting
+        ];
+        $pdf = PDF::loadView('manager.report.pdf.attendance', $data);
+        return $pdf->download(Carbon::now()->toFormattedDateString().'-AttendanceReport.pdf');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+    public function generate_schedule_daily_report_pdf(Request $request){
+        $guard_id = $request->guard_id;
+        $company_setting=$this->getCompanyDetails(Auth::user()->id);
+        if ($guard_id != null) {
+            $daily_report = $this->getDailyReportByGuardAndScheduleID($guard_id, $request->from, $request->to, $request->schedule_id);
+        } else {
+            $daily_report = $this->getAllDailyReportByScheduleId($request->schedule_id);
+        }
+        $data = [
+            'daily_report' => $daily_report,
+            'company_setting' => $company_setting
+        ];
+        $pdf = PDF::loadView('manager.report.pdf.daily_report', $data);
+        return $pdf->download(Carbon::now()->toFormattedDateString().'-DailyReport.pdf');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

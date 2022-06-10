@@ -44,4 +44,38 @@ trait DailyReportTrait {
         })->with(array('admin'))->with(array('admin','guards'))->where('guard_id',$guard_id)->whereBetween('date', [$from, $to])->where('client_id',$client_id)->paginate(10);
         return $daily_report;
     }
+
+    public function showAllDailyReportByScheduleId($schedule_id){
+        $admin_id = $this->getAdminID(Auth::user()->id);
+        $daily_report=DailyReport::whereHas('admin',function ($query) use ($admin_id){
+            $query->where('id',$admin_id);
+        })->with(array('admin'))->with(array('admin','guards'))->where('schedule_id',$schedule_id)->paginate(10);
+        return $daily_report;
+    }
+
+    public function showDailyReportByGuardAndScheduleID($guard_id,$from,$to,$schedule_id){
+        $admin_id = $this->getAdminID(Auth::user()->id);
+        $daily_report=DailyReport::whereHas('admin',function ($query) use ($admin_id,$guard_id){
+            $query->where('id',$admin_id);
+        })->with(array('admin'))->with(array('admin','guards'))->where('guard_id',$guard_id)->whereBetween('date', [$from, $to])
+          ->where('schedule_id',$schedule_id)->paginate(10);
+        return $daily_report;
+    }
+
+    public function getAllDailyReportByScheduleId($schedule_id){
+        $admin_id = $this->getAdminID(Auth::user()->id);
+        $daily_report=DailyReport::whereHas('admin',function ($query) use ($admin_id){
+            $query->where('id',$admin_id);
+        })->with(array('admin'))->with(array('admin','guards','daily_report_images'))->where('schedule_id',$schedule_id)->get();
+        return $daily_report;
+    }
+
+    public function getDailyReportByGuardAndScheduleID($guard_id,$from,$to,$schedule_id){
+        $admin_id = $this->getAdminID(Auth::user()->id);
+        $daily_report=DailyReport::whereHas('admin',function ($query) use ($admin_id,$guard_id){
+            $query->where('id',$admin_id);
+        })->with(array('admin'))->with(array('admin','guards'))->where('guard_id',$guard_id)->whereBetween('date', [$from, $to])
+          ->where('schedule_id',$schedule_id)->get();
+        return $daily_report;
+    }
 }

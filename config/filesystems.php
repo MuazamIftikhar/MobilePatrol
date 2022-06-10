@@ -54,8 +54,8 @@ return [
         'ftp' => [
             'driver'   => 'ftp',
             'host'     => 'ftp.cybermeteors.com',
-            'username' => 'root@square.cybermeteors.com',
-            'password' => 'Redrose125@#',
+            'username' => 'cybedlfm@shop.cybermeteors.com',
+            'password' => 'Redrose125@@',
         ]
 
     ],

@@ -11,10 +11,7 @@ class DailyReportImages extends Model
 
     public $appends = ['image_url'];
 
-    public function getImageUrlAttribute(){
-        if($this->images == null){
-            return "";
-        }
-         return "https://square.cybermeteors.com/root/".$this->images;
+    public function getImagesAttribute($value){
+        return $value != null ? config("app.image_domain").$value : '';
     }
 }

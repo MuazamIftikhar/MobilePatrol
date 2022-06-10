@@ -15,7 +15,7 @@ class CreateFormValuesTable extends Migration
     {
         Schema::create('form_values', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
+            $table->integer('guard_id');
             $table->integer('form_id');
             $table->json('form_element');
             $table->date('date');

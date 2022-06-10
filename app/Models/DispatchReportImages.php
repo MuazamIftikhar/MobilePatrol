@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class DispatchReportImages extends Model
 {
     use HasFactory;
+
+
 }

@@ -11,9 +11,9 @@ trait FormTrait {
 
     use PhpFunctionsTrait;
 
-    public function create_form($user_id,$form_name,$description,$form_element){
+    public function create_form($admin_id,$form_name,$description,$form_element){
         $save = new Form();
-        $save->user_id = $user_id;
+        $save->admin_id = $admin_id;
         $save->name = $form_name;
         $save->slug = \Str::slug($form_name);
         $save->description = $description;
@@ -22,8 +22,8 @@ trait FormTrait {
         return $save;
     }
 
-    public function checkIfFormNameExists($user_id,$form_name){
-        $check = Form::where([['user_id', $user_id], ['name',$form_name]])->get();
+    public function checkIfFormNameExists($admin_id,$form_name){
+        $check = Form::where([['admin_id', $admin_id], ['name',$form_name]])->get();
         if(count($check) > 0){
             return false;
         }else{

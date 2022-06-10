@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Traits\CompanySettingTrait;
 use App\Http\Traits\FormTrait;
 use App\Http\Traits\ResponseTrait;
 use App\Models\Client;
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 
 class FormController extends Controller
 {
-    use FormTrait,ResponseTrait;
+    use FormTrait,ResponseTrait,CompanySettingTrait;
     /**
      * Display a listing of the resource.
      *
@@ -19,7 +20,6 @@ class FormController extends Controller
      */
     public function index()
     {
-        $clients=Client::all();
         return view('manager.form.index')->with('title','Create form');
     }
 
@@ -33,13 +33,14 @@ class FormController extends Controller
 
         try {
             $form_element_array = array();
+            $admin_id=$this->getAdminID(Auth::user()->id);
             for ($i = 0; $i < count($request->form_element); $i++) {
                 $decode_data = json_decode($request->form_element[$i]);
                 array_push($form_element_array, $decode_data);
             }
-            $checkDuplication = $this->checkIfFormNameExists(Auth::user()->id,$request->form_name);
+            $checkDuplication = $this->checkIfFormNameExists($admin_id,$request->form_name);
             if($checkDuplication == true) {
-            $this->create_form(Auth::user()->id, $request->form_name, $request->description, $form_element_array);
+            $this->create_form($admin_id, $request->form_name, $request->description, $form_element_array);
             return $this->returnApiResponse(200, 'success', array('response' => 'Form Created Successfully'));
             }else{
             return $this->returnApiResponse(200, 'warning', array('response' => 'Form Name Alrready Presenet.'));
@@ -57,7 +58,8 @@ class FormController extends Controller
      */
     public function manage_form()
     {
-        $form=Form::where('user_id',Auth::user()->id)->paginate(2);
+        $admin_id=$this->getAdminID(Auth::user()->id);
+        $form=Form::where('admin_id',$admin_id)->paginate(5);
         return view('manager.form.manage',compact('form'))->with('title','Manage Form');
     }
 

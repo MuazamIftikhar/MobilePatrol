@@ -154,7 +154,7 @@
                                         <div class="card-body p-5">
                                             <div>
                                                 <div class="form-group">
-                                                    <label>Add Logo</label>
+                                                    <label>Add Logo {{config("app.image_domain")}}</label>
                                                     <input type="file" name="company_logo" required
                                                            class="form-control @error('company_logo') is-invalid @enderror"
                                                            >

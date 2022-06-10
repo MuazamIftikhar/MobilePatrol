@@ -50,4 +50,20 @@ trait VisitorTrait {
         return $visitor;
     }
 
+    public function showAllVisitorsByScheduleID($schedule_id){
+        $admin_id = $this->getAdminID(Auth::user()->id);
+        $visitor = Visitor::whereHas('admin',function ($query) use ($admin_id){
+            $query->where('id',$admin_id);
+        })->with(array('admin'))->where('schedule_id',$schedule_id)->paginate(10);
+        return $visitor;
+    }
+
+    public function showVisitorsByScheduleAndGuardID($guard_id,$from,$to,$schedule_id){
+        $admin_id = $this->getAdminID(Auth::user()->id);
+        $visitor = Visitor::whereHas('admin',function ($query) use ($admin_id){
+            $query->where('id',$admin_id);
+        })->with(array('admin'))->where('guard_id',$guard_id)->whereBetween('time_in', [$from, $to])->where('schedule_id',$schedule_id)->paginate(10);
+        return $visitor;
+    }
+
 }

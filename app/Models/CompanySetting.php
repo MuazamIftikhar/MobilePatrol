@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Config;
 
 class CompanySetting extends Model
 {
@@ -14,7 +15,6 @@ class CompanySetting extends Model
 
     public function getCompanyLogoAttribute($value)
     {
-        return $value != null ? env("IMAGE_PATH").$value : '';
-        //return $value;
+        return $value != null ? config("app.image_domain").$value : '';
     }
 }

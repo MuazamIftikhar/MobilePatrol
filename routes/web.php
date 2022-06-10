@@ -153,20 +153,23 @@ Route::middleware(['auth', 'cors'])->group(function () {
     Route::get('manager/manage/reports/by/clients/form/{form_id}', [App\Http\Controllers\Manager\ReportController::class, 'reports_by_clients_forms'])
         ->name('reports_by_clients_forms')->middleware('role:manager');
     #--------------------Not Complete ------------------------------#
-    Route::get('manager/manage/reports/by/schedule/incident/{client_id}/{hash}', [App\Http\Controllers\Manager\ReportController::class, 'reports_by_schedule_incident'])
+    Route::get('manager/manage/reports/by/schedule/incident/{schedule_id}/{hash}', [App\Http\Controllers\Manager\ReportController::class, 'reports_by_schedule_incident'])
         ->name('reports_by_schedule_incident')->middleware('role:manager');
-    Route::get('manager/manage/reports/by/schedule/visitor/{client_id}/{hash}', [App\Http\Controllers\Manager\ReportController::class, 'reports_by_schedule_visitor'])
+    Route::get('manager/manage/reports/by/schedule/visitor/{schedule_id}/{hash}', [App\Http\Controllers\Manager\ReportController::class, 'reports_by_schedule_visitor'])
         ->name('reports_by_schedule_visitor')->middleware('role:manager');
-    Route::get('manager/manage/daily/reports/by/schedule/{client_id}/{hash}', [App\Http\Controllers\Manager\ReportController::class, 'daily_reports_by_schedule'])
+    Route::get('manager/manage/daily/reports/by/schedule/{schedule_id}/{hash}', [App\Http\Controllers\Manager\ReportController::class, 'daily_reports_by_schedule'])
         ->name('daily_reports_by_schedule')->middleware('role:manager');
-    Route::get('manager/manage/reports/by/schedule/attendance/{client_id}/{hash}', [App\Http\Controllers\Manager\ReportController::class, 'reports_by_schedule_attendance'])
+    Route::get('manager/manage/reports/by/schedule/attendance/{schedule_id}/{hash}', [App\Http\Controllers\Manager\ReportController::class, 'reports_by_schedule_attendance'])
         ->name('reports_by_schedule_attendance')->middleware('role:manager');
     Route::get('manager/manage/reports/by/schedule/form/{form_id}', [App\Http\Controllers\Manager\ReportController::class, 'reports_by_schedule_forms'])
         ->name('reports_by_schedule_forms')->middleware('role:manager');
 
 
     #--------------------Manager Accounts --------------- Generate Reports ------------------------------#
-    Route::get('generate/pdf', [\App\Http\Controllers\Manager\ReportController::class, 'generatePDF'])
-        ->name('generate_attendance_pdf');
-
+    Route::get('generate/client/attendance/pdf', [\App\Http\Controllers\Manager\ReportController::class, 'generate_client_attendance_pdf'])
+        ->name('generate_client_attendance_pdf');
+    Route::get('generate/schedule/attendance/pdf', [\App\Http\Controllers\Manager\ReportController::class, 'generate_schedule_attendance_pdf'])
+        ->name('generate_schedule_attendance_pdf');
+    Route::get('generate/schedule/daily/report/pdf', [\App\Http\Controllers\Manager\ReportController::class, 'generate_schedule_daily_report_pdf'])
+        ->name('generate_schedule_daily_report_pdf');
 });
