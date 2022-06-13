@@ -21,12 +21,13 @@ class CreateCheckpointHistoriesTable extends Migration
             $table->integer('client_id')->nullable();
             $table->integer('checkpoint_id');
             $table->string('type')->nullable();
+            $table->date('date');
             $table->timestamps();
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Reverse the migrations....00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
      *
      * @return void
      */

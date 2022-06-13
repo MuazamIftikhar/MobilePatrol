@@ -33,6 +33,9 @@ trait PhpFunctionsTrait {
     public function convertDateToDbFormat($date){
         return Carbon::parse($date)->format('Y-m-d');
     }
+    public function convertTimeToDbFormat($date){
+        return Carbon::parse($date)->format('H:i');
+    }
     public function convertDateTimeToDbFormatPlus1($datetime){
         return Carbon::parse($datetime)->addMinute(1)->format('Y-m-d H:i');
     }

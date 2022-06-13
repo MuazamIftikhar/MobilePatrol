@@ -4,6 +4,8 @@ namespace App\Http\Traits;
 
 use App\Models\Checkpoint;
 use App\Models\CheckpointHistory;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 trait CheckpointTrait {
 
@@ -25,7 +27,21 @@ trait CheckpointTrait {
         $save->schedule_id = $schedule_id;
         $save->checkpoint_id = $admin_id;
         $save->type = $admin_id;
+        $save->date=$this->convertDateToDbFormat(Carbon::now());
         $save->save();
         return $save;
+    }
+
+    public function showAllQrReportByScheduleId($schedule_id){
+        $admin_id = $this->getAdminID(Auth::user()->id);
+        $check_point_history=CheckpointHistory::whereHas('admin',function ($query) use ($admin_id){
+            $query->where('id',$admin_id);
+        })->where('schedule_id',$schedule_id)->get();
+        return $check_point_history;
+    }
+    
+    
+    public function showQrReportByGuardAndScheduleID($guard_id, $from, $to, $schedule_id){
+        
     }
 }

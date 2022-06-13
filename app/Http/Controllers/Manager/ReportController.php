@@ -9,6 +9,7 @@ use App\Http\Traits\CompanySettingTrait;
 use App\Http\Traits\DailyReportTrait;
 use App\Http\Traits\FormTrait;
 use App\Http\Traits\GuardTrait;
+use App\Http\Traits\QrTrait;
 use App\Http\Traits\ScheduleTrait;
 use App\Http\Traits\VisitorTrait;
 use App\Models\Client;
@@ -22,7 +23,7 @@ use Illuminate\Support\Facades\Auth;
 class ReportController extends Controller
 {
     use CompanySettingTrait, AttendanceTrait, GuardTrait, ScheduleTrait, ClientTrait, VisitorTrait,
-        DailyReportTrait, FormTrait;
+        DailyReportTrait, FormTrait ,QrTrait ;
 
     /**
      * Display a listing of the resource.
@@ -167,6 +168,19 @@ class ReportController extends Controller
             ->with('title', 'Manage Daily Reports');
     }
 
+    public function qr_reports_by_schedule(Request $request){
+        $guard_id = $request->guard_id;
+        $schedule = Schedule::where('id', $request->schedule_id)->first();
+        if ($guard_id != null) {
+            $check_point = $this->showQrReportByGuardAndScheduleID($guard_id, $request->from, $request->to, $request->schedule_id);
+        } else {
+            $check_point = $this->showAllQrReportByScheduleId($request->schedule_id);
+        }
+        $guard = $this->getAdminGuard();
+        return view('manager.report.shifts.qr', ['check_point' => $check_point, 'guard' => $guard, 'schedule' => $schedule])->with('title', 'Manage Qr Reports');
+
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -236,6 +250,54 @@ class ReportController extends Controller
         ];
         $pdf = PDF::loadView('manager.report.pdf.daily_report', $data);
         return $pdf->download(Carbon::now()->toFormattedDateString().'-DailyReport.pdf');
+    }
+
+    public function generate_client_daily_report_pdf(Request $request){
+        $guard_id = $request->guard_id;
+        $company_setting=$this->getCompanyDetails(Auth::user()->id);
+        if ($guard_id != null) {
+            $daily_report = $this->getDailyReportByGuardID($guard_id, $request->from, $request->to, $request->client_id);
+        } else {
+            $daily_report = $this->showAllDailyReportByClientId($request->client_id);
+        }
+        $data = [
+            'daily_report' => $daily_report,
+            'company_setting' => $company_setting
+        ];
+        $pdf = PDF::loadView('manager.report.pdf.daily_report', $data);
+        return $pdf->download(Carbon::now()->toFormattedDateString().'-DailyReport.pdf');
+    }
+
+    public function generate_schedule_visitor_report_pdf(Request $request){
+        $guard_id = $request->guard_id;
+        $company_setting=$this->getCompanyDetails(Auth::user()->id);
+        if ($guard_id != null) {
+            $visitor = $this->getVisitorsByScheduleAndGuardID($guard_id, $request->from, $request->to, $request->schedule_id);
+        } else {
+            $visitor = $this->getAllVisitorsByScheduleID($request->schedule_id);
+        }
+        $data = [
+            'visitor' => $visitor,
+            'company_setting' => $company_setting
+        ];
+        $pdf = PDF::loadView('manager.report.pdf.visitor', $data);
+        return $pdf->download(Carbon::now()->toFormattedDateString().'-VisitorReport.pdf');
+    }
+
+    public function generate_client_visitor_report_pdf(Request $request){
+        $guard_id = $request->guard_id;
+        $company_setting=$this->getCompanyDetails(Auth::user()->id);
+        if ($guard_id != null) {
+            $visitor = $this->getVisitorsByGuardID($guard_id, $request->from, $request->to, $request->client_id);
+        } else {
+            $visitor = $this->getAllVisitorsByClientID($request->client_id);
+        }
+        $data = [
+            'visitor' => $visitor,
+            'company_setting' => $company_setting
+        ];
+        $pdf = PDF::loadView('manager.report.pdf.visitor', $data);
+        return $pdf->download(Carbon::now()->toFormattedDateString().'-VisitorReport.pdf');
     }
 
 }

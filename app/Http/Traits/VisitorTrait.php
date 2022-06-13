@@ -50,6 +50,23 @@ trait VisitorTrait {
         return $visitor;
     }
 
+    public function getAllVisitorsByClientID($client_id){
+        $admin_id = $this->getAdminID(Auth::user()->id);
+        $visitor = Visitor::whereHas('admin',function ($query) use ($admin_id){
+            $query->where('id',$admin_id);
+        })->with(array('admin','client','guards','visitor_report_images'))->where('client_id',$client_id)->get();
+        return $visitor;
+    }
+
+    public function getVisitorsByGuardID($guard_id,$from,$to,$client_id){
+        $admin_id = $this->getAdminID(Auth::user()->id);
+        $visitor = Visitor::whereHas('admin',function ($query) use ($admin_id){
+            $query->where('id',$admin_id);
+        })->with(array('admin','client','guards','visitor_report_images'))->where('guard_id',$guard_id)
+            ->whereBetween('time_in', [$from, $to])->where('client_id',$client_id)->get();
+        return $visitor;
+    }
+
     public function showAllVisitorsByScheduleID($schedule_id){
         $admin_id = $this->getAdminID(Auth::user()->id);
         $visitor = Visitor::whereHas('admin',function ($query) use ($admin_id){
@@ -66,4 +83,19 @@ trait VisitorTrait {
         return $visitor;
     }
 
+    public function getVisitorsByScheduleAndGuardID($guard_id,$from,$to,$schedule_id){
+        $admin_id = $this->getAdminID(Auth::user()->id);
+        $visitor = Visitor::whereHas('admin',function ($query) use ($admin_id){
+            $query->where('id',$admin_id);
+        })->with(array('admin','client','guards','visitor_report_images'))->where('guard_id',$guard_id)->whereBetween('time_in', [$from, $to])->where('schedule_id',$schedule_id)->get();
+        return $visitor;
+    }
+
+    public function getAllVisitorsByScheduleID($schedule_id){
+        $admin_id = $this->getAdminID(Auth::user()->id);
+        $visitor = Visitor::whereHas('admin',function ($query) use ($admin_id){
+            $query->where('id',$admin_id);
+        })->with(array('admin','client','guards','visitor_report_images'))->where('schedule_id',$schedule_id)->get();
+        return $visitor;
+    }
 }

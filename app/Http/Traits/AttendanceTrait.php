@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 trait AttendanceTrait{
 
     use PhpFunctionsTrait,CompanySettingTrait;
+
     public function create_guard_attendance($guard_id,$client_id,$schedule_id,$admin_id,$time_in,$time_out,$date,$timezone){
         $attendance=new Attendance();
         $attendance->guard_id=$guard_id;

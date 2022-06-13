@@ -41,7 +41,8 @@ trait DailyReportTrait {
         $admin_id = $this->getAdminID(Auth::user()->id);
         $daily_report=DailyReport::whereHas('admin',function ($query) use ($admin_id,$guard_id){
             $query->where('id',$admin_id);
-        })->with(array('admin'))->with(array('admin','guards'))->where('guard_id',$guard_id)->whereBetween('date', [$from, $to])->where('client_id',$client_id)->paginate(10);
+        })->with(array('admin'))->with(array('admin','guards'))->where('guard_id',$guard_id)
+            ->whereBetween('date', [$from, $to])->where('client_id',$client_id)->paginate(10);
         return $daily_report;
     }
 
@@ -74,8 +75,25 @@ trait DailyReportTrait {
         $admin_id = $this->getAdminID(Auth::user()->id);
         $daily_report=DailyReport::whereHas('admin',function ($query) use ($admin_id,$guard_id){
             $query->where('id',$admin_id);
-        })->with(array('admin'))->with(array('admin','guards'))->where('guard_id',$guard_id)->whereBetween('date', [$from, $to])
-          ->where('schedule_id',$schedule_id)->get();
+        })->with(array('admin'))->with(array('admin','guards','daily_report_images'))->where('guard_id',$guard_id)
+            ->whereBetween('date', [$from, $to])->where('schedule_id',$schedule_id)->get();
+        return $daily_report;
+    }
+
+    public function getDailyReportByGuardID($guard_id,$from,$to,$client_id){
+        $admin_id = $this->getAdminID(Auth::user()->id);
+        $daily_report=DailyReport::whereHas('admin',function ($query) use ($admin_id,$guard_id){
+            $query->where('id',$admin_id);
+        })->with(array('admin'))->with(array('admin','guards','daily_report_images'))->where('guard_id',$guard_id)
+            ->whereBetween('date', [$from, $to])->where('client_id',$client_id)->get();
+        return $daily_report;
+    }
+
+    public function getAllDailyReportByClientId($client_id){
+        $admin_id = $this->getAdminID(Auth::user()->id);
+        $daily_report=DailyReport::whereHas('admin',function ($query) use ($admin_id){
+            $query->where('id',$admin_id);
+        })->with(array('admin'))->with(array('admin','guards','daily_report_images'))->where('client_id',$client_id)->get();
         return $daily_report;
     }
 }
