@@ -33,7 +33,7 @@
                         <!--begin::Mixed Widget 1-->
                         <div class="card card-custom card-stretch gutter-b">
                             <div class="card-body p-5">
-                                <form method="get"  action="{{route('qr_reports_by_schedule',['schedule_id'=>$schedule->id,'hash'=>md5($schedule->id)])}}" >
+                                <form method="get"  action="{{route('qr_reports_by_clients',['client_id'=>$client->id,'hash'=>md5($client->id)])}}">
                                     <div class="row">
                                         <div class="col-lg-3">
                                             <div class="form-group">
@@ -78,8 +78,8 @@
                             <div class="card-header border-0  py-5">
                                 <h3 class="card-title font-weight-bolder">{{$title}}</h3>
                                 <div class="card-toolbar">
-                                    <a class="btn btn-primary" href="{{route('generate_schedule_qr_report_pdf',['guard_id'=>request()->guard_id,
-                                    'from'=>request()->from,'to'=>request()->to,'schedule_id'=>$schedule->id])}}">Export Pdf</a>
+                                    <a class="btn btn-primary" href="{{route('generate_client_qr_report_pdf',['guard_id'=>request()->guard_id,
+                                    'from'=>request()->from,'to'=>request()->to,'client_id'=>$client->id])}}">Export Pdf</a>
                                 </div>
                             </div>
                             <!--end::Header-->

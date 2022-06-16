@@ -86,6 +86,11 @@ Route::middleware(['auth:api','cors'])->group(function () {
     Route::post('save_dispatch_report',[\App\Http\Controllers\Api\DispatchController::class,'save_dispatch_report'])
         ->name('save_dispatch_report');
 
+    Route::post('save_incident_report',[\App\Http\Controllers\Api\IncidentController::class,'save_incident_report'])
+        ->name('save_incident_report');
+
+    Route::post('save_yard_report',[\App\Http\Controllers\Api\YardController::class,'save_yard_report'])
+        ->name('save_yard_report');
 
 });
 

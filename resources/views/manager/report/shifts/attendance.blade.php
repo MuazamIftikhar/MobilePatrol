@@ -109,7 +109,7 @@
                                                 <td>{{$g->date}}</td>
                                                 <td>
                                                     <a href="{{route('edit_timing',['id' => $g->id,'hash' => md5($g->id)])}}" class="btn btn-warning btn-sm"><i class="fa fa-edit fa-1x"></i></a>
-                                                    <a href="{{route('delete_timing',['id' => $g->id,'hash' => md5($g->id)])}}" class="btn btn-danger btn-sm"><i class="fa fa-trash fa-1x"></i></a>
+                                                    <a href="{{route('delete_timing',['id' => $g->id,'hash' => md5($g->id)])}}" id="kt_sweetalert_demo_5" class="btn btn-danger btn-sm"><i class="fa fa-trash fa-1x"></i></a>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -135,4 +135,22 @@
     </div>
 @endsection
 @section('script')
+    <script>
+
+        $("#kt_sweetalert_demo_5").click(function (e) {
+            Swal.fire({
+                title: "Good job!",
+                text: "You clicked the button!",
+                icon: "success",
+                buttonsStyling: false,
+                confirmButtonText: "<i class='la la-headphones'></i> I am game!",
+                showCancelButton: true,
+                cancelButtonText: "<i class='la la-thumbs-down'></i> No, thanks",
+                customClass: {
+                    confirmButton: "btn btn-danger",
+                    cancelButton: "btn btn-default"
+                }
+            });
+        });
+    </script>
 @endsection

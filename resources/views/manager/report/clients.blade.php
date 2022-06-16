@@ -62,7 +62,7 @@
                                                     <a href="{{route('daily_reports_by_clients',['client_id' => $s->id,'hash' => md5($s->id)])}}" class="btn btn-success btn-sm">Daily Report</a>
                                                     <a href="{{route('reports_by_clients_visitor',['client_id' => $s->id,'hash' => md5($s->id)])}}" class="btn btn-danger btn-sm">Visitor Report</a>
                                                     <a href="{{route('reports_by_clients_attendance',['client_id' => $s->id,'hash' => md5($s->id)])}}" class="btn btn-warning btn-sm">Attendance Report</a>
-                                                    <a href="#" class="btn btn-secondary btn-sm">QR Report</a>
+                                                    <a href="{{route('qr_reports_by_clients',['client_id' => $s->id,'hash' => md5($s->id)])}}" class="btn btn-secondary btn-sm">QR Report</a>
                                                     <a href="javascript:;" class="btn btn-sm btn-clean btn-icon mr-2"
                                                        data-toggle="dropdown" aria-expanded="false"> <span
                                                                 class="svg-icon svg-icon-md">
@@ -102,13 +102,7 @@
                         </div>
                         <!--end::Mixed Widget 1-->
                     </div>
-
                 </div>
-                <!--end::Row-->
-                <!--begin::Row-->
-
-                <!--end::Row-->
-                <!--end::Dashboard-->
             </div>
             <!--end::Container-->
         </div>

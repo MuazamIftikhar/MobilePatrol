@@ -101,6 +101,7 @@
                                             <th>Guard Name</th>
                                             <th>Description</th>
                                             <th>Date</th>
+                                            <th>Action</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -109,6 +110,10 @@
                                                 <td>{{$s->guards->guard_name}}</td>
                                                 <td>{{$s->description}}</td>
                                                 <td>{{$s->date}}</td>
+                                                <td>
+                                                    <a href="{{route('edit_timing',['id' => $g->id,'hash' => md5($g->id)])}}" class="btn btn-warning btn-sm"><i class="fa fa-edit fa-1x"></i></a>
+                                                    <a href="{{route('delete_timing',['id' => $g->id,'hash' => md5($g->id)])}}" class="btn btn-danger btn-sm"><i class="fa fa-trash fa-1x"></i></a>
+                                                </td>
                                             </tr>
                                         @endforeach
                                         </tbody>

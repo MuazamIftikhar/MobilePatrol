@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Manager;
 
 use App\Http\Controllers\Controller;
 use App\Http\Traits\AttendanceTrait;
+use App\Http\Traits\CheckpointTrait;
 use App\Http\Traits\ClientTrait;
 use App\Http\Traits\CompanySettingTrait;
 use App\Http\Traits\DailyReportTrait;
@@ -23,7 +24,7 @@ use Illuminate\Support\Facades\Auth;
 class ReportController extends Controller
 {
     use CompanySettingTrait, AttendanceTrait, GuardTrait, ScheduleTrait, ClientTrait, VisitorTrait,
-        DailyReportTrait, FormTrait ,QrTrait ;
+        DailyReportTrait, FormTrait ,CheckpointTrait ;
 
     /**
      * Display a listing of the resource.
@@ -177,8 +178,19 @@ class ReportController extends Controller
             $check_point = $this->showAllQrReportByScheduleId($request->schedule_id);
         }
         $guard = $this->getAdminGuard();
-        return view('manager.report.shifts.qr', ['check_point' => $check_point, 'guard' => $guard, 'schedule' => $schedule])->with('title', 'Manage Qr Reports');
+        return view('manager.report.shifts.checkPoint', ['check_point' => $check_point, 'guard' => $guard, 'schedule' => $schedule])->with('title', 'Manage Qr Reports');
+    }
 
+    public function qr_reports_by_clients(Request $request){
+        $guard_id = $request->guard_id;
+        $client = Client::where('id', $request->client_id)->first();
+        if ($guard_id != null) {
+            $check_point = $this->showQrReportByGuardAndClientID($guard_id, $request->from, $request->to, $request->client_id);
+        } else {
+            $check_point = $this->showAllQrReportByClientId($request->client_id);
+        }
+        $guard = $this->getAdminGuard();
+        return view('manager.report.clients.checkPoint', ['check_point' => $check_point, 'guard' => $guard, 'client' => $client])->with('title', 'Manage Qr Reports');
     }
 
     /**
@@ -300,4 +312,35 @@ class ReportController extends Controller
         return $pdf->download(Carbon::now()->toFormattedDateString().'-VisitorReport.pdf');
     }
 
+    public function generate_schedule_qr_report_pdf(Request $request){
+        $guard_id = $request->guard_id;
+        $company_setting=$this->getCompanyDetails(Auth::user()->id);
+        if ($guard_id != null) {
+            $check_point = $this->getQrReportByGuardAndScheduleID($guard_id, $request->from, $request->to, $request->schedule_id);
+        } else {
+            $check_point = $this->getAllQrReportByScheduleId($request->schedule_id);
+        }
+        $data = [
+            'check_point' => $check_point,
+            'company_setting' => $company_setting
+        ];
+        $pdf = PDF::loadView('manager.report.pdf.check_point', $data);
+        return $pdf->download(Carbon::now()->toFormattedDateString().'-QrReport.pdf');
+    }
+
+    public function generate_client_qr_report_pdf(Request $request){
+        $guard_id = $request->guard_id;
+        $company_setting=$this->getCompanyDetails(Auth::user()->id);
+        if ($guard_id != null) {
+            $check_point = $this->showQrReportByGuardAndClientID($guard_id, $request->from, $request->to, $request->client_id);
+        } else {
+            $check_point = $this->showAllQrReportByClientId($request->client_id);
+        }
+        $data = [
+            'check_point' => $check_point,
+            'company_setting' => $company_setting
+        ];
+        $pdf = PDF::loadView('manager.report.pdf.check_point', $data);
+        return $pdf->download(Carbon::now()->toFormattedDateString().'-QrReport.pdf');
+    }
 }

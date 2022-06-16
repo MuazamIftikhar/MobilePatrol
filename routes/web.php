@@ -182,4 +182,8 @@ Route::middleware(['auth', 'cors'])->group(function () {
         ->name('generate_schedule_visitor_report_pdf');
     Route::get('generate/client/visitor/report/pdf', [\App\Http\Controllers\Manager\ReportController::class, 'generate_client_visitor_report_pdf'])
         ->name('generate_client_visitor_report_pdf');
+    Route::get('generate/schedule/qr/report/pdf', [\App\Http\Controllers\Manager\ReportController::class, 'generate_schedule_qr_report_pdf'])
+        ->name('generate_schedule_qr_report_pdf');
+    Route::get('generate/client/qr/report/pdf', [\App\Http\Controllers\Manager\ReportController::class, 'generate_client_qr_report_pdf'])
+        ->name('generate_client_qr_report_pdf');
 });
