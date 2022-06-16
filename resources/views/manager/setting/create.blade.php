@@ -70,7 +70,7 @@
                                                     <label>Address</label>
                                                     <textarea rows="2" name="company_address" required
                                                            class="form-control @error('company_address') is-invalid @enderror"
-                                                              placeholder="Company address">{{$company_details->company_address??""}}</textarea>
+                                                              placeholder="Company address">{{$company_details->company_address ?? ""}}</textarea>
                                                     @error('company_address')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -154,7 +154,6 @@
                                         <div class="card-body p-5">
                                             <div>
                                                 <div class="form-group">
-                                                    <label>Add Logo {{config("app.image_domain")}}</label>
                                                     <input type="file" name="company_logo" required
                                                            class="form-control @error('company_logo') is-invalid @enderror"
                                                            >

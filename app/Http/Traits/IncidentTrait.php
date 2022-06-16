@@ -22,7 +22,7 @@ trait IncidentTrait {
         $save->property_damaged=$property_damaged;
         $save->witness=$witness;
         $save->infomation=$information;
-        $save->date=$this->convertHtmlDateTimeToDbFormat(Carbon::now(),Carbon::now()->timezone);
+        $save->date=$this->convertHtmlDateToDbFormat(Carbon::now(),Carbon::now()->timezone);
         $save->save();
         return $save;
 

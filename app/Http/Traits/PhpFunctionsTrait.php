@@ -27,6 +27,9 @@ trait PhpFunctionsTrait {
     public function convertHtmlDateTimeToDbFormat($datetime,$timezone){
         return Carbon::parse($datetime, $timezone)->setTimezone('UTC')->format('Y-m-d H:i');
     }
+    public function convertHtmlDateToDbFormat($datetime,$timezone){
+        return Carbon::parse($datetime, $timezone)->setTimezone('UTC')->format('Y-m-d');
+    }
     public function convertDateTimeToDbFormat($datetime){
         return Carbon::parse($datetime)->format('Y-m-d H:i');
     }

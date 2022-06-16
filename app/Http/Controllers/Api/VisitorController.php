@@ -23,7 +23,7 @@ class VisitorController extends Controller
         try {
             $guard = $this->get_guard_table_row($request->user()->id);
             $report = $this->save_visitor_report_trait($guard->id, $request->client_id, $request->schedule_id, $guard->admin_id,
-                $request->visitor_name, $request->purpose, $request->company, $request->time_in, $request->time_our);
+                $request->visitor_name, $request->purpose, $request->company, $request->time_in, $request->time_out);
             if ($request->has_photos == true) {
                 foreach ($request->photos as $photo) {
                     $image = $this->uploadImage($photo);

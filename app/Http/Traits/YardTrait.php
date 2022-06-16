@@ -10,7 +10,7 @@ trait YardTrait {
                         $yard_name, $yard_number){
             $save=new Yard();
             $save->guard_id=$guard_id;
-            $save->clien_id=$client_id;
+            $save->client_id=$client_id;
             $save->schedule_id=$schedule_id;
             $save->admin_id=$admin_id;
             $save->yard_name=$yard_name;
