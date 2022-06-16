@@ -22,7 +22,7 @@ class YardController extends Controller
             $guard = $this->get_guard_table_row($request->user()->id);
             $report = $this->save_yard_report_trait($guard->id, $request->client_id, $request->schedule_id, $guard->admin_id,
                 $request->yard_name, $request->yard_number);
-            return $this->returnApiResponse(200, 'success', array('response' => 'Incident Report Saved Successfully'));
+            return $this->returnApiResponse(200, 'success', array('response' => 'Yard Report Saved Successfully'));
         } catch (\Exception $e) {
             return $this->returnApiResponse(401, 'danger', array('error' => $e->getMessage()));
         }

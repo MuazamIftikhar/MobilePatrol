@@ -7,6 +7,7 @@ use App\Models\IncidentImages;
 use Carbon\Carbon;
 
 trait IncidentTrait {
+    use PhpFunctionsTrait;
     
     public function save_incident_report_trait($guard_id, $client_id, $schedule_id, $admin_id, $nature_of_complaint,
                     $police_called, $anyone_interested, $property_damaged, $witness,$information){
