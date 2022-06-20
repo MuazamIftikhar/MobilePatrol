@@ -141,7 +141,7 @@ Route::middleware(['auth', 'cors'])->group(function () {
         ->name('shift_report')->middleware('role:manager');
     Route::get('manager/manage/report/clients', [App\Http\Controllers\Manager\ReportController::class, 'client_report'])
         ->name('client_report')->middleware('role:manager');
-    #--------------------Not Complete ------------------------------#
+    #--------------------client Reports ------------------------------#
     Route::get('manager/manage/reports/by/clients/incident/{client_id}/{hash}', [App\Http\Controllers\Manager\ReportController::class, 'reports_by_clients_incident'])
         ->name('reports_by_clients_incident')->middleware('role:manager');
     Route::get('manager/manage/reports/by/clients/visitor/{client_id}/{hash}', [App\Http\Controllers\Manager\ReportController::class, 'reports_by_clients_visitor'])
@@ -154,7 +154,7 @@ Route::middleware(['auth', 'cors'])->group(function () {
         ->name('qr_reports_by_clients')->middleware('role:manager');
     Route::get('manager/manage/reports/by/clients/form/{form_id}', [App\Http\Controllers\Manager\ReportController::class, 'reports_by_clients_forms'])
         ->name('reports_by_clients_forms')->middleware('role:manager');
-    #--------------------Not Complete ------------------------------#
+    #--------------------Schedule Reports ------------------------------#
     Route::get('manager/manage/reports/by/schedule/incident/{schedule_id}/{hash}', [App\Http\Controllers\Manager\ReportController::class, 'reports_by_schedule_incident'])
         ->name('reports_by_schedule_incident')->middleware('role:manager');
     Route::get('manager/manage/reports/by/schedule/visitor/{schedule_id}/{hash}', [App\Http\Controllers\Manager\ReportController::class, 'reports_by_schedule_visitor'])
@@ -186,4 +186,18 @@ Route::middleware(['auth', 'cors'])->group(function () {
         ->name('generate_schedule_qr_report_pdf');
     Route::get('generate/client/qr/report/pdf', [\App\Http\Controllers\Manager\ReportController::class, 'generate_client_qr_report_pdf'])
         ->name('generate_client_qr_report_pdf');
+    Route::get('generate/schedule/incident/report/pdf', [\App\Http\Controllers\Manager\ReportController::class, 'generate_schedule_incident_report_pdf'])
+        ->name('generate_schedule_incident_report_pdf');
+    Route::get('generate/client/incident/report/pdf', [\App\Http\Controllers\Manager\ReportController::class, 'generate_client_incident_report_pdf'])
+        ->name('generate_client_incident_report_pdf');
+
+
+
+    #-------------------------------Create Reports Manually -------------------------------------------#
+
+    #---------------------------Incident Report -------------------------------------------------------#
+
+    Route::get('manager/incident/report/create', [\App\Http\Controllers\Manager\IncidentController::class, 'create_incident_report'])
+        ->name('create_incident_report');
+
 });

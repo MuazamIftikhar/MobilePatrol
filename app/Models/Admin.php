@@ -37,4 +37,8 @@ class Admin extends Model
     public function schedule(){
         return $this->hasMany(Schedule::class);
     }
+
+    public function incident(){
+        return $this->hasMany(Incident::class);
+    }
 }

@@ -10,6 +10,7 @@ use App\Http\Traits\CompanySettingTrait;
 use App\Http\Traits\DailyReportTrait;
 use App\Http\Traits\FormTrait;
 use App\Http\Traits\GuardTrait;
+use App\Http\Traits\IncidentTrait;
 use App\Http\Traits\QrTrait;
 use App\Http\Traits\ScheduleTrait;
 use App\Http\Traits\VisitorTrait;
@@ -24,7 +25,7 @@ use Illuminate\Support\Facades\Auth;
 class ReportController extends Controller
 {
     use CompanySettingTrait, AttendanceTrait, GuardTrait, ScheduleTrait, ClientTrait, VisitorTrait,
-        DailyReportTrait, FormTrait ,CheckpointTrait ;
+        DailyReportTrait, FormTrait ,CheckpointTrait,IncidentTrait ;
 
     /**
      * Display a listing of the resource.
@@ -65,13 +66,31 @@ class ReportController extends Controller
 
     public function reports_by_clients_incident(Request $request)
     {
+        $co=rand(1000,9999);
         $guard_id = $request->guard_id;
+        $client = Client::where('id', $request->client_id)->first();
         if ($guard_id != null) {
-            $shifts = $this->showGuardSchedule($guard_id, $request->from, $request->to);
+            $incident = $this->showAllIncidentByClientAndGuardID($guard_id, $request->from, $request->to,$request->client_id);
         } else {
-            $shifts = $this->showAllGuardSchedule();
+            $incident = $this->showAllIncidentByClientID($request->client_id);
         }
         $guard = $this->getAdminGuard();
+        return view('manager.report.clients.incident', ['incident' => $incident, 'guard' => $guard, 'client' => $client])
+            ->with('title', 'Manage Incident Reports');
+    }
+
+    public function reports_by_schedule_incident(Request $request)
+    {
+        $guard_id = $request->guard_id;
+        $schedule = Schedule::where('id', $request->schedule_id)->first();
+        if ($guard_id != null) {
+            $incident = $this->showAllIncidentByScheduleAndGuardID($guard_id, $request->from, $request->to,$request->schedule_id);
+        } else {
+            $incident = $this->showAllIncidentByScheduleID($request->schedule_id);
+        }
+        $guard = $this->getAdminGuard();
+        return view('manager.report.shifts.incident', ['incident' => $incident, 'guard' => $guard, 'schedule' => $schedule])
+            ->with('title', 'Manage Incident Reports');
     }
 
     public function reports_by_clients_visitor(Request $request)
@@ -342,5 +361,37 @@ class ReportController extends Controller
         ];
         $pdf = PDF::loadView('manager.report.pdf.check_point', $data);
         return $pdf->download(Carbon::now()->toFormattedDateString().'-QrReport.pdf');
+    }
+
+    public function generate_schedule_incident_report_pdf(Request $request){
+        $guard_id = $request->guard_id;
+        $company_setting=$this->getCompanyDetails(Auth::user()->id);
+        if ($guard_id != null) {
+            $incident = $this->getAllIncidentByScheduleAndGuardID($guard_id, $request->from, $request->to,$request->schedule_id);
+        } else {
+            $incident = $this->getAllIncidentByScheduleID($request->schedule_id);
+        }
+        $data = [
+            'incident' => $incident,
+            'company_setting' => $company_setting
+        ];
+        $pdf = PDF::loadView('manager.report.pdf.incident', $data);
+        return $pdf->download(Carbon::now()->toFormattedDateString().'-IncidentReport.pdf');
+    }
+
+    public function generate_client_incident_report_pdf(Request $request){
+        $guard_id = $request->guard_id;
+        $company_setting=$this->getCompanyDetails(Auth::user()->id);
+        if ($guard_id != null) {
+            $incident = $this->getAllIncidentByClientAndGuardID($guard_id, $request->from, $request->to,$request->client_id);
+        } else {
+            $incident = $this->getAllIncidentByClientID($request->client_id);
+        }
+        $data = [
+            'incident' => $incident,
+            'company_setting' => $company_setting
+        ];
+        $pdf = PDF::loadView('manager.report.pdf.incident', $data);
+        return $pdf->download(Carbon::now()->toFormattedDateString().'-IncidentReport.pdf');
     }
 }

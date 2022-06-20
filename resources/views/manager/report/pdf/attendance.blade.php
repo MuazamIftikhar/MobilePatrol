@@ -45,7 +45,7 @@
 @include('manager.report.pdf.splits.header')
 <table style="width: 100% !important;  border: none; border-collapse: collapse !important">
     <tr>
-        <td style="text-align:right !important;"><b class="headerSmall">CPS FILE#: CPS-{{0000+$company_setting->id}}</b></td>
+        <td style="text-align:right !important;"><b class="headerSmall">CPS FILE#: CPS-{{rand(1000,9999)}}</b></td>
     </tr>
 </table>
 <table style="width: 100% !important;  border: none; border-collapse: collapse !important;margin-bottom: 10px">

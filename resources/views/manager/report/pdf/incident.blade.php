@@ -50,11 +50,11 @@
 </table>
 <table style="width: 100% !important;  border: none; border-collapse: collapse !important;margin-bottom: 10px">
     <tr>
-        <td style="text-align:center !important;font-size: 24px"><b class="headerSmall" style="text-decoration: underline">VISITORS REPORT</b></td>
+        <td style="text-align:center !important;font-size: 24px"><b class="headerSmall" style="text-decoration: underline">INCIDENT REPORT</b></td>
     </tr>
 </table>
 <div>
-@include('manager.report.pdf.splits.visitor')
+    @include('manager.report.pdf.splits.incident')
 </div>
 
 </body>

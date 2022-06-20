@@ -1,7 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Manager;
 
+use App\Http\Controllers\Controller;
+use App\Models\Client;
+use App\Models\Guard;
 use App\Models\Incident;
 use Illuminate\Http\Request;
 
@@ -12,9 +15,11 @@ class IncidentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function create_incident_report()
     {
-        //
+        $client=Client::all();
+        $guard=Guard::all();
+        return view('manager.incident.create',['clients'=>$client,'guards'=>$guard])->with('title','Create Incident Report');
     }
 
     /**

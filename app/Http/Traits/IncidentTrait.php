@@ -5,6 +5,7 @@ namespace App\Http\Traits;
 use App\Models\Incident;
 use App\Models\IncidentImages;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 trait IncidentTrait {
     use PhpFunctionsTrait;
@@ -34,6 +35,74 @@ trait IncidentTrait {
         $save->incident_id = $report_id;
         $save->images = $image;
         $save->save();
+    }
+
+    public function showAllIncidentByScheduleID($schedule_id){
+        $admin_id = $this->getAdminID(Auth::user()->id);
+        $incident = Incident::whereHas('admin',function ($query) use ($admin_id){
+            $query->where('id',$admin_id);
+        })->with(array('admin'))->where('schedule_id',$schedule_id)->paginate(10);
+        return $incident;
+    }
+
+    public function showAllIncidentByScheduleAndGuardID($guard_id,$from,$to,$schedule_id){
+        $admin_id = $this->getAdminID(Auth::user()->id);
+        $incident = Incident::whereHas('admin',function ($query) use ($admin_id){
+            $query->where('id',$admin_id);
+        })->with(array('admin'))->where('guard_id',$guard_id)->whereBetween('date', [$from, $to])
+            ->where('schedule_id',$schedule_id)->paginate(10);
+        return $incident;
+    }
+
+    public function showAllIncidentByClientID($client_id){
+        $admin_id = $this->getAdminID(Auth::user()->id);
+        $incident = Incident::whereHas('admin',function ($query) use ($admin_id){
+            $query->where('id',$admin_id);
+        })->with(array('admin'))->where('client_id',$client_id)->paginate(10);
+        return $incident;
+    }
+
+    public function showAllIncidentByClientAndGuardID($guard_id,$from,$to,$client_id){
+        $admin_id = $this->getAdminID(Auth::user()->id);
+        $incident = Incident::whereHas('admin',function ($query) use ($admin_id){
+            $query->where('id',$admin_id);
+        })->with(array('admin'))->where('guard_id',$guard_id)->whereBetween('date', [$from, $to])
+            ->where('client_id',$client_id)->paginate(10);
+        return $incident;
+    }
+
+    public function getAllIncidentByScheduleID($schedule_id){
+        $admin_id = $this->getAdminID(Auth::user()->id);
+        $incident = Incident::whereHas('admin',function ($query) use ($admin_id){
+            $query->where('id',$admin_id);
+        })->with(array('admin'))->where('schedule_id',$schedule_id)->get();
+        return $incident;
+    }
+
+    public function getAllIncidentByScheduleAndGuardID($guard_id,$from,$to,$schedule_id){
+        $admin_id = $this->getAdminID(Auth::user()->id);
+        $incident = Incident::whereHas('admin',function ($query) use ($admin_id){
+            $query->where('id',$admin_id);
+        })->with(array('admin'))->where('guard_id',$guard_id)->whereBetween('date', [$from, $to])
+            ->where('schedule_id',$schedule_id)->get();
+        return $incident;
+    }
+
+    public function getAllIncidentByClientID($client_id){
+        $admin_id = $this->getAdminID(Auth::user()->id);
+        $incident = Incident::whereHas('admin',function ($query) use ($admin_id){
+            $query->where('id',$admin_id);
+        })->with(array('admin','incident_report_images'))->where('client_id',$client_id)->get();
+        return $incident;
+    }
+
+    public function getAllIncidentByClientAndGuardID($guard_id,$from,$to,$client_id){
+        $admin_id = $this->getAdminID(Auth::user()->id);
+        $incident = Incident::whereHas('admin',function ($query) use ($admin_id){
+            $query->where('id',$admin_id);
+        })->with(array('admin','incident_report_images'))->where('guard_id',$guard_id)->whereBetween('date', [$from, $to])
+            ->where('client_id',$client_id)->get();
+        return $incident;
     }
 
 }
