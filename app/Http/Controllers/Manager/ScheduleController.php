@@ -122,4 +122,9 @@ class ScheduleController extends Controller
             return $this->returnApiResponse(404, 'error', array());
         }
     }
+
+    public function get_schedule(Request $request){
+        $schedule=Schedule::where('guard_id',$request->guard_id)->where('client_id',$request->client_id)->get();
+        return $schedule;
+    }
 }

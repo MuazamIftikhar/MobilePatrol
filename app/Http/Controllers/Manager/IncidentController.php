@@ -3,13 +3,19 @@
 namespace App\Http\Controllers\Manager;
 
 use App\Http\Controllers\Controller;
-use App\Models\Client;
+use App\Http\Traits\AccountsTrait;
+use App\Http\Traits\ClientTrait;
+use App\Http\Traits\GuardTrait;
+use App\Http\Traits\ImageUplaodTrait;
+use App\Http\Traits\IncidentTrait;
+use App\Http\Traits\ResponseTrait;
 use App\Models\Guard;
 use App\Models\Incident;
 use Illuminate\Http\Request;
 
 class IncidentController extends Controller
 {
+    use ClientTrait,GuardTrait,AccountsTrait,IncidentTrait,ImageUplaodTrait,ResponseTrait;
     /**
      * Display a listing of the resource.
      *
@@ -17,8 +23,8 @@ class IncidentController extends Controller
      */
     public function create_incident_report()
     {
-        $client=Client::all();
-        $guard=Guard::all();
+        $client=$this->showAdminClient();
+        $guard=$this->showAdminGuard();
         return view('manager.incident.create',['clients'=>$client,'guards'=>$guard])->with('title','Create Incident Report');
     }
 
@@ -27,9 +33,23 @@ class IncidentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function save_incident_report(Request $request)
     {
-        //
+        try {
+            $guard = Guard::where('id',$request->guard_id)->first();
+            $report = $this->save_incident_report_trait($guard->id, $request->client_id, $request->schedule_id, $guard->admin_id,
+                $request->nature_of_complaint, $request->police_called, $request->anyone_arrested, $request->property_damaged,
+                $request->witness,$request->information);
+            if ($request->hasFile('photos')) {
+                foreach ($request->photos as $photo) {
+                    $image = $this->uploadImage($photo);
+                    $this->save_incident_report_images_trait($report->id, $image);
+                }
+            }
+            return $this->returnWebResponse('Report created successfully', 'success');
+        } catch (\Exception $e) {
+            return $this->returnWebResponse($e->getMessage(), 'danger');
+        }
     }
 
     /**

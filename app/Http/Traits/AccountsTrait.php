@@ -3,11 +3,8 @@
 namespace App\Http\Traits;
 
 use App\Models\Admin;
-use App\Models\CompanySetting;
 use App\Models\Guard;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use function Symfony\Component\String\s;
 
 trait AccountsTrait {
 
