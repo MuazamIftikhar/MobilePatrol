@@ -197,14 +197,13 @@ Route::middleware(['auth', 'cors'])->group(function () {
 
     #---------------------------Incident Report -------------------------------------------------------#
 
-    Route::get('manager/incident/report/create', [\App\Http\Controllers\Manager\IncidentController::class, 'create_incident_report'])
+    Route::get('manager/incident/report/create/{schedule_id}/{hash}', [\App\Http\Controllers\Manager\IncidentController::class, 'create_incident_report'])
         ->name('create_incident_report');
     Route::post('manager/incident/report/save', [\App\Http\Controllers\Manager\IncidentController::class, 'save_incident_report'])
         ->name('save_incident_report');
-
-
-
-    Route::post('manager/get/schedule',[\App\Http\Controllers\Manager\ScheduleController::class,'get_schedule'])
-        ->name('get_schedule');
+    Route::get('manager/incident/report/update/{incident_id}/{hash}', [\App\Http\Controllers\Manager\IncidentController::class, 'update_incident_report'])
+        ->name('update_incident_report');
+    Route::post('manager/incident/report/edit', [\App\Http\Controllers\Manager\IncidentController::class, 'edit_incident_report'])
+        ->name('edit_incident_report');
 
 });

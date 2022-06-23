@@ -15,10 +15,6 @@ class Guard extends Model
         return $this->belongsTo(User::class);
     }
 
-//    public function mobilePatrol(){
-//        return $this->hasMany(MobilePatrol::class);
-//    }
-
     public function getDrivingLicenseImageAttribute($value){
         if($value == null){
             return "";
@@ -59,6 +55,7 @@ class Guard extends Model
     public function schedule(){
         return $this->hasMany(Schedule::class);
     }
+
     public function attendance(){
         return $this->hasMany(Attendance::class);
     }

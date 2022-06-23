@@ -28,7 +28,7 @@
                                 !</strong> {{session('message')['result']}}</span>
                     </div>
                 @endif
-                <form method="post" action="{{route('save_incident_report',['schedule_id'=>request()->schedule_id])}}"
+                <form method="post" action="{{route('edit_incident_report',['incident_id'=>request()->incident_id])}}"
                       enctype="multipart/form-data">
                     @csrf
                     <!--begin::Row-->
@@ -48,7 +48,7 @@
                                                     <div class="form-group">
                                                         <label>Client</label>
                                                         <input type="text" readonly="readonly" class="form-control"
-                                                               value="{{$schedule->client->client_name}}">
+                                                               value="{{$incident->client->client_name}}">
                                                         @error('client_id')
                                                         <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -60,7 +60,7 @@
                                                     <div class="form-group">
                                                         <label>Guard</label>
                                                         <input type="text" readonly="readonly" class="form-control"
-                                                               value="{{$schedule->guards->guard_name}}">
+                                                               value="{{$incident->guards->guard_name}}">
                                                         @error('guard_id')
                                                         <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -73,7 +73,7 @@
                                                     <div class="form-group">
                                                         <label>Schedule </label>
                                                         <input type="text" readonly="readonly" class="form-control"
-                                                               value="{{$schedule->local_from_date_time}} | {{$schedule->local_to_date_time}}">
+                                                               value="{{$incident->schedule->local_from_date_time}} | {{$incident->schedule->local_to_date_time}}">
                                                         @error('date')
                                                         <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -88,8 +88,8 @@
                                                     <div class="form-group">
                                                         <label>Police Called </label>
                                                         <select class="form-control" name="police_called" required>
-                                                            <option value="Yes">Yes</option>
-                                                            <option value="No">No</option>
+                                                            <option value="Yes" {{$incident->police_called == "Yes" ? "selected" : ""}}>Yes</option>
+                                                            <option value="No"  {{$incident->police_called == "No" ? "selected" : ""}}>No</option>
                                                         </select>
                                                         @error('police_called')
                                                         <span class="invalid-feedback" role="alert">
@@ -101,7 +101,7 @@
                                                 <div class="col-lg-4">
                                                     <div class="form-group">
                                                         <label>Anyone Arrested</label>
-                                                        <input class="form-control" name="anyone_arrested">
+                                                        <input class="form-control" name="anyone_arrested" value="{{$incident->anyone_interested}}">
                                                         @error('guard_id')
                                                         <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -112,7 +112,7 @@
                                                 <div class="col-lg-4">
                                                     <div class="form-group">
                                                         <label>Property Damaged</label>
-                                                        <input class="form-control" name="property_damaged">
+                                                        <input class="form-control" name="property_damaged" value="{{$incident->property_damaged}}">
                                                         @error('property_damaged')
                                                         <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -126,7 +126,7 @@
                                                 <div class="col-lg-4">
                                                     <div class="form-group">
                                                         <label>Witness</label>
-                                                        <input class="form-control" name="witness">
+                                                        <input class="form-control" name="witness" value="{{$incident->witness}}">
                                                         @error('witness')
                                                         <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -137,7 +137,7 @@
                                                 <div class="col-lg-4">
                                                     <div class="form-group">
                                                         <label>Nature of Complaints</label>
-                                                        <input class="form-control" name="nature_of_complaint">
+                                                        <input class="form-control" name="nature_of_complaint" value="{{$incident->nature_of_complaint}}">
                                                         @error('nature_of_complaint')
                                                         <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -164,8 +164,8 @@
                                                     <div class="form-group">
                                                         <label>Information</label>
                                                         <textarea class="form-control" name="information"
-                                                                  rows="2"></textarea>
-                                                        @error('instructions')
+                                                                  rows="2">{{$incident->information}}</textarea>
+                                                        @error('information')
                                                         <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>

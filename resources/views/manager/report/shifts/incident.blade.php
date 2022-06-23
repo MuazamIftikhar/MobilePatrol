@@ -31,54 +31,6 @@
             @endif
             <!--begin::Row-->
                 <div class="row">
-                    <div class="col-lg-2"></div>
-                    <div class="col-lg-8 ">
-                        <!--begin::Mixed Widget 1-->
-                        <div class="card card-custom card-stretch gutter-b">
-                            <div class="card-body p-5">
-                                <form method="get" action="{{route('shift_report')}}">
-                                    <div class="row">
-                                        <div class="col-lg-3">
-                                            <div class="form-group">
-                                                <label>Guard</label>
-                                                <select class="form-control" name="guard_id" required>
-                                                    <option value="">Select</option>
-                                                    @foreach($guard as $g)
-                                                        <option value="{{$g->id}}">{{$g->guard_name}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <div class="form-group">
-                                                <label>From Date</label>
-                                                <input type="date" name="from" required
-                                                       class="form-control">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-3">
-                                            <div class="form-group">
-                                                <label>To Date</label>
-                                                <input type="date" name="to" required
-                                                       class="form-control">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-3">
-                                            <div class="form-group">
-                                                <button type="submit" class="btn btn-success form-control mt-8">Search
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                </form>
-
-                            </div>
-                        </div>
-                    </div>
                     <div class="col-lg-12">
                         <!--begin::Mixed Widget 1-->
                         <div class="card card-custom card-stretch gutter-b">
@@ -86,7 +38,8 @@
                             <div class="card-header border-0  py-5">
                                 <h3 class="card-title font-weight-bolder">{{$title}}</h3>
                                 <div class="card-toolbar">
-                                    <a class="btn btn-secondary" href="{{route('create_incident_report')}}">Add Report</a>&nbsp;
+                                    <a class="btn btn-secondary" href="{{route('create_incident_report',['schedule_id'=>$schedule->id,
+                                    'hash'=>md5($schedule->id)])}}">Add Report</a>&nbsp;
                                     <a class="btn btn-primary" href="{{route('generate_schedule_incident_report_pdf',['guard_id'=>request()->guard_id,
                                                 'from'=>request()->from,'to'=>request()->to,'schedule_id'=>$schedule->id])}}">Export Pdf</a>
                                 </div>
@@ -120,12 +73,10 @@
                                                 <td>{{$s->property_damaged}}</td>
                                                 <td>{{$s->witness}}</td>
                                                 <td>
-                                                    <a href="{{route('edit_timing',['id' => $s->id,'hash' => md5($s->id)])}}"
-                                                       class="btn btn-warning btn-sm"><i
-                                                                class="fa fa-edit fa-1x"></i></a>
+                                                    <a href="{{route('update_incident_report',['incident_id' => $s->id,'hash' => md5($s->id)])}}"
+                                                       class="btn btn-warning btn-sm"><i class="fa fa-edit fa-1x"></i></a>
                                                     <a href="{{route('delete_timing',['id' => $s->id,'hash' => md5($s->id)])}}"
-                                                       class="btn btn-danger btn-sm"><i
-                                                                class="fa fa-trash fa-1x"></i></a>
+                                                       class="btn btn-danger btn-sm"><i class="fa fa-trash fa-1x"></i></a>
                                                 </td>
                                             </tr>
                                         @endforeach

@@ -81,15 +81,9 @@ class ReportController extends Controller
 
     public function reports_by_schedule_incident(Request $request)
     {
-        $guard_id = $request->guard_id;
         $schedule = Schedule::where('id', $request->schedule_id)->first();
-        if ($guard_id != null) {
-            $incident = $this->showAllIncidentByScheduleAndGuardID($guard_id, $request->from, $request->to,$request->schedule_id);
-        } else {
-            $incident = $this->showAllIncidentByScheduleID($request->schedule_id);
-        }
-        $guard = $this->getAdminGuard();
-        return view('manager.report.shifts.incident', ['incident' => $incident, 'guard' => $guard, 'schedule' => $schedule])
+        $incident = $this->showAllIncidentByScheduleID($request->schedule_id);
+        return view('manager.report.shifts.incident', ['incident' => $incident, 'schedule' => $schedule])
             ->with('title', 'Manage Incident Reports');
     }
 
