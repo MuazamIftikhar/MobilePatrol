@@ -25,7 +25,7 @@ class IncidentController extends Controller
             $report = $this->save_incident_report_trait($guard->id, $request->client_id, $request->schedule_id, $guard->admin_id,
                 $request->nature_of_complaint, $request->police_called, $request->anyone_interested,
                 $request->property_damaged, $request->witness,$request->information);
-            if ($request->has_photos == true) {
+            if ($request->hasFile('photos')) {
                 foreach ($request->photos as $photo) {
                     $image = $this->uploadImage($photo);
                     $this->save_incident_report_images_trait($report->id, $image);

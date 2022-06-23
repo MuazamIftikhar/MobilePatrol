@@ -103,9 +103,17 @@ trait ScheduleTrait {
     }
 
     public function showGuardSchedule($guard_id,$from_date_time,$to_date_time){
-        $schedule=Schedule::whereBetween('from_date_time', [$from_date_time, $to_date_time])
-            ->orWhereBetween('to_date_time', [$from_date_time, $to_date_time])
-            ->where('guard_id',$guard_id)->with(array('client','guards'))->paginate(5);
+        $schedule=Schedule::where('guard_id',$guard_id)
+            ->where(function($q) use ($from_date_time, $to_date_time) {
+                $q->where(function($query) use ($from_date_time,$to_date_time){
+                    $query->whereDate('from_date_time', '>=', $from_date_time)
+                        ->whereDate('to_date_time', '<=', $to_date_time);
+                });
+                $q->orWhere(function($query) use ($from_date_time, $to_date_time) {
+                 $query->whereDate('from_date_time', '>=', $from_date_time)
+                        ->whereDate('to_date_time', '<=', $to_date_time);
+                    });
+            }) ->with(array('client','guards'))->paginate(5);
         return $schedule;
     }
     public function showAllGuardSchedule(){
