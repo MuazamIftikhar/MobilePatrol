@@ -21,6 +21,7 @@ class CreateDailyReportsTable extends Migration
             $table->bigInteger('schedule_id')->nullable();
             $table->date('date');
             $table->string('description');
+            $table->integer('status')->default(1);
             $table->timestamps();
         });
     }

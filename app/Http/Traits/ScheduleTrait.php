@@ -119,6 +119,10 @@ trait ScheduleTrait {
     public function showAllGuardSchedule(){
         $schedule=Schedule::with(array('client','guards'))->paginate(5);
         return $schedule;
+    }
 
+    public function getFirstSchedule($schedule_id){
+        $schedule=Schedule::where('id',$schedule_id)->first();
+        return $schedule;
     }
 }

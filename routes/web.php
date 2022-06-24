@@ -205,5 +205,20 @@ Route::middleware(['auth', 'cors'])->group(function () {
         ->name('update_incident_report');
     Route::post('manager/incident/report/edit', [\App\Http\Controllers\Manager\IncidentController::class, 'edit_incident_report'])
         ->name('edit_incident_report');
+    Route::get('manager/incident/report/delete', [\App\Http\Controllers\Manager\IncidentController::class, 'delete_incident_report'])
+        ->name('delete_incident_report');
+
+
+    #--------------------------------Daily Report -----------------------------------------------------#
+    Route::get('manager/daily/report/create/{schedule_id}/{hash}', [\App\Http\Controllers\Manager\DailyController::class, 'create_daily_report'])
+        ->name('create_daily_report');
+    Route::post('manager/daily/report/save', [\App\Http\Controllers\Manager\DailyController::class, 'save_daily_report'])
+        ->name('save_daily_report');
+    Route::get('manager/daily/report/update/{daily_report_id}/{hash}', [\App\Http\Controllers\Manager\DailyController::class, 'update_daily_report'])
+        ->name('update_daily_report');
+    Route::post('manager/daily/report/edit', [\App\Http\Controllers\Manager\DailyController::class, 'edit_daily_report'])
+        ->name('edit_daily_report');
+    Route::get('manager/daily/report/delete', [\App\Http\Controllers\Manager\DailyController::class, 'delete_daily_report'])
+        ->name('delete_daily_report');
 
 });

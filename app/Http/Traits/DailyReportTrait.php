@@ -50,16 +50,8 @@ trait DailyReportTrait {
         $admin_id = $this->getAdminID(Auth::user()->id);
         $daily_report=DailyReport::whereHas('admin',function ($query) use ($admin_id){
             $query->where('id',$admin_id);
-        })->with(array('admin'))->with(array('admin','guards'))->where('schedule_id',$schedule_id)->paginate(10);
-        return $daily_report;
-    }
-
-    public function showDailyReportByGuardAndScheduleID($guard_id,$from,$to,$schedule_id){
-        $admin_id = $this->getAdminID(Auth::user()->id);
-        $daily_report=DailyReport::whereHas('admin',function ($query) use ($admin_id,$guard_id){
-            $query->where('id',$admin_id);
-        })->with(array('admin'))->with(array('admin','guards'))->where('guard_id',$guard_id)->whereBetween('date', [$from, $to])
-          ->where('schedule_id',$schedule_id)->paginate(10);
+        })->with(array('admin'))->with(array('admin','guards'))
+        ->where('schedule_id',$schedule_id)->where('status',1)->paginate(10);
         return $daily_report;
     }
 
@@ -67,16 +59,8 @@ trait DailyReportTrait {
         $admin_id = $this->getAdminID(Auth::user()->id);
         $daily_report=DailyReport::whereHas('admin',function ($query) use ($admin_id){
             $query->where('id',$admin_id);
-        })->with(array('admin'))->with(array('admin','guards','daily_report_images'))->where('schedule_id',$schedule_id)->get();
-        return $daily_report;
-    }
-
-    public function getDailyReportByGuardAndScheduleID($guard_id,$from,$to,$schedule_id){
-        $admin_id = $this->getAdminID(Auth::user()->id);
-        $daily_report=DailyReport::whereHas('admin',function ($query) use ($admin_id,$guard_id){
-            $query->where('id',$admin_id);
-        })->with(array('admin'))->with(array('admin','guards','daily_report_images'))->where('guard_id',$guard_id)
-            ->whereBetween('date', [$from, $to])->where('schedule_id',$schedule_id)->get();
+        })->with(array('admin'))->with(array('admin','guards','daily_report_images'))
+            ->where('schedule_id',$schedule_id)->where('status',1)->get();
         return $daily_report;
     }
 
@@ -85,7 +69,7 @@ trait DailyReportTrait {
         $daily_report=DailyReport::whereHas('admin',function ($query) use ($admin_id,$guard_id){
             $query->where('id',$admin_id);
         })->with(array('admin'))->with(array('admin','guards','daily_report_images'))->where('guard_id',$guard_id)
-            ->whereBetween('date', [$from, $to])->where('client_id',$client_id)->get();
+            ->whereBetween('date', [$from, $to])->where('client_id',$client_id)->where('status',1)->get();
         return $daily_report;
     }
 
@@ -93,7 +77,16 @@ trait DailyReportTrait {
         $admin_id = $this->getAdminID(Auth::user()->id);
         $daily_report=DailyReport::whereHas('admin',function ($query) use ($admin_id){
             $query->where('id',$admin_id);
-        })->with(array('admin'))->with(array('admin','guards','daily_report_images'))->where('client_id',$client_id)->get();
+        })->with(array('admin'))->with(array('admin','guards','daily_report_images'))->where('client_id',$client_id)
+            ->where('status',1)->get();
         return $daily_report;
+    }
+
+    public function update_daily_report_images_trait($report_id,$image){
+        DailyReportImages::where('daily_report_id',$report_id)->delete();
+        $save = new DailyReportImages();
+        $save->daily_report_id = $report_id;
+        $save->images = $image;
+        $save->save();
     }
 }

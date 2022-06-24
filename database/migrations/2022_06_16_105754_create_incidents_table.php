@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('property_damaged');
             $table->string('witness');
             $table->string('information');
+            $table->integer('status')->default(1);
             $table->date('date');
             $table->timestamps();
         });

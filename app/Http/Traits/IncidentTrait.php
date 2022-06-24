@@ -41,24 +41,15 @@ trait IncidentTrait {
         $admin_id = $this->getAdminID(Auth::user()->id);
         $incident = Incident::whereHas('admin',function ($query) use ($admin_id){
             $query->where('id',$admin_id);
-        })->with(array('admin'))->where('schedule_id',$schedule_id)->paginate(10);
+        })->with(array('admin'))->where('schedule_id',$schedule_id)->where('status',1)->paginate(10);
         return $incident;
     }
-
-//    public function showAllIncidentByScheduleAndGuardID($guard_id,$from,$to,$schedule_id){
-//        $admin_id = $this->getAdminID(Auth::user()->id);
-//        $incident = Incident::whereHas('admin',function ($query) use ($admin_id){
-//            $query->where('id',$admin_id);
-//        })->with(array('admin'))->where('guard_id',$guard_id)->whereBetween('date', [$from, $to])
-//            ->where('schedule_id',$schedule_id)->paginate(10);
-//        return $incident;
-//    }
 
     public function showAllIncidentByClientID($client_id){
         $admin_id = $this->getAdminID(Auth::user()->id);
         $incident = Incident::whereHas('admin',function ($query) use ($admin_id){
             $query->where('id',$admin_id);
-        })->with(array('admin'))->where('client_id',$client_id)->paginate(10);
+        })->with(array('admin'))->where('client_id',$client_id)->where('status',1)->paginate(10);
         return $incident;
     }
 
@@ -67,7 +58,7 @@ trait IncidentTrait {
         $incident = Incident::whereHas('admin',function ($query) use ($admin_id){
             $query->where('id',$admin_id);
         })->with(array('admin'))->where('guard_id',$guard_id)->whereBetween('date', [$from, $to])
-            ->where('client_id',$client_id)->paginate(10);
+            ->where('client_id',$client_id)->where('status',1)->paginate(10);
         return $incident;
     }
 
@@ -75,7 +66,7 @@ trait IncidentTrait {
         $admin_id = $this->getAdminID(Auth::user()->id);
         $incident = Incident::whereHas('admin',function ($query) use ($admin_id){
             $query->where('id',$admin_id);
-        })->with(array('admin'))->where('schedule_id',$schedule_id)->get();
+        })->with(array('admin'))->where('schedule_id',$schedule_id)->where('status',1)->get();
         return $incident;
     }
 
@@ -83,7 +74,7 @@ trait IncidentTrait {
         $admin_id = $this->getAdminID(Auth::user()->id);
         $incident = Incident::whereHas('admin',function ($query) use ($admin_id){
             $query->where('id',$admin_id);
-        })->with(array('admin','incident_report_images'))->where('client_id',$client_id)->get();
+        })->with(array('admin','incident_report_images'))->where('client_id',$client_id)->where('status',1)->get();
         return $incident;
     }
 
@@ -92,7 +83,7 @@ trait IncidentTrait {
         $incident = Incident::whereHas('admin',function ($query) use ($admin_id){
             $query->where('id',$admin_id);
         })->with(array('admin','incident_report_images'))->where('guard_id',$guard_id)->whereBetween('date', [$from, $to])
-            ->where('client_id',$client_id)->get();
+            ->where('client_id',$client_id)->where('status',1)->get();
         return $incident;
     }
 
@@ -101,6 +92,15 @@ trait IncidentTrait {
         $incident=Incident::where('id',$incident_id)->update(['police_called'=>$police_called,'anyone_interested'=>$anyone_arrested,
             'property_damaged'=>$property_damaged,'witness'=>$witness,'nature_of_complaint'=>$nature_of_complaint,'information'=>$information]);
         return $incident;
+    }
+
+    public function update_incident_report_images_trait($report_id,$image){
+        IncidentImages::where('incident_id',$report_id)->delete();
+        $save = new IncidentImages();
+        $save->incident_id = $report_id;
+        $save->images = $image;
+        $save->save();
+        return $save;
     }
 
 }

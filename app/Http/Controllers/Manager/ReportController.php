@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\Auth;
 class ReportController extends Controller
 {
     use CompanySettingTrait, AttendanceTrait, GuardTrait, ScheduleTrait, ClientTrait, VisitorTrait,
-        DailyReportTrait, FormTrait ,CheckpointTrait,IncidentTrait ;
+        DailyReportTrait, FormTrait, CheckpointTrait, IncidentTrait;
 
     /**
      * Display a listing of the resource.
@@ -66,11 +66,11 @@ class ReportController extends Controller
 
     public function reports_by_clients_incident(Request $request)
     {
-        $co=rand(1000,9999);
+        $co = rand(1000, 9999);
         $guard_id = $request->guard_id;
         $client = Client::where('id', $request->client_id)->first();
         if ($guard_id != null) {
-            $incident = $this->showAllIncidentByClientAndGuardID($guard_id, $request->from, $request->to,$request->client_id);
+            $incident = $this->showAllIncidentByClientAndGuardID($guard_id, $request->from, $request->to, $request->client_id);
         } else {
             $incident = $this->showAllIncidentByClientID($request->client_id);
         }
@@ -130,13 +130,8 @@ class ReportController extends Controller
 
     public function daily_reports_by_schedule(Request $request)
     {
-        $guard_id = $request->guard_id;
         $schedule = Schedule::where('id', $request->schedule_id)->first();
-        if ($guard_id != null) {
-            $daily_report = $this->showDailyReportByGuardAndScheduleID($guard_id, $request->from, $request->to, $request->schedule_id);
-        } else {
-            $daily_report = $this->showAllDailyReportByScheduleId($request->schedule_id);
-        }
+        $daily_report = $this->showAllDailyReportByScheduleId($request->schedule_id);
         $guard = $this->getAdminGuard();
         return view('manager.report.shifts.daily', ['daily_report' => $daily_report, 'guard' => $guard, 'schedule' => $schedule])->with('title', 'Manage Daily Reports');
     }
@@ -182,7 +177,8 @@ class ReportController extends Controller
             ->with('title', 'Manage Daily Reports');
     }
 
-    public function qr_reports_by_schedule(Request $request){
+    public function qr_reports_by_schedule(Request $request)
+    {
         $guard_id = $request->guard_id;
         $schedule = Schedule::where('id', $request->schedule_id)->first();
         if ($guard_id != null) {
@@ -194,7 +190,8 @@ class ReportController extends Controller
         return view('manager.report.shifts.checkPoint', ['check_point' => $check_point, 'guard' => $guard, 'schedule' => $schedule])->with('title', 'Manage Qr Reports');
     }
 
-    public function qr_reports_by_clients(Request $request){
+    public function qr_reports_by_clients(Request $request)
+    {
         $guard_id = $request->guard_id;
         $client = Client::where('id', $request->client_id)->first();
         if ($guard_id != null) {
@@ -231,9 +228,9 @@ class ReportController extends Controller
     public function generate_client_attendance_pdf(Request $request)
     {
         $guard_id = $request->guard_id;
-        $company_setting=$this->getCompanyDetails(Auth::user()->id);
+        $company_setting = $this->getCompanyDetails(Auth::user()->id);
         if ($guard_id != null) {
-            $attendance = $this->getAttendanceReportByGuardAndClientID($guard_id, $request->from, $request->to,$request->client_id);
+            $attendance = $this->getAttendanceReportByGuardAndClientID($guard_id, $request->from, $request->to, $request->client_id);
         } else {
             $attendance = $this->getAllAttendanceReportByClientId($request->client_id);
         }
@@ -242,14 +239,15 @@ class ReportController extends Controller
             'company_setting' => $company_setting
         ];
         $pdf = PDF::loadView('manager.report.pdf.attendance', $data);
-        return $pdf->download(Carbon::now()->toFormattedDateString().'-AttendanceReport.pdf');
+        return $pdf->download(Carbon::now()->toFormattedDateString() . '-AttendanceReport.pdf');
     }
 
-    public function generate_schedule_attendance_pdf(Request $request){
+    public function generate_schedule_attendance_pdf(Request $request)
+    {
         $guard_id = $request->guard_id;
-        $company_setting=$this->getCompanyDetails(Auth::user()->id);
+        $company_setting = $this->getCompanyDetails(Auth::user()->id);
         if ($guard_id != null) {
-            $attendance = $this->getAttendanceReportByGuardAndScheduleID($guard_id, $request->from, $request->to,$request->schedule_id);
+            $attendance = $this->getAttendanceReportByGuardAndScheduleID($guard_id, $request->from, $request->to, $request->schedule_id);
         } else {
             $attendance = $this->getAllAttendanceReportByScheduleId($request->schedule_id);
         }
@@ -258,12 +256,13 @@ class ReportController extends Controller
             'company_setting' => $company_setting
         ];
         $pdf = PDF::loadView('manager.report.pdf.attendance', $data);
-        return $pdf->download(Carbon::now()->toFormattedDateString().'-AttendanceReport.pdf');
+        return $pdf->download(Carbon::now()->toFormattedDateString() . '-AttendanceReport.pdf');
     }
 
-    public function generate_schedule_daily_report_pdf(Request $request){
+    public function generate_schedule_daily_report_pdf(Request $request)
+    {
         $guard_id = $request->guard_id;
-        $company_setting=$this->getCompanyDetails(Auth::user()->id);
+        $company_setting = $this->getCompanyDetails(Auth::user()->id);
         if ($guard_id != null) {
             $daily_report = $this->getDailyReportByGuardAndScheduleID($guard_id, $request->from, $request->to, $request->schedule_id);
         } else {
@@ -274,12 +273,13 @@ class ReportController extends Controller
             'company_setting' => $company_setting
         ];
         $pdf = PDF::loadView('manager.report.pdf.daily_report', $data);
-        return $pdf->download(Carbon::now()->toFormattedDateString().'-DailyReport.pdf');
+        return $pdf->download(Carbon::now()->toFormattedDateString() . '-DailyReport.pdf');
     }
 
-    public function generate_client_daily_report_pdf(Request $request){
+    public function generate_client_daily_report_pdf(Request $request)
+    {
         $guard_id = $request->guard_id;
-        $company_setting=$this->getCompanyDetails(Auth::user()->id);
+        $company_setting = $this->getCompanyDetails(Auth::user()->id);
         if ($guard_id != null) {
             $daily_report = $this->getDailyReportByGuardID($guard_id, $request->from, $request->to, $request->client_id);
         } else {
@@ -290,12 +290,13 @@ class ReportController extends Controller
             'company_setting' => $company_setting
         ];
         $pdf = PDF::loadView('manager.report.pdf.daily_report', $data);
-        return $pdf->download(Carbon::now()->toFormattedDateString().'-DailyReport.pdf');
+        return $pdf->download(Carbon::now()->toFormattedDateString() . '-DailyReport.pdf');
     }
 
-    public function generate_schedule_visitor_report_pdf(Request $request){
+    public function generate_schedule_visitor_report_pdf(Request $request)
+    {
         $guard_id = $request->guard_id;
-        $company_setting=$this->getCompanyDetails(Auth::user()->id);
+        $company_setting = $this->getCompanyDetails(Auth::user()->id);
         if ($guard_id != null) {
             $visitor = $this->getVisitorsByScheduleAndGuardID($guard_id, $request->from, $request->to, $request->schedule_id);
         } else {
@@ -306,12 +307,13 @@ class ReportController extends Controller
             'company_setting' => $company_setting
         ];
         $pdf = PDF::loadView('manager.report.pdf.visitor', $data);
-        return $pdf->download(Carbon::now()->toFormattedDateString().'-VisitorReport.pdf');
+        return $pdf->download(Carbon::now()->toFormattedDateString() . '-VisitorReport.pdf');
     }
 
-    public function generate_client_visitor_report_pdf(Request $request){
+    public function generate_client_visitor_report_pdf(Request $request)
+    {
         $guard_id = $request->guard_id;
-        $company_setting=$this->getCompanyDetails(Auth::user()->id);
+        $company_setting = $this->getCompanyDetails(Auth::user()->id);
         if ($guard_id != null) {
             $visitor = $this->getVisitorsByGuardID($guard_id, $request->from, $request->to, $request->client_id);
         } else {
@@ -322,12 +324,13 @@ class ReportController extends Controller
             'company_setting' => $company_setting
         ];
         $pdf = PDF::loadView('manager.report.pdf.visitor', $data);
-        return $pdf->download(Carbon::now()->toFormattedDateString().'-VisitorReport.pdf');
+        return $pdf->download(Carbon::now()->toFormattedDateString() . '-VisitorReport.pdf');
     }
 
-    public function generate_schedule_qr_report_pdf(Request $request){
+    public function generate_schedule_qr_report_pdf(Request $request)
+    {
         $guard_id = $request->guard_id;
-        $company_setting=$this->getCompanyDetails(Auth::user()->id);
+        $company_setting = $this->getCompanyDetails(Auth::user()->id);
         if ($guard_id != null) {
             $check_point = $this->getQrReportByGuardAndScheduleID($guard_id, $request->from, $request->to, $request->schedule_id);
         } else {
@@ -338,12 +341,13 @@ class ReportController extends Controller
             'company_setting' => $company_setting
         ];
         $pdf = PDF::loadView('manager.report.pdf.check_point', $data);
-        return $pdf->download(Carbon::now()->toFormattedDateString().'-QrReport.pdf');
+        return $pdf->download(Carbon::now()->toFormattedDateString() . '-QrReport.pdf');
     }
 
-    public function generate_client_qr_report_pdf(Request $request){
+    public function generate_client_qr_report_pdf(Request $request)
+    {
         $guard_id = $request->guard_id;
-        $company_setting=$this->getCompanyDetails(Auth::user()->id);
+        $company_setting = $this->getCompanyDetails(Auth::user()->id);
         if ($guard_id != null) {
             $check_point = $this->showQrReportByGuardAndClientID($guard_id, $request->from, $request->to, $request->client_id);
         } else {
@@ -354,14 +358,15 @@ class ReportController extends Controller
             'company_setting' => $company_setting
         ];
         $pdf = PDF::loadView('manager.report.pdf.check_point', $data);
-        return $pdf->download(Carbon::now()->toFormattedDateString().'-QrReport.pdf');
+        return $pdf->download(Carbon::now()->toFormattedDateString() . '-QrReport.pdf');
     }
 
-    public function generate_schedule_incident_report_pdf(Request $request){
+    public function generate_schedule_incident_report_pdf(Request $request)
+    {
         $guard_id = $request->guard_id;
-        $company_setting=$this->getCompanyDetails(Auth::user()->id);
+        $company_setting = $this->getCompanyDetails(Auth::user()->id);
         if ($guard_id != null) {
-            $incident = $this->getAllIncidentByScheduleAndGuardID($guard_id, $request->from, $request->to,$request->schedule_id);
+            $incident = $this->getAllIncidentByScheduleAndGuardID($guard_id, $request->from, $request->to, $request->schedule_id);
         } else {
             $incident = $this->getAllIncidentByScheduleID($request->schedule_id);
         }
@@ -370,14 +375,15 @@ class ReportController extends Controller
             'company_setting' => $company_setting
         ];
         $pdf = PDF::loadView('manager.report.pdf.incident', $data);
-        return $pdf->download(Carbon::now()->toFormattedDateString().'-IncidentReport.pdf');
+        return $pdf->download(Carbon::now()->toFormattedDateString() . '-IncidentReport.pdf');
     }
 
-    public function generate_client_incident_report_pdf(Request $request){
+    public function generate_client_incident_report_pdf(Request $request)
+    {
         $guard_id = $request->guard_id;
-        $company_setting=$this->getCompanyDetails(Auth::user()->id);
+        $company_setting = $this->getCompanyDetails(Auth::user()->id);
         if ($guard_id != null) {
-            $incident = $this->getAllIncidentByClientAndGuardID($guard_id, $request->from, $request->to,$request->client_id);
+            $incident = $this->getAllIncidentByClientAndGuardID($guard_id, $request->from, $request->to, $request->client_id);
         } else {
             $incident = $this->getAllIncidentByClientID($request->client_id);
         }
@@ -386,6 +392,6 @@ class ReportController extends Controller
             'company_setting' => $company_setting
         ];
         $pdf = PDF::loadView('manager.report.pdf.incident', $data);
-        return $pdf->download(Carbon::now()->toFormattedDateString().'-IncidentReport.pdf');
+        return $pdf->download(Carbon::now()->toFormattedDateString() . '-IncidentReport.pdf');
     }
 }
