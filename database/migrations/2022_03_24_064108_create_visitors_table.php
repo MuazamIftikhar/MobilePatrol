@@ -24,6 +24,7 @@ class CreateVisitorsTable extends Migration
             $table->string('company')->nullable();
             $table->dateTime('time_in')->nullable();
             $table->dateTime('time_out')->nullable();
+            $table->integer('status')->default(1);
             $table->timestamps();
         });
     }

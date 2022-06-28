@@ -106,7 +106,7 @@ Route::middleware(['auth', 'cors'])->group(function () {
     Route::get('manager/delete/attendance/time/{id}/{hash}', [App\Http\Controllers\Manager\AttendanceController::class, 'delete_timing'])
         ->name('delete_timing')->where('any', '[\/\w\.-]*')->middleware('role:manager');
     Route::get('manager/create/attendance/{id}', [App\Http\Controllers\Manager\AttendanceController::class, 'attendance'])
-        ->name('attendance')->where('any', '[\/\w\.-]*')->middleware('role:manager');
+        ->name('attendance')->middleware('role:manager');
     Route::post('manager/save/attendance', [App\Http\Controllers\Manager\AttendanceController::class, 'save_guard_attendance'])
         ->name('save_guard_attendance')->middleware('role:manager');
     Route::post('manager/edit/attendance', [App\Http\Controllers\Manager\AttendanceController::class, 'edit_guard_attendance'])
@@ -220,5 +220,31 @@ Route::middleware(['auth', 'cors'])->group(function () {
         ->name('edit_daily_report');
     Route::get('manager/daily/report/delete', [\App\Http\Controllers\Manager\DailyController::class, 'delete_daily_report'])
         ->name('delete_daily_report');
+
+
+    #--------------------------------Visitor Report -----------------------------------------------------#
+    Route::get('manager/visitor/report/create/{schedule_id}/{hash}', [\App\Http\Controllers\Manager\VisitorController::class, 'create_visitor_report'])
+        ->name('create_visitor_report');
+    Route::post('manager/visitor/report/save', [\App\Http\Controllers\Manager\VisitorController::class, 'save_visitor_report'])
+        ->name('save_visitor_report');
+    Route::get('manager/visitor/report/update/{visitor_report_id}', [\App\Http\Controllers\Manager\VisitorController::class, 'update_visitor_report'])
+        ->name('update_visitor_report');
+    Route::post('manager/visitor/report/edit', [\App\Http\Controllers\Manager\VisitorController::class, 'edit_visitor_report'])
+        ->name('edit_visitor_report');
+    Route::get('manager/visitor/report/delete', [\App\Http\Controllers\Manager\VisitorController::class, 'delete_visitor_report'])
+        ->name('delete_visitor_report');
+
+
+    #--------------------------------Checkpoint Report -----------------------------------------------------#
+    Route::get('manager/qr/report/create/{schedule_id}/{hash}', [\App\Http\Controllers\Manager\CheckpointController::class, 'create_qr_report'])
+        ->name('create_qr_report');
+    Route::post('manager/qr/report/save', [\App\Http\Controllers\Manager\CheckpointController::class, 'save_qr_report'])
+        ->name('save_qr_report');
+    Route::get('manager/qr/report/update/{qr_report_id}', [\App\Http\Controllers\Manager\CheckpointController::class, 'update_qr_report'])
+        ->name('update_qr_report');
+    Route::post('manager/qr/report/edit', [\App\Http\Controllers\Manager\CheckpointController::class, 'edit_qr_report'])
+        ->name('edit_qr_report');
+    Route::get('manager/qr/report/delete', [\App\Http\Controllers\Manager\CheckpointController::class, 'delete_qr_report'])
+        ->name('delete_qr_report');
 
 });

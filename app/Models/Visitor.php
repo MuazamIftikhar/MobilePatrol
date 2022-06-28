@@ -23,6 +23,10 @@ class Visitor extends Model
         return $this->belongsTo(Guard::class,'guard_id','id');
     }
 
+    public function schedule(){
+        return $this->belongsTo(Schedule::class);
+    }
+
     public function client(){
         return $this->belongsTo(Client::class);
     }

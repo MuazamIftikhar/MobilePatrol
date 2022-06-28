@@ -304,7 +304,7 @@
                             <a href="javascript:;" class="menu-link menu-toggle">
 										<span class="svg-icon menu-icon">
 											<!--begin::Svg Icon | path:assets/media/svg/icons/Design/Bucket.svg-->
-											<i class="fa fa-clock"></i>
+											<i class="fas fa-shuttle-van"></i>
                                             <!--end::Svg Icon-->
 										</span>
                                 <span class="menu-text">Mobile Patrol</span>
@@ -340,9 +340,7 @@
                         <li class="menu-item menu-item-submenu {{\Request::is('*form*') ? 'menu-item-open' : ''}}" aria-haspopup="true" data-menu-toggle="hover">
                             <a href="javascript:;" class="menu-link menu-toggle">
 										<span class="svg-icon menu-icon">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/Design/Bucket.svg-->
-											<i class="fa fa-clock"></i>
-                                            <!--end::Svg Icon-->
+										    <i class="fas fa-file"></i>
 										</span>
                                 <span class="menu-text">Form</span>
                                 <i class="menu-arrow"></i>
@@ -378,7 +376,7 @@
                             <a href="javascript:;" class="menu-link menu-toggle">
 										<span class="svg-icon menu-icon">
 											<!--begin::Svg Icon | path:assets/media/svg/icons/Design/Bucket.svg-->
-											<i class="fa fa-clock"></i>
+											<i class="fas fa-user-clock"></i>
                                             <!--end::Svg Icon-->
 										</span>
                                 <span class="menu-text">Attendance</span>
@@ -406,9 +404,7 @@
                         <li class="menu-item menu-item-submenu {{\Request::is('*report*') ? 'menu-item-open' : ''}}" aria-haspopup="true" data-menu-toggle="hover">
                             <a href="javascript:;" class="menu-link menu-toggle">
 										<span class="svg-icon menu-icon">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/Design/Bucket.svg-->
-											<i class="fa fa-clock"></i>
-                                            <!--end::Svg Icon-->
+											<i class="fas fa-file-signature"></i>
 										</span>
                                 <span class="menu-text">Report</span>
                                 <i class="menu-arrow"></i>

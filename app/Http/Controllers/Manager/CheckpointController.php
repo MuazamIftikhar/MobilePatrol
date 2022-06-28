@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Traits\CheckpointTrait;
 use App\Http\Traits\CompanySettingTrait;
 use App\Http\Traits\ResponseTrait;
+use App\Http\Traits\ScheduleTrait;
 use App\Models\Checkpoint;
 use App\Models\Client;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -15,7 +16,7 @@ use Illuminate\Support\Facades\Auth;
 class CheckpointController extends Controller
 {
     //
-    use CompanySettingTrait, ResponseTrait, CheckpointTrait;
+    use CompanySettingTrait, ResponseTrait, CheckpointTrait , ScheduleTrait;
 
     public function client_checkpoints(Request $request){
         $checkpoints = Checkpoint::with(array('client'))->where('client_id',$request->client_id)->paginate(15);
@@ -42,5 +43,12 @@ class CheckpointController extends Controller
 
         $pdf = PDF::loadView('manager.client.QR.single_qr_print', compact('checkpoint'));
         return $pdf->download($fileName.'.pdf');
+    }
+
+    public function create_qr_report(Request $request){
+        $schedule = $this->getFirstSchedule($request->schedule_id);
+        $admin_id = $this->getAdminID(Auth::user()->id);
+        $checkpoint=Checkpoint::where('admin_id',$admin_id)->where('client_id',$schedule->client_id)->get();
+        return view('manager.report.custom.checkpoint.create', ['schedule' => $schedule,'checkpoint'=>$checkpoint])->with('title', 'Create QR Report');
     }
 }

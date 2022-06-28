@@ -60,25 +60,24 @@ class DailyController extends Controller
     public function edit_daily_report(Request $request)
     {
         try {
-            $daily_report = DailyReport::where('id', $request->daily_report_id)->update(['description' => $request->description]);
-                if ($request->hasFile('photos')) {
-                    foreach ($request->photos as $photo) {
-                        $image = $this->uploadImage($photo);
-                        $this->update_daily_report_images_trait($request->daily_report_id, $image);
-                    }
+            DailyReport::where('id', $request->daily_report_id)->update(['description' => $request->description]);
+            if ($request->hasFile('photos')) {
+                foreach ($request->photos as $photo) {
+                    $image = $this->uploadImage($photo);
+                    $this->update_daily_report_images_trait($request->daily_report_id, $image);
                 }
-                return $this->returnWebResponse('Report Edit successfully', 'success');
             }
-        catch (\Exception $e) {
-                return $this->returnWebResponse($e->getMessage(), 'danger');
-            }
+            return $this->returnWebResponse('Report Edit successfully', 'success');
+        } catch (\Exception $e) {
+            return $this->returnWebResponse($e->getMessage(), 'danger');
+        }
 
 
     }
 
     public function delete_daily_report(Request $request)
     {
-         DailyReport::where('id',$request->daily_report_id)->update(['status'=>'0']);
+        DailyReport::where('id', $request->daily_report_id)->update(['status' => '0']);
         return back();
     }
 

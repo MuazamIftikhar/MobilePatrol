@@ -22,9 +22,10 @@ class VisitorController extends Controller
     {
         try {
             $guard = $this->get_guard_table_row($request->user()->id);
+            $admin_info =$this->getAdminCompanyDetails($guard->admin_id);
             $report = $this->save_visitor_report_trait($guard->id, $request->client_id, $request->schedule_id, $guard->admin_id,
-                $request->visitor_name, $request->purpose, $request->company, $request->time_in, $request->time_out);
-            if ($request->has_photos == true) {
+                $request->visitor_name, $request->purpose, $request->company, $request->time_in, $request->time_out,$admin_info->company_time_zone);
+            if ($request->hasFile('photos')) {
                 foreach ($request->photos as $photo) {
                     $image = $this->uploadImage($photo);
                     $this->save_visitor_report_images_trait($report->id, $image);
