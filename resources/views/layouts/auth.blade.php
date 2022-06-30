@@ -417,14 +417,6 @@
 													<span class="menu-text">Report</span>
 												</span>
                                     </li>
-                                    <li class="menu-item {{Route::currentRouteName() == 'manage_report' ? 'menu-item-active' : ''}}" aria-haspopup="true">
-                                        <a href="{{route('manage_report')}}" class="menu-link">
-                                            <i class="menu-bullet menu-bullet-dot">
-                                                <span></span>
-                                            </i>
-                                            <span class="menu-text">Attendance</span>
-                                        </a>
-                                    </li>
                                     <li class="menu-item {{Route::currentRouteName() == 'shift_report' ? 'menu-item-active' : ''}}" aria-haspopup="true">
                                         <a href="{{route('shift_report')}}" class="menu-link">
                                             <i class="menu-bullet menu-bullet-dot">

@@ -27,23 +27,6 @@ class ReportController extends Controller
     use CompanySettingTrait, AttendanceTrait, GuardTrait, ScheduleTrait, ClientTrait, VisitorTrait,
         DailyReportTrait, FormTrait, CheckpointTrait, IncidentTrait;
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Request $request)
-    {
-        $guard_id = $request->guard_id;
-        if ($guard_id != null) {
-            $attendance = $this->showGuardAttendance($guard_id, $request->from, $request->to);
-        } else {
-            $attendance = $this->showAllGuardAttendance();
-        }
-        $guard = $this->getAdminGuard();
-        return view('manager.report.attendance', ['attendance' => $attendance, 'guard' => $guard])->with('title', 'Manage Reports');
-    }
-
     public function shift_report(Request $request)
     {
         $guard_id = $request->guard_id;

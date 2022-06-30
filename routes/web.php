@@ -135,8 +135,6 @@ Route::middleware(['auth', 'cors'])->group(function () {
 
 
     #--------------------Manager Accounts --------------- Manage Reports ------------------------------#
-    Route::get('manager/manage/report', [App\Http\Controllers\Manager\ReportController::class, 'index'])
-        ->name('manage_report')->middleware('role:manager');
     Route::get('manager/manage/report/shifts', [App\Http\Controllers\Manager\ReportController::class, 'shift_report'])
         ->name('shift_report')->middleware('role:manager');
     Route::get('manager/manage/report/clients', [App\Http\Controllers\Manager\ReportController::class, 'client_report'])

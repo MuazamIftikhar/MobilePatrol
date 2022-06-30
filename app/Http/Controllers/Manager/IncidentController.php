@@ -22,7 +22,7 @@ class IncidentController extends Controller
     public function create_incident_report(Request $request)
     {
         $schedule=$this->getFirstSchedule($request->schedule_id);
-        return view('manager.incident.create',['schedule'=>$schedule])->with('title','Create Incident Report');
+        return view('manager.report.custom.incident.create',['schedule'=>$schedule])->with('title','Create Incident Report');
     }
 
     public function save_incident_report(Request $request)
@@ -46,7 +46,7 @@ class IncidentController extends Controller
 
     public function update_incident_report(Request $request){
         $incident = Incident::where('id',$request->incident_id)->first();
-        return view('manager.incident.edit',['incident'=>$incident])->with('title','Edit Incident Report');
+        return view('manager.report.custom.incident.edit',['incident'=>$incident])->with('title','Edit Incident Report');
     }
 
     public function edit_incident_report(Request $request){

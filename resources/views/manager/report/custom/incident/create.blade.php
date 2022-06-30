@@ -175,8 +175,8 @@
                                             </div>
                                         </div>
                                         <div class="card-footer">
-                                            <button type="submit" class="btn btn-primary">Create Incident Report
-                                            </button>
+                                            <a href="{{ url()->previous() }}" class="btn btn-default">Back</a>
+                                            <button type="submit" class="btn btn-primary">Create Incident Report</button>
                                         </div>
                                         <!--end::Body-->
                                     </div>
