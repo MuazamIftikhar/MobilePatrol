@@ -22,6 +22,7 @@ class CreateCheckpointHistoriesTable extends Migration
             $table->integer('checkpoint_id');
             $table->string('type')->nullable();
             $table->date('date');
+            $table->integer('status')->default('1');
             $table->timestamps();
         });
     }

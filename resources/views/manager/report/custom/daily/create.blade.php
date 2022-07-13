@@ -84,9 +84,8 @@
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
-                                                        <label>Guard</label>
-                                                        <input type="file"  class="form-control"
-                                                               value="{{$schedule->guards->guard_name}}" name="photos[]">
+                                                        <label>Images</label>
+                                                        <input type="file"  class="form-control" name="photos[]">
                                                         @error('photos')
                                                         <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -111,6 +110,7 @@
                                             </div>
                                         </div>
                                         <div class="card-footer">
+                                            <a href="{{route('daily_reports_by_schedule',['schedule_id'=>request()->schedule_id,'hash'=>md5(request()->schedule_id)])}}" class="btn btn-default">Back</a>
                                             <button type="submit" class="btn btn-primary">Create Daily Report
                                             </button>
                                         </div>

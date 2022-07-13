@@ -11,6 +11,7 @@ use App\Http\Traits\IncidentTrait;
 use App\Http\Traits\ResponseTrait;
 use App\Http\Traits\ScheduleTrait;
 use App\Models\Incident;
+use App\Models\IncidentImages;
 use App\Models\Schedule;
 use Illuminate\Http\Request;
 
@@ -45,7 +46,7 @@ class IncidentController extends Controller
     }
 
     public function update_incident_report(Request $request){
-        $incident = Incident::where('id',$request->incident_id)->first();
+        $incident = Incident::where('id',$request->incident_id)->with(array('admin','incident_report_images'))->first();
         return view('manager.report.custom.incident.edit',['incident'=>$incident])->with('title','Edit Incident Report');
     }
 
@@ -54,6 +55,7 @@ class IncidentController extends Controller
         $this->update_incident($request->incident_id,$request->police_called,$request->anyone_arrested,$request->property_damaged,
         $request->witness,$request->nature_of_complaint,$request->information);
         if ($request->hasFile('photos')) {
+            IncidentImages::where('incident_id',$request->incident_id)->delete();
             foreach ($request->photos as $photo) {
                 $image = $this->uploadImage($photo);
                 $this->update_incident_report_images_trait($request->incident_id, $image);

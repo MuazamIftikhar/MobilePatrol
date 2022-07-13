@@ -43,7 +43,7 @@ class VisitorController extends Controller
     public function update_visitor_report(Request $request)
     {
         $visitor=Visitor::where('id',$request->visitor_report_id)->first();
-        return view('manager.report.custom.visitor.edit', ['visitor' => $visitor])->with('title', 'Manage Visitor Report');
+        return view('manager.report.custom.visitor.edit', ['visitor' => $visitor])->with('title', 'Edit Visitor Report');
     }
 
     /**

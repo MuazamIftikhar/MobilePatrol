@@ -28,7 +28,7 @@
                                 !</strong> {{session('message')['result']}}</span>
                     </div>
                 @endif
-                <form method="post" action="{{route('save_visitor_report',['schedule_id'=>request()->schedule_id])}}"
+                <form method="post" action="{{route('edit_qr_report',['checkpoint_hitory_id'=>$checkpoint_history->id,'hash'=>md5($checkpoint_history->id)])}}"
                       enctype="multipart/form-data">
                     @csrf
                     <!--begin::Row-->
@@ -44,11 +44,11 @@
                                         </div>
                                         <div class="card-body p-5">
                                             <div class="row">
-                                                <div class="col-lg-4">
+                                                <div class="col-lg-6">
                                                     <div class="form-group">
                                                         <label>Client</label>
                                                         <input type="text" readonly="readonly" class="form-control"
-                                                               value="{{$schedule->client->client_name}}">
+                                                               value="{{$checkpoint_history->client->client_name}}">
                                                         @error('client_id')
                                                         <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -56,11 +56,11 @@
                                                         @enderror
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-4">
+                                                <div class="col-lg-6">
                                                     <div class="form-group">
                                                         <label>Guard</label>
                                                         <input type="text" readonly="readonly" class="form-control"
-                                                               value="{{$schedule->guards->guard_name}}">
+                                                               value="{{$checkpoint_history->guards->guard_name}}">
                                                         @error('guard_id')
                                                         <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -68,12 +68,13 @@
                                                         @enderror
                                                     </div>
                                                 </div>
-
-                                                <div class="col-lg-4">
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-6">
                                                     <div class="form-group">
                                                         <label>Schedule </label>
                                                         <input type="text" readonly="readonly" class="form-control"
-                                                               value="{{$schedule->local_from_date_time}} | {{$schedule->local_to_date_time}}">
+                                                               value="{{$checkpoint_history->schedule->local_from_date_time}} | {{$checkpoint_history->schedule->local_to_date_time}}">
                                                         @error('date')
                                                         <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -81,36 +82,16 @@
                                                         @enderror
                                                     </div>
                                                 </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-lg-4">
+                                                <div class="col-lg-6">
                                                     <div class="form-group">
-                                                        <label>Visitor Name</label>
-                                                        <input type="text" name="visitor_name" class="form-control" required>
-                                                        @error('visitor_name')
-                                                        <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                        @enderror
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-4">
-                                                    <div class="form-group">
-                                                        <label>Purpose</label>
-                                                        <input class="form-control" name="purpose" required>
-                                                        @error('purpose')
-                                                        <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                        @enderror
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-4">
-                                                    <div class="form-group">
-                                                        <label>Company</label>
-                                                        <input class="form-control" name="company">
-                                                        @error('company')
+                                                        <label>Check Point</label>
+                                                        <select class="form-control" name="checkpoint_id">
+                                                            <option value="">---Select---</option>
+                                                            @foreach($checkpoint as $c)
+                                                                <option value="{{$c->id}}" {{$c->id == $checkpoint_history->checkpoint_id ? "selected" : ""}}>{{$c->checkpoint_name}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                        @error('photos')
                                                         <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
@@ -120,34 +101,22 @@
                                             </div>
 
                                             <div class="row">
-                                                <div class="col-lg-4">
+                                                <div class="col-lg-6">
                                                     <div class="form-group">
-                                                        <label>Time In</label>
-                                                        <input type="datetime-local" name="time_in" class="form-control" required>
-                                                        @error('visitor_name')
+                                                        <label>Type </label>
+                                                        <input type="text" class="form-control" name="type" value="{{$checkpoint_history->type}}">
+                                                        @error('date')
                                                         <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
                                                         @enderror
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-4">
+                                                <div class="col-lg-6">
                                                     <div class="form-group">
-                                                        <label>Time Out</label>
-                                                        <input type="datetime-local" class="form-control" name="time_out" required>
-                                                        @error('time_out')
-                                                        <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                        @enderror
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-4">
-                                                    <div class="form-group">
-                                                        <label>Images</label>
-                                                        <input type="file" multiple class="form-control"
-                                                               name="photos[]">
-                                                        @error('images')
+                                                        <label>Date</label>
+                                                        <input type="date" name="date" class="form-control" value="{{$checkpoint_history->date}}">
+                                                        @error('photos')
                                                         <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
@@ -155,10 +124,10 @@
                                                     </div>
                                                 </div>
                                             </div>
-
                                         </div>
                                         <div class="card-footer">
-                                            <a href="{{route('reports_by_schedule_visitor',['schedule_id'=>request()->schedule_id,'hash'=>md5(request()->schedule_id)])}}" class="btn btn-default">Back</a>
+                                            <a href="{{route('qr_reports_by_schedule',['schedule_id'=>$checkpoint_history->schedule_id,'hash'=>md5($checkpoint_history->schedule_id)])}}"
+                                               class="btn btn-default">Back</a>
                                             <button type="submit" class="btn btn-primary">{{$title}}</button>
                                         </div>
                                         <!--end::Body-->

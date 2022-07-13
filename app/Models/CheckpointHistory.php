@@ -25,7 +25,7 @@ class CheckpointHistory extends Model
         return $this->belongsTo(Admin::class);
     }
 
-    public function schedules(){
+    public function schedule(){
         return $this->belongsTo(Schedule::class);
     }
 

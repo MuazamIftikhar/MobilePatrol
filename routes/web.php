@@ -133,7 +133,6 @@ Route::middleware(['auth', 'cors'])->group(function () {
     Route::post('manager/save/mobile/patrol/report', [App\Http\Controllers\Manager\MobilePatrolController::class, 'save_mobile_patrol_report'])
         ->name('save_mobile_patrol_report')->middleware('role:manager');
 
-
     #--------------------Manager Accounts --------------- Manage Reports ------------------------------#
     Route::get('manager/manage/report/shifts', [App\Http\Controllers\Manager\ReportController::class, 'shift_report'])
         ->name('shift_report')->middleware('role:manager');
@@ -238,7 +237,7 @@ Route::middleware(['auth', 'cors'])->group(function () {
         ->name('create_qr_report');
     Route::post('manager/qr/report/save', [\App\Http\Controllers\Manager\CheckpointController::class, 'save_qr_report'])
         ->name('save_qr_report');
-    Route::get('manager/qr/report/update/{qr_report_id}', [\App\Http\Controllers\Manager\CheckpointController::class, 'update_qr_report'])
+    Route::get('manager/qr/report/update/{checkpoint_hitory_id}/{hash}', [\App\Http\Controllers\Manager\CheckpointController::class, 'update_qr_report'])
         ->name('update_qr_report');
     Route::post('manager/qr/report/edit', [\App\Http\Controllers\Manager\CheckpointController::class, 'edit_qr_report'])
         ->name('edit_qr_report');

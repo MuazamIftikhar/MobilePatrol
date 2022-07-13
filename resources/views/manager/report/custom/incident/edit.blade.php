@@ -150,6 +150,10 @@
                                                         <label>Images</label>
                                                         <input type="file" multiple class="form-control"
                                                                name="photos[]">
+                                                        <br>
+                                                        @foreach($incident->incident_report_images as $i)
+                                                        <a href="{{$i->images}}"><img src="{{$i->images}}" width="100px"></a> &nbsp; &nbsp;
+                                                        @endforeach
                                                         @error('images')
                                                         <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -160,7 +164,7 @@
                                             </div>
 
                                             <div class="row">
-                                                <div class="col-lg-12">
+                                                <div class="col-lg-8">
                                                     <div class="form-group">
                                                         <label>Information</label>
                                                         <textarea class="form-control" name="information"
@@ -175,7 +179,8 @@
                                             </div>
                                         </div>
                                         <div class="card-footer">
-                                            <button type="submit" class="btn btn-primary">Create Incident Report
+                                            <a href="{{route('reports_by_schedule_incident',['schedule_id'=>$incident->schedule_id,'hash'=>md5($incident->schedule_id)])}}" class="btn btn-default">Back</a>
+                                            <button type="submit" class="btn btn-primary">{{$title}}
                                             </button>
                                         </div>
                                         <!--end::Body-->

@@ -66,8 +66,9 @@
                                                 <td>{{$c->type}}</td>
                                                 <td>{{$c->date}}</td>
                                                 <td>
-                                                    <a href="{{route('edit_timing',['id' => $c->id,'hash' => md5($c->id)])}}" class="btn btn-warning btn-sm"><i class="fa fa-edit fa-1x"></i></a>
-                                                    <a href="{{route('delete_timing',['id' => $c->id,'hash' => md5($c->id)])}}" class="btn btn-danger btn-sm"><i class="fa fa-trash fa-1x"></i></a>
+                                                    <a href="{{route('update_qr_report',['checkpoint_hitory_id' => $c->id,'hash' => md5($c->id)])}}" class="btn btn-warning btn-sm"><i class="fa fa-edit fa-1x"></i></a>
+                                                    <a href="{{route('delete_qr_report',['checkpoint_hitory_id' => $c->id])}}"
+                                                       onclick="return confirm('Are you sure?')" class="btn btn-danger btn-sm"><i class="fa fa-trash fa-1x"></i></a>
                                                 </td>
                                             </tr>
                                         @endforeach

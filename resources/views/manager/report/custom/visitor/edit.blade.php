@@ -148,6 +148,10 @@
                                                         <label>Images</label>
                                                         <input type="file" multiple class="form-control"
                                                                name="photos[]">
+                                                        <br>
+                                                        @foreach($visitor->visitor_report_images as $i)
+                                                            <a href="{{$i->images}}"><img src="{{$i->images}}" width="100px"></a> &nbsp; &nbsp;
+                                                        @endforeach
                                                         @error('images')
                                                         <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -159,6 +163,7 @@
 
                                         </div>
                                         <div class="card-footer">
+                                            <a href="{{route('reports_by_schedule_visitor',['schedule_id'=>$visitor->schedule_id,'hash'=>md5($visitor->schedule_id)])}}" class="btn btn-default">Back</a>
                                             <button type="submit" class="btn btn-primary">{{$title}}
                                             </button>
                                         </div>

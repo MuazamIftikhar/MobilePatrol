@@ -175,7 +175,7 @@
                                             </div>
                                         </div>
                                         <div class="card-footer">
-                                            <a href="{{ url()->previous() }}" class="btn btn-default">Back</a>
+                                            <a href="{{route('reports_by_schedule_incident',['schedule_id'=>request()->schedule_id,'hash'=>md5(request()->schedule_id)])}}" class="btn btn-default">Back</a>
                                             <button type="submit" class="btn btn-primary">Create Incident Report</button>
                                         </div>
                                         <!--end::Body-->

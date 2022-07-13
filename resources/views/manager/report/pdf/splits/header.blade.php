@@ -10,7 +10,7 @@
                         {{$company_setting->company_name}}</h1>
                     <p class="headerSmall" style=" font-size: 12px;margin-top: -15px; text-align: center;">{{$company_setting->company_address}}</p>
                     <p class="headerSmall" style=" font-size: 12px; text-align: center;"><b>Office:</b>
-                        {{$company_setting->company_phone}} |
+                        {{$company_setting->company_phone}}
                     </p>
                     <p class="headerSmall" style=" font-size: 12px; text-align: center;"><b>Email:</b>
                         {{$company_setting->company_email}} |

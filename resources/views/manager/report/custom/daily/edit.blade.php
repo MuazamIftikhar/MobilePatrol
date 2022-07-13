@@ -84,8 +84,12 @@
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
-                                                        <label>Guard</label>
+                                                        <label>Images</label>
                                                         <input type="file"  class="form-control" name="photos[]">
+                                                        <br>
+                                                        @foreach($daily_report->daily_report_images as $i)
+                                                            <a href="{{$i->images}}"><img src="{{$i->images}}" width="100px"></a> &nbsp; &nbsp;
+                                                        @endforeach
                                                         @error('photos')
                                                         <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -110,6 +114,7 @@
                                             </div>
                                         </div>
                                         <div class="card-footer">
+                                            <a href="{{route('daily_reports_by_schedule',['schedule_id'=>$daily_report->schedule_id,'hash'=>md5($daily_report->schedule_id)])}}" class="btn btn-default">Back</a>
                                             <button type="submit" class="btn btn-primary">Edit Daily Report
                                             </button>
                                         </div>

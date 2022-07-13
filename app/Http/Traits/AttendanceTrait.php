@@ -91,12 +91,12 @@ trait AttendanceTrait{
         return $attendance;
     }
 
-    public function showAttendanceReportByGuardAndScheduleID($guard_id,$from,$to,$schedule_id){
-        $attendance = Attendance::whereHas('guards', function ($query) use ($guard_id) {
-            $query->where('id', $guard_id);
-        })->with(array('guards'))->whereBetween('date', [$from, $to])->where('schedule_id',$schedule_id)->paginate(10);
-        return $attendance;
-    }
+//    public function showAttendanceReportByGuardAndScheduleID($guard_id,$from,$to,$schedule_id){
+//        $attendance = Attendance::whereHas('guards', function ($query) use ($guard_id) {
+//            $query->where('id', $guard_id);
+//        })->with(array('guards'))->whereBetween('date', [$from, $to])->where('schedule_id',$schedule_id)->paginate(10);
+//        return $attendance;
+//    }
 
     public function getAllAttendanceReportByScheduleId($schedule_id){
         $admin_id = $this->getAdminID(Auth::user()->id);
@@ -106,12 +106,12 @@ trait AttendanceTrait{
         return $attendance;
     }
 
-    public function getAttendanceReportByGuardAndScheduleID($guard_id,$from,$to,$schedule_id){
-        $attendance = Attendance::whereHas('guards', function ($query) use ($guard_id) {
-            $query->where('id', $guard_id);
-        })->with(array('guards'))->whereBetween('date', [$from, $to])->where('schedule_id',$schedule_id)->paginate(10);
-        return $attendance;
-    }
+//    public function getAttendanceReportByGuardAndScheduleID($guard_id,$from,$to,$schedule_id){
+//        $attendance = Attendance::whereHas('guards', function ($query) use ($guard_id) {
+//            $query->where('id', $guard_id);
+//        })->with(array('guards'))->whereBetween('date', [$from, $to])->where('schedule_id',$schedule_id)->paginate(10);
+//        return $attendance;
+//    }
 
     public function getGuardAttendance($guard_id,$from,$to){
         $attendance = Attendance::whereHas('guards', function ($query) use ($guard_id) {

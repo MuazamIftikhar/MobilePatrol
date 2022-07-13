@@ -41,7 +41,7 @@ trait IncidentTrait {
         $admin_id = $this->getAdminID(Auth::user()->id);
         $incident = Incident::whereHas('admin',function ($query) use ($admin_id){
             $query->where('id',$admin_id);
-        })->with(array('admin'))->where('schedule_id',$schedule_id)->where('status',1)->paginate(10);
+        })->with(array('admin','incident_report_images'))->where('schedule_id',$schedule_id)->where('status',1)->paginate(10);
         return $incident;
     }
 
@@ -95,7 +95,6 @@ trait IncidentTrait {
     }
 
     public function update_incident_report_images_trait($report_id,$image){
-        IncidentImages::where('incident_id',$report_id)->delete();
         $save = new IncidentImages();
         $save->incident_id = $report_id;
         $save->images = $image;

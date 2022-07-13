@@ -9,7 +9,8 @@ class IncidentImages extends Model
 {
     use HasFactory;
 
-    public function getImagesAttribute($value){
-        return $value != null ? config("app.image_domain").$value : '';
+    public function getImagesAttribute($value)
+    {
+        return $value != null ? config("app.image_domain") . $value : '';
     }
 }

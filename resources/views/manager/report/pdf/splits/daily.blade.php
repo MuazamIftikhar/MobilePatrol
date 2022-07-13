@@ -18,7 +18,11 @@
                 <p style="font-size: 10px">{{$d->description}} </p>
             </td>
             <td style="width: 40%;padding: 0">
-                <img src="{{$d->daily_report_images->first()->images}}" width="280">
+                @if(count($d->daily_report_images) >= 1)
+                    <img src="{{$d->daily_report_images->first()->images}}" width="280">
+                @else
+                    <img src="http://localhost/MobilePatrol/public/assets/no-image.jpg" width="280">
+                @endif
             </td>
         </tr>
     </table>

@@ -27,7 +27,11 @@
                 <p style="font-size: 10px">{{$s->local_time_out != null ? $s->local_time_out : 'N/A'}}</p>
             </td>
             <td style="width: 40%;padding: 0">
-                <img src="{{$s->visitor_report_images->first()->images}}" width="280">
+                @if(count($s->visitor_report_images) >= 1)
+                    <img src="{{$s->visitor_report_images->first()->images}}" width="280">
+                @else
+                    <img src="http://localhost/MobilePatrol/public/assets/no-image.jpg" width="280">
+                @endif
             </td>
         </tr>
     </table>

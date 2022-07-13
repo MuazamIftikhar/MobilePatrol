@@ -28,7 +28,8 @@
                                 !</strong> {{session('message')['result']}}</span>
                     </div>
                 @endif
-                <form method="post" action="{{route('save_daily_report',['schedule_id'=>request()->schedule_id])}}"
+                <form method="post"
+                      action="{{route('save_qr_report',['schedule_id'=>request()->schedule_id,'hash'=>md5(request()->schedule_id)])}}"
                       enctype="multipart/form-data">
                     @csrf
                     <!--begin::Row-->
@@ -85,9 +86,10 @@
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
                                                         <label>Check Point</label>
-                                                        <select class="form-control" name="check_point_id">
-                                                           @foreach($checkpoint as $c)
-                                                            <option>{{$c->checkpoint_name}}</option>
+                                                        <select class="form-control" name="checkpoint_id">
+                                                            @foreach($checkpoint as $c)
+                                                                <option
+                                                                    value="{{$c->id}}">{{$c->checkpoint_name}}</option>
                                                             @endforeach
                                                         </select>
                                                         @error('photos')
@@ -99,43 +101,44 @@
                                                 </div>
                                             </div>
 
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <div class="form-group">
-                                                            <label>Type </label>
-                                                            <input type="text" readonly="readonly" class="form-control">
-                                                            @error('date')
-                                                            <span class="invalid-feedback" role="alert">
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label>Type </label>
+                                                        <input type="text" class="form-control" name="type">
+                                                        @error('date')
+                                                        <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
-                                                            @enderror
-                                                        </div>
+                                                        @enderror
                                                     </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="form-group">
-                                                            <label>Date</label>
-                                                            <input type="date" name="date" class="form-control">
-                                                            @error('photos')
-                                                            <span class="invalid-feedback" role="alert">
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label>Date</label>
+                                                        <input type="date" name="date" class="form-control">
+                                                        @error('photos')
+                                                        <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
-                                                            @enderror
-                                                        </div>
+                                                        @enderror
                                                     </div>
                                                 </div>
-                                        </div>
-                                                <div class="card-footer">
-                                                    <button type="submit" class="btn btn-primary">Create Daily Report
-                                                    </button>
-                                                </div>
-                                                <!--end::Body-->
                                             </div>
                                         </div>
+                                        <div class="card-footer">
+                                            <a href="{{route('qr_reports_by_schedule',['schedule_id'=>request()->schedule_id,'hash'=>md5(request()->schedule_id)])}}"
+                                               class="btn btn-default">Back</a>
+                                            <button type="submit" class="btn btn-primary">Create Daily Report</button>
+                                        </div>
+                                        <!--end::Body-->
                                     </div>
-                                    <!--end::Mixed Widget 1-->
                                 </div>
-
                             </div>
+                            <!--end::Mixed Widget 1-->
+                        </div>
+
+                    </div>
                 </form>
             </div>
             <!--end::Container-->
