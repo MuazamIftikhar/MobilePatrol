@@ -179,9 +179,12 @@
                                             </div>
                                         </div>
                                         <div class="card-footer">
+                                            @if(request()->type == "schedule")
                                             <a href="{{route('reports_by_schedule_incident',['schedule_id'=>$incident->schedule_id,'hash'=>md5($incident->schedule_id)])}}" class="btn btn-default">Back</a>
-                                            <button type="submit" class="btn btn-primary">{{$title}}
-                                            </button>
+                                            @elseif(request()->type == "client")
+                                            <a href="{{route('reports_by_clients_incident',['client_id'=>$incident->client_id,'hash'=>md5($incident->client_id)])}}" class="btn btn-default">Back</a>
+                                            @endif
+                                            <button type="submit" class="btn btn-primary">{{$title}}</button>
                                         </div>
                                         <!--end::Body-->
                                     </div>

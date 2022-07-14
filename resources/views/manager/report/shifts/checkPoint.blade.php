@@ -25,8 +25,8 @@
                         <span class="alert-text"><strong>{{strtoupper(session('message')['class'])}}
                                 !</strong> {{session('message')['result']}}</span>
                     </div>
-            @endif
-            <!--begin::Row-->
+                @endif
+                <!--begin::Row-->
                 <div class="row">
                     <div class="col-lg-12">
                         <!--begin::Mixed Widget 1-->
@@ -38,7 +38,8 @@
                                     <a class="btn btn-secondary" href="{{route('create_qr_report',['schedule_id'=>$schedule->id,
                                     'hash'=>md5($schedule->id)])}}">Add Report</a>&nbsp;
                                     <a class="btn btn-primary" href="{{route('generate_schedule_qr_report_pdf',['guard_id'=>request()->guard_id,
-                                    'from'=>request()->from,'to'=>request()->to,'schedule_id'=>$schedule->id])}}">Export Pdf</a>
+                                    'from'=>request()->from,'to'=>request()->to,'schedule_id'=>$schedule->id])}}">Export
+                                        Pdf</a>
                                 </div>
                             </div>
                             <!--end::Header-->
@@ -66,9 +67,11 @@
                                                 <td>{{$c->type}}</td>
                                                 <td>{{$c->date}}</td>
                                                 <td>
-                                                    <a href="{{route('update_qr_report',['checkpoint_hitory_id' => $c->id,'hash' => md5($c->id)])}}" class="btn btn-warning btn-sm"><i class="fa fa-edit fa-1x"></i></a>
+                                                    <a href="{{route('update_qr_report',['checkpoint_hitory_id' => $c->id,'hash' => md5($c->id),'type'=>'schedule'])}}"
+                                                       class="btn btn-warning btn-sm"><i class="fa fa-edit fa-1x"></i></a>
                                                     <a href="{{route('delete_qr_report',['checkpoint_hitory_id' => $c->id])}}"
-                                                       onclick="return confirm('Are you sure?')" class="btn btn-danger btn-sm"><i class="fa fa-trash fa-1x"></i></a>
+                                                       onclick="return confirm('Are you sure?')" class="btn btn-danger btn-sm">
+                                                        <i class="fa fa-trash fa-1x"></i></a>
                                                 </td>
                                             </tr>
                                         @endforeach

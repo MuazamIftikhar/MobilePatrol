@@ -163,7 +163,11 @@
 
                                         </div>
                                         <div class="card-footer">
-                                            <a href="{{route('reports_by_schedule_visitor',['schedule_id'=>$visitor->schedule_id,'hash'=>md5($visitor->schedule_id)])}}" class="btn btn-default">Back</a>
+                                            @if(request()->type == "schedule")
+                                                <a href="{{route('reports_by_schedule_visitor',['schedule_id'=>$visitor->schedule_id,'hash'=>md5($visitor->schedule_id)])}}" class="btn btn-default">Back</a>
+                                            @elseif(request()->type == "client")
+                                                <a href="{{route('reports_by_clients_visitor',['client_id'=>$visitor->client_id,'hash'=>md5($visitor->client_id)])}}" class="btn btn-default">Back</a>
+                                            @endif
                                             <button type="submit" class="btn btn-primary">{{$title}}
                                             </button>
                                         </div>

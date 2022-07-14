@@ -114,7 +114,11 @@
                                             </div>
                                         </div>
                                         <div class="card-footer">
-                                            <a href="{{route('daily_reports_by_schedule',['schedule_id'=>$daily_report->schedule_id,'hash'=>md5($daily_report->schedule_id)])}}" class="btn btn-default">Back</a>
+                                            @if(request()->type == "schedule")
+                                                <a href="{{route('daily_reports_by_schedule',['schedule_id'=>$daily_report->schedule_id,'hash'=>md5($daily_report->schedule_id)])}}" class="btn btn-default">Back</a>
+                                            @elseif(request()->type == "client")
+                                                <a href="{{route('daily_reports_by_clients',['client_id'=>$daily_report->client_id,'hash'=>md5($daily_report->client_id)])}}" class="btn btn-default">Back</a>
+                                            @endif
                                             <button type="submit" class="btn btn-primary">Edit Daily Report
                                             </button>
                                         </div>

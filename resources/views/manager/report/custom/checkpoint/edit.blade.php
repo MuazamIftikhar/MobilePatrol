@@ -126,8 +126,11 @@
                                             </div>
                                         </div>
                                         <div class="card-footer">
-                                            <a href="{{route('qr_reports_by_schedule',['schedule_id'=>$checkpoint_history->schedule_id,'hash'=>md5($checkpoint_history->schedule_id)])}}"
-                                               class="btn btn-default">Back</a>
+                                            @if(request()->type == "schedule")
+                                                <a href="{{route('qr_reports_by_schedule',['schedule_id'=>$checkpoint_history->schedule_id,'hash'=>md5($checkpoint_history->schedule_id)])}}" class="btn btn-default">Back</a>
+                                            @elseif(request()->type == "client")
+                                                <a href="{{route('qr_reports_by_clients',['client_id'=>$checkpoint_history->client_id,'hash'=>md5($checkpoint_history->client_id)])}}" class="btn btn-default">Back</a>
+                                            @endif
                                             <button type="submit" class="btn btn-primary">{{$title}}</button>
                                         </div>
                                         <!--end::Body-->

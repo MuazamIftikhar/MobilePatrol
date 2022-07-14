@@ -205,14 +205,9 @@ class ReportController extends Controller
 
     public function generate_schedule_attendance_pdf(Request $request)
     {
-//        $guard_id = $request->guard_id;
-        $company_setting = $this->getCompanyDetails(Auth::user()->id);
-//        if ($guard_id != null) {
-//            $attendance = $this->getAttendanceReportByGuardAndScheduleID($guard_id, $request->from, $request->to, $request->schedule_id);
-//        } else {
-            $attendance = $this->getAllAttendanceReportByScheduleId($request->schedule_id);
-//        }
-        $data = [
+       $company_setting = $this->getCompanyDetails(Auth::user()->id);
+       $attendance = $this->getAllAttendanceReportByScheduleId($request->schedule_id);
+       $data = [
             'attendance' => $attendance,
             'company_setting' => $company_setting
         ];

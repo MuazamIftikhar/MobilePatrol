@@ -120,12 +120,12 @@
                                                 <td>{{$s->property_damaged}}</td>
                                                 <td>{{$s->witness}}</td>
                                                 <td>
-                                                    <a href="{{route('edit_timing',['id' => $s->id,'hash' => md5($s->id)])}}"
+                                                    <a href="{{route('update_incident_report',['incident_id' => $s->id,'hash' => md5($s->id),'type' => "client"])}}"
                                                        class="btn btn-warning btn-sm"><i
-                                                                class="fa fa-edit fa-1x"></i></a>
-                                                    <a href="{{route('delete_timing',['id' => $s->id,'hash' => md5($s->id)])}}"
-                                                       class="btn btn-danger btn-sm"><i
-                                                                class="fa fa-trash fa-1x"></i></a>
+                                                            class="fa fa-edit fa-1x"></i></a>
+                                                    <a href="{{route('delete_incident_report',['incident_id' => $s->id,'hash' => md5($s->id)])}}"
+                                                       onclick="return confirm('Are you sure?')"
+                                                       class="btn btn-danger btn-sm"><i class="fa fa-trash fa-1x"></i></a>
                                                 </td>
                                             </tr>
                                         @endforeach

@@ -68,7 +68,7 @@
                                                 <td>{{$s->purpose}}</td>
                                                 <td>{{$s->local_time_in}} - {{$s->local_time_out}}</td>
                                                 <td>
-                                                    <a href="{{route('update_visitor_report',['visitor_report_id' => $s->id,'hash' => md5($s->id)])}}"
+                                                    <a href="{{route('update_visitor_report',['visitor_report_id' => $s->id,'hash' => md5($s->id),'type' => 'schedule'])}}"
                                                        class="btn btn-warning btn-sm"><i class="fa fa-edit fa-1x"></i></a>
                                                     <a href="{{route('delete_visitor_report',['visitor_report_id' => $s->id,'hash' => md5($s->id)])}}"
                                                        onclick="return confirm('Are you sure?')"  class="btn btn-danger btn-sm"><i class="fa fa-trash fa-1x"></i></a>

@@ -89,8 +89,8 @@
                             <div class="card-header border-0  py-5">
                                 <h3 class="card-title font-weight-bolder">{{$title}}</h3>
                                 <div class="card-toolbar">
-                                    <a class="btn btn-primary" href="{{route('generate_attendance_pdf',['guard_id'=>request()->guard_id,'from'=>request()->from,'to'=>request()->to])}}">Export Pdf</a>
-                                </div>
+                                    <a class="btn btn-primary" href="{{route('generate_client_daily_report_pdf',['guard_id'=>request()->guard_id,
+                                        'from'=>request()->from,'to'=>request()->to,'client_id'=>$client->id])}}">Export Pdf</a>                                </div>
                             </div>
                             <!--end::Header-->
 
@@ -103,6 +103,7 @@
                                             <th>Guard Name</th>
                                             <th>Description</th>
                                             <th>Date</th>
+                                            <th>Action</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -111,6 +112,12 @@
                                                 <td>{{$s->guards->guard_name}}</td>
                                                 <td>{{$s->description}}</td>
                                                 <td>{{$s->date}}</td>
+                                                <td>
+                                                    <a href="{{route('update_daily_report',['daily_report_id' => $s->id,'hash' => md5($s->id),'type'=> 'client'])}}"
+                                                       class="btn btn-warning btn-sm"><i class="fa fa-edit fa-1x"></i></a>
+                                                    <a href="{{route('delete_daily_report',['daily_report_id' => $s->id,'hash' => md5($s->id)])}}"
+                                                       onclick="return confirm('Are you sure?')"  class="btn btn-danger btn-sm"><i class="fa fa-trash fa-1x"></i></a>
+                                                </td>
                                             </tr>
                                         @endforeach
                                         </tbody>

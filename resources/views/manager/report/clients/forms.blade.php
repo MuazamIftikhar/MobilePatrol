@@ -87,9 +87,9 @@
                             <div class="card-header border-0  py-5">
                                 <h3 class="card-title font-weight-bolder">{{$title}}</h3>
                                 <div class="card-toolbar">
-                                    <a class="btn btn-primary"
-                                       href="{{route('generate_attendance_pdf',['guard_id'=>request()->guard_id,'from'=>request()->from,'to'=>request()->to])}}">Export
-                                        Pdf</a>
+{{--                                    <a class="btn btn-primary"--}}
+{{--                                       href="{{route('generate_attendance_pdf',['guard_id'=>request()->guard_id,'from'=>request()->from,'to'=>request()->to])}}">Export--}}
+{{--                                        Pdf</a>--}}
                                 </div>
                             </div>
                             <!--end::Header-->

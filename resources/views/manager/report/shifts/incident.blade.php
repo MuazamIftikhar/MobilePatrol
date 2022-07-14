@@ -74,7 +74,7 @@
                                                 <td>{{$s->property_damaged}}</td>
                                                 <td>{{$s->witness}}</td>
                                                 <td>
-                                                    <a href="{{route('update_incident_report',['incident_id' => $s->id,'hash' => md5($s->id)])}}"
+                                                    <a href="{{route('update_incident_report',['incident_id' => $s->id,'hash' => md5($s->id),'type' => "schedule"])}}"
                                                        class="btn btn-warning btn-sm"><i
                                                             class="fa fa-edit fa-1x"></i></a>
                                                     <a href="{{route('delete_incident_report',['incident_id' => $s->id,'hash' => md5($s->id)])}}"

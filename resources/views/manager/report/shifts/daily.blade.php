@@ -63,7 +63,7 @@
                                                 <td>{{$s->description}}</td>
                                                 <td>{{$s->date}}</td>
                                                 <td>
-                                                    <a href="{{route('update_daily_report',['daily_report_id' => $s->id,'hash' => md5($s->id)])}}"
+                                                    <a href="{{route('update_daily_report',['daily_report_id' => $s->id,'hash' => md5($s->id),'type'=> 'schedule'])}}"
                                                        class="btn btn-warning btn-sm"><i class="fa fa-edit fa-1x"></i></a>
                                                     <a href="{{route('delete_daily_report',['daily_report_id' => $s->id,'hash' => md5($s->id)])}}"
                                                        onclick="return confirm('Are you sure?')"  class="btn btn-danger btn-sm"><i class="fa fa-trash fa-1x"></i></a>
