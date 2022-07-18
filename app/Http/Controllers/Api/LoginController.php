@@ -21,8 +21,11 @@ class LoginController extends Controller
         }
     }
 
-    public function form(){
-        $form= Form::all();
-        return $this->returnApiResponse('200', 'success', array('form' => $form));
+    public function check_token(Request $request){
+        if(auth()->user()){
+            return $this->returnApiResponse('200', 'success', array('user' => auth()->user()));
+        }else{
+            return $this->returnApiResponse( '401', 'warning','Login failed');
+        }
     }
 }
