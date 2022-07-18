@@ -37,7 +37,7 @@
                         <!--begin::Mixed Widget 1-->
                         <div class="card card-custom card-stretch gutter-b">
                             <div class="card-body p-5">
-                                <form method="get" action="{{route('shift_report')}}">
+                                <form method="get" action="{{route('reports_by_clients_forms',['form_id' => request()->form_id])}}">
                                     <div class="row">
                                         <div class="col-lg-3">
                                             <div class="form-group">
@@ -55,6 +55,8 @@
                                                 <label>From Date</label>
                                                 <input type="date" name="from" required
                                                        class="form-control">
+                                                <input type="hidden" name="client_id" required
+                                                       class="form-control" value="{{request()->client_id}}">
                                             </div>
                                         </div>
 
@@ -87,9 +89,8 @@
                             <div class="card-header border-0  py-5">
                                 <h3 class="card-title font-weight-bolder">{{$title}}</h3>
                                 <div class="card-toolbar">
-{{--                                    <a class="btn btn-primary"--}}
-{{--                                       href="{{route('generate_attendance_pdf',['guard_id'=>request()->guard_id,'from'=>request()->from,'to'=>request()->to])}}">Export--}}
-{{--                                        Pdf</a>--}}
+                                    <a class="btn btn-primary" href="{{route('generate_client_forms_report_pdf', ['guard_id'=>request()->guard_id,
+                                        'from'=>request()->from,'to'=>request()->to,'client_id'=>request()->client_id,'form_id'=>request()->form_id])}}">Export Pdf</a>
                                 </div>
                             </div>
                             <!--end::Header-->
@@ -103,6 +104,7 @@
                                             @foreach(json_decode($form_input->form_element) as $f)
                                             <th>{{$f->name}}</th>
                                             @endforeach
+                                            <th>Action</th>
 
                                         </tr>
                                         </thead>
@@ -112,6 +114,10 @@
                                                 @foreach(json_decode($f->form_element) as $f)
                                                 <td>{{$f->value}}</td>
                                                 @endforeach
+                                                    <td>
+                                                        <a href="{{route('delete_form_report',['form_id'=>$f->id])}}" onclick="return confirm('Are you sure?')" class="btn btn-danger btn-sm">
+                                                            <i class="fa fa-trash fa-1x"></i></a>
+                                                    </td>
                                             </tr>
                                         @endforeach
                                         </tbody>

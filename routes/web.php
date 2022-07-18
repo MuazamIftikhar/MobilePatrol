@@ -187,6 +187,10 @@ Route::middleware(['auth', 'cors'])->group(function () {
         ->name('generate_schedule_incident_report_pdf');
     Route::get('generate/client/incident/report/pdf', [\App\Http\Controllers\Manager\ReportController::class, 'generate_client_incident_report_pdf'])
         ->name('generate_client_incident_report_pdf');
+    Route::get('generate/schedule/forms/report/pdf', [\App\Http\Controllers\Manager\ReportController::class, 'generate_schedule_forms_report_pdf'])
+        ->name('generate_schedule_forms_report_pdf');
+    Route::get('generate/client/forms/report/pdf', [\App\Http\Controllers\Manager\ReportController::class, 'generate_client_forms_report_pdf'])
+        ->name('generate_client_forms_report_pdf');
 
 
 
@@ -243,5 +247,9 @@ Route::middleware(['auth', 'cors'])->group(function () {
         ->name('edit_qr_report');
     Route::get('manager/qr/report/delete', [\App\Http\Controllers\Manager\CheckpointController::class, 'delete_qr_report'])
         ->name('delete_qr_report');
+
+    #------------------------------Dynamic Form ----------------------------------------------------------#
+    Route::get('manager/form/report/delete', [\App\Http\Controllers\FormController::class, 'delete_form_report'])
+        ->name('delete_form_report');
 
 });

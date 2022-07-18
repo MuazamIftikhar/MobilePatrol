@@ -39,9 +39,8 @@
                             <div class="card-header border-0  py-5">
                                 <h3 class="card-title font-weight-bolder">{{$title}}</h3>
                                 <div class="card-toolbar">
-                                    {{--                                    <a class="btn btn-primary"--}}
-                                    {{--                                       href="{{route('generate_attendance_pdf',['guard_id'=>request()->guard_id,'from'=>request()->from,'to'=>request()->to])}}">Export--}}
-                                    {{--                                        Pdf</a>--}}
+                                    <a class="btn btn-primary" href="{{route('generate_schedule_forms_report_pdf',['form_id'=>request()->form_id,
+                                                'schedule_id'=>request()->schedule_id])}}">Export Pdf</a>
                                 </div>
                             </div>
                             <!--end::Header-->
@@ -55,7 +54,7 @@
                                             @foreach(json_decode($form_input->form_element) as $f)
                                                 <th>{{$f->name}}</th>
                                             @endforeach
-
+                                            <th>Action</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -64,6 +63,9 @@
                                                 @foreach(json_decode($f->form_element) as $f)
                                                     <td>{{$f->value}}</td>
                                                 @endforeach
+                                                <td>     <a href="{{route('delete_form_report',['form_id'=>$f->id])}}" onclick="return confirm('Are you sure?')" class="btn btn-danger btn-sm">
+                                                        <i class="fa fa-trash fa-1x"></i></a>
+                                                </td>
                                             </tr>
                                         @endforeach
                                         </tbody>

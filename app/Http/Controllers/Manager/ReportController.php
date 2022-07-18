@@ -146,10 +146,11 @@ class ReportController extends Controller
         $guard_id = $request->guard_id;
         $form_input = Form::where('id', $request->form_id)->first();
         if ($guard_id != null) {
-            $form = $this->showAttendanceReportByGuardID($guard_id, $request->from, $request->to, $request->client_id);
+            $form = $this->showFormReportByGuardID($guard_id, $request->from, $request->to, $request->client_id,$request->form_id);
         } else {
-            $form = $this->showAllGuardForm($request->form_id);
+            $form = $this->showAllGuardForm($request->form_id,$request->client_id);
         }
+        dd($form);
         $guard = $this->getAdminGuard();
         return view('manager.report.clients.forms', ['form_input' => $form_input, 'form' => $form, 'guard' => $guard])
             ->with('title', 'Manage Reports');
@@ -327,5 +328,32 @@ class ReportController extends Controller
         ];
         $pdf = PDF::loadView('manager.report.pdf.incident', $data);
         return $pdf->download(Carbon::now()->toFormattedDateString() . '-IncidentReport.pdf');
+    }
+
+    public function generate_schedule_forms_report_pdf(Request $request){
+        $company_setting = $this->getCompanyDetails(Auth::user()->id);
+        $form = FormValue::where('form_id',$request->form_id)->where('schedule_id',$request->schedule_id)->get();
+        $data = [
+            'form' => $form,
+            'company_setting' => $company_setting
+        ];
+        $pdf = PDF::loadView('manager.report.pdf.forms', $data);
+        return $pdf->download(Carbon::now()->toFormattedDateString() . '-FormReport.pdf');
+    }
+
+    public function generate_client_forms_report_pdf(Request $request){
+        $guard_id = $request->guard_id;
+        $company_setting = $this->getCompanyDetails(Auth::user()->id);
+        if ($guard_id != null) {
+            $form = $this->getFormReportByGuardID($guard_id, $request->from, $request->to, $request->client_id,$request->form_id);
+        } else {
+            $form = $this->getAllGuardForm($request->form_id,$request->client_id);
+        }
+        $data = [
+            'form' => $form,
+            'company_setting' => $company_setting
+        ];
+        $pdf = PDF::loadView('manager.report.pdf.forms', $data);
+        return $pdf->download(Carbon::now()->toFormattedDateString() . '-FormReport.pdf');
     }
 }

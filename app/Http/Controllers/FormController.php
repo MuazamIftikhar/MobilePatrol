@@ -6,6 +6,7 @@ use App\Http\Traits\CompanySettingTrait;
 use App\Http\Traits\FormTrait;
 use App\Http\Traits\ResponseTrait;
 use App\Models\Form;
+use App\Models\FormValue;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -117,8 +118,9 @@ class FormController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
+    public function delete_form_report(Request $request){
+        dd($request->all());
+        FormValue::where('id',$id)->update(['status'=>0]);
+        return back();
     }
 }
