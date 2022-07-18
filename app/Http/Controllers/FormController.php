@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Traits\CompanySettingTrait;
 use App\Http\Traits\FormTrait;
 use App\Http\Traits\ResponseTrait;
-use App\Models\Client;
 use App\Models\Form;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -40,13 +39,13 @@ class FormController extends Controller
             }
             $checkDuplication = $this->checkIfFormNameExists($admin_id,$request->form_name);
             if($checkDuplication == true) {
-            $this->create_form($admin_id, $request->form_name, $request->description, $form_element_array);
+            $this->create_form($admin_id, $request->form_name, $request->description,$request->form_type, $form_element_array);
             return $this->returnApiResponse(200, 'success', array('response' => 'Form Created Successfully'));
             }else{
-            return $this->returnApiResponse(200, 'warning', array('response' => 'Form Name Alrready Presenet.'));
+            return $this->returnApiResponse(200, 'warning', array('response' => 'Form Name Already Present.'));
             }
         } catch (\Exception $e) {
-            return $this->returnApiResponse(404, 'error', array());
+            return $this->returnApiResponse(404, 'error', array('response' => $e->getMessage()));
         }
     }
 
@@ -89,7 +88,7 @@ class FormController extends Controller
                 $decode_data = json_decode($request->form_element[$i]);
                 array_push($form_element_array, $decode_data);
             }
-            $this->update_forms($request->id, $request->form_name, $request->description, $form_element_array);
+            $this->update_forms($request->id, $request->form_name, $request->description,$request->form_type, $form_element_array);
             return $this->returnApiResponse(200, 'success', array('response' => 'Form Updated Successfully'));
         } catch (\Exception $e) {
             return $this->returnApiResponse(404, 'error', array());

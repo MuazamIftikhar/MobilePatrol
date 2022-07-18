@@ -3,7 +3,7 @@
         <div class="col-8 p-5" style="background-color: white" >
             <!--<h3>Create Form</h3>-->
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="form-group">
                         <label>Form Name</label>
                         <input type="text" v-model="form_name" class="form-control"/>
@@ -11,12 +11,27 @@
                               class="help-block">Please enter a form name</span>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="form-group">
                         <label>Form Description</label>
                         <input type="text" v-model="description" class="form-control"/>
                         <span v-show="errors.description"
                               class="help-block">Please enter a description</span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Form Type</label>
+                        <div class="radio-inline">
+                            <label class="radio">
+                                <input type="radio" name="some-radios" value="shift" v-model="form_type">Shift
+                                <span></span></label>
+                            <label class="radio">
+                                <input type="radio" name="some-radios" value="regular" v-model="form_type">Regular
+                                <span></span></label>
+                        </div>
+                        <span v-show="errors.description"
+                              class="help-block">Please enter a Form</span>
                     </div>
                 </div>
             </div>
@@ -109,8 +124,9 @@
         data() {
             return {
                 form_name : '',
+                form_type : '',
                 description : '',
-                errors : {form_name:false,description:false,form_element:false},
+                errors : {form_name:false,form_type:false,description:false,form_element:false},
                 showSlider:false,
                 element_list: [
                     {name: "text", id: 1, label : "Enter Text" , required : "true" , placeholder : "Enter Text" },
@@ -129,6 +145,7 @@
             created_at(){
                 let self=this;
                 if (self.form_name.trim() == ''){self.errors.form_name = true;return false;}else {self.errors.form_name = false}
+                if (self.form_type.trim() == ''){self.errors.form_type = true;return false;}else {self.errors.form_type = false}
                 if (self.description.trim() == ''){self.errors.description = true;return false;}else {self.errors.description = false}
                 if (self.form_element_list.length == '0'){self.errors.form_element = true;return false;}else {self.errors.form_element = false}
 
@@ -140,6 +157,7 @@
 
                 var params = {
                     form_name:self.form_name,
+                    form_type:self.form_type,
                     description:self.description,
                     form_element:self.form_elements,
                 }

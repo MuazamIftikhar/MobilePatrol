@@ -11,11 +11,11 @@ use App\Http\Traits\DailyReportTrait;
 use App\Http\Traits\FormTrait;
 use App\Http\Traits\GuardTrait;
 use App\Http\Traits\IncidentTrait;
-use App\Http\Traits\QrTrait;
 use App\Http\Traits\ScheduleTrait;
 use App\Http\Traits\VisitorTrait;
 use App\Models\Client;
 use App\Models\Form;
+use App\Models\FormValue;
 use App\Models\Schedule;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
@@ -36,7 +36,7 @@ class ReportController extends Controller
             $shifts = $this->showAllGuardSchedule();
         }
         $guard = $this->getAdminGuard();
-        $form = Form::all();
+        $form = Form::where('form_type','shift')->get();
         return view('manager.report.shifts', ['shifts' => $shifts, 'guard' => $guard, 'form' => $form])->with('title', 'Manage Reports');
     }
 
@@ -135,13 +135,8 @@ class ReportController extends Controller
 
     public function reports_by_schedule_attendance(Request $request)
     {
-        $guard_id = $request->guard_id;
         $schedule = Schedule::where('id', $request->schedule_id)->first();
-//        if ($guard_id != null) {
-//            $attendance = $this->showAttendanceReportByGuardAndScheduleID($guard_id, $request->from, $request->to, $request->schedule_id);
-//        } else {
-            $attendance = $this->showAllAttendanceReportByScheduleId($request->schedule_id);
-//        }
+        $attendance = $this->showAllAttendanceReportByScheduleId($request->schedule_id);
         $guard = $this->getAdminGuard();
         return view('manager.report.shifts.attendance', ['attendance' => $attendance, 'guard' => $guard, 'schedule' => $schedule])->with('title', 'Manage Attendance Reports');
     }
@@ -157,18 +152,20 @@ class ReportController extends Controller
         }
         $guard = $this->getAdminGuard();
         return view('manager.report.clients.forms', ['form_input' => $form_input, 'form' => $form, 'guard' => $guard])
-            ->with('title', 'Manage Daily Reports');
+            ->with('title', 'Manage Reports');
+    }
+    public function reports_by_schedule_forms(Request $request)
+    {
+        $form_input = Form::where('id', $request->form_id)->first();
+        $form = FormValue::where('form_id',$request->form_id)->where('schedule_id',$request->schedule_id)->paginate(10);
+        return view('manager.report.shifts.forms', ['form_input' => $form_input, 'form' => $form])
+            ->with('title', 'Manage Reports');
     }
 
     public function qr_reports_by_schedule(Request $request)
     {
-        $guard_id = $request->guard_id;
         $schedule = Schedule::where('id', $request->schedule_id)->first();
-//        if ($guard_id != null) {
-//            $check_point = $this->showQrReportByGuardAndScheduleID($guard_id, $request->from, $request->to, $request->schedule_id);
-//        } else {
-            $check_point = $this->showAllQrReportByScheduleId($request->schedule_id);
-//        }
+        $check_point = $this->showAllQrReportByScheduleId($request->schedule_id);
         $guard = $this->getAdminGuard();
         return view('manager.report.shifts.checkPoint', ['check_point' => $check_point, 'guard' => $guard, 'schedule' => $schedule])->with('title', 'Manage Qr Reports');
     }
@@ -205,9 +202,9 @@ class ReportController extends Controller
 
     public function generate_schedule_attendance_pdf(Request $request)
     {
-       $company_setting = $this->getCompanyDetails(Auth::user()->id);
-       $attendance = $this->getAllAttendanceReportByScheduleId($request->schedule_id);
-       $data = [
+        $company_setting = $this->getCompanyDetails(Auth::user()->id);
+        $attendance = $this->getAllAttendanceReportByScheduleId($request->schedule_id);
+        $data = [
             'attendance' => $attendance,
             'company_setting' => $company_setting
         ];
@@ -217,13 +214,8 @@ class ReportController extends Controller
 
     public function generate_schedule_daily_report_pdf(Request $request)
     {
-        $guard_id = $request->guard_id;
         $company_setting = $this->getCompanyDetails(Auth::user()->id);
-//        if ($guard_id != null) {
-//            $daily_report = $this->getDailyReportByGuardAndScheduleID($guard_id, $request->from, $request->to, $request->schedule_id);
-//        } else {
-            $daily_report = $this->getAllDailyReportByScheduleId($request->schedule_id);
-//        }
+        $daily_report = $this->getAllDailyReportByScheduleId($request->schedule_id);
         $data = [
             'daily_report' => $daily_report,
             'company_setting' => $company_setting
@@ -251,13 +243,8 @@ class ReportController extends Controller
 
     public function generate_schedule_visitor_report_pdf(Request $request)
     {
-        $guard_id = $request->guard_id;
         $company_setting = $this->getCompanyDetails(Auth::user()->id);
-//        if ($guard_id != null) {
-//            $visitor = $this->getVisitorsByScheduleAndGuardID($guard_id, $request->from, $request->to, $request->schedule_id);
-//        } else {
-            $visitor = $this->getAllVisitorsByScheduleID($request->schedule_id);
-//        }
+        $visitor = $this->getAllVisitorsByScheduleID($request->schedule_id);
         $data = [
             'visitor' => $visitor,
             'company_setting' => $company_setting
@@ -285,13 +272,9 @@ class ReportController extends Controller
 
     public function generate_schedule_qr_report_pdf(Request $request)
     {
-        $guard_id = $request->guard_id;
         $company_setting = $this->getCompanyDetails(Auth::user()->id);
-//        if ($guard_id != null) {
-//            $check_point = $this->getQrReportByGuardAndScheduleID($guard_id, $request->from, $request->to, $request->schedule_id);
-//        } else {
-            $check_point = $this->getAllQrReportByScheduleId($request->schedule_id);
-//        }
+        $check_point = $this->getAllQrReportByScheduleId($request->schedule_id);
+
         $data = [
             'check_point' => $check_point,
             'company_setting' => $company_setting
@@ -319,13 +302,8 @@ class ReportController extends Controller
 
     public function generate_schedule_incident_report_pdf(Request $request)
     {
-        $guard_id = $request->guard_id;
         $company_setting = $this->getCompanyDetails(Auth::user()->id);
-//        if ($guard_id != null) {
-//            $incident = $this->getAllIncidentByScheduleAndGuardID($guard_id, $request->from, $request->to, $request->schedule_id);
-//        } else {
-            $incident = $this->getAllIncidentByScheduleID($request->schedule_id);
-//        }
+        $incident = $this->getAllIncidentByScheduleID($request->schedule_id);
         $data = [
             'incident' => $incident,
             'company_setting' => $company_setting

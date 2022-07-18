@@ -17092,6 +17092,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -17106,9 +17121,11 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       form_name: '',
+      form_type: '',
       description: '',
       errors: {
         form_name: false,
+        form_type: false,
         description: false,
         form_element: false
       },
@@ -17179,6 +17196,13 @@ __webpack_require__.r(__webpack_exports__);
         self.errors.form_name = false;
       }
 
+      if (self.form_type.trim() == '') {
+        self.errors.form_type = true;
+        return false;
+      } else {
+        self.errors.form_type = false;
+      }
+
       if (self.description.trim() == '') {
         self.errors.description = true;
         return false;
@@ -17201,6 +17225,7 @@ __webpack_require__.r(__webpack_exports__);
       console.log(self.form_elements);
       var params = {
         form_name: self.form_name,
+        form_type: self.form_type,
         description: self.description,
         form_element: self.form_elements
       };
@@ -17481,6 +17506,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -17495,10 +17535,12 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       form_name: '',
+      form_type: '',
       description: '',
       id: '',
       errors: {
         form_name: false,
+        form_type: false,
         description: false,
         form_element: false
       },
@@ -17570,6 +17612,7 @@ __webpack_require__.r(__webpack_exports__);
       Promise.resolve(_controller_HelperController__WEBPACK_IMPORTED_MODULE_2__.default.sendGetRequest('manager/get/form/' + id)).then(function (response) {
         if (response.data != '') {
           self.form_name = response.data.name;
+          self.form_type = response.data.form_type;
           self.description = response.data.description;
           self.id = response.data.id;
           self.form_element_list = JSON.parse(response.data.form_element);
@@ -17590,6 +17633,13 @@ __webpack_require__.r(__webpack_exports__);
         return false;
       } else {
         self.errors.form_name = false;
+      }
+
+      if (self.form_type == '') {
+        self.errors.form_type = true;
+        return false;
+      } else {
+        self.errors.form_type = false;
       }
 
       if (self.description.trim() == '') {
@@ -17614,6 +17664,7 @@ __webpack_require__.r(__webpack_exports__);
       console.log(self.form_elements);
       var params = {
         form_name: self.form_name,
+        form_type: self.form_type,
         description: self.description,
         form_element: self.form_elements,
         id: self.id
@@ -18640,13 +18691,7 @@ vue__WEBPACK_IMPORTED_MODULE_0__.default.use((vue_toast_notification__WEBPACK_IM
 
 vue__WEBPACK_IMPORTED_MODULE_0__.default.component('example-component', __webpack_require__(/*! ./components/ExampleComponent.vue */ "./resources/js/components/ExampleComponent.vue").default);
 vue__WEBPACK_IMPORTED_MODULE_0__.default.component('schedule-component', __webpack_require__(/*! ./components/schedule/ScheduleComponent.vue */ "./resources/js/components/schedule/ScheduleComponent.vue").default);
-vue__WEBPACK_IMPORTED_MODULE_0__.default.component('form-component', __webpack_require__(/*! ./components/form/AddFormComponent.vue */ "./resources/js/components/form/AddFormComponent.vue").default);
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
-//Axios URL
+vue__WEBPACK_IMPORTED_MODULE_0__.default.component('form-component', __webpack_require__(/*! ./components/form/AddFormComponent.vue */ "./resources/js/components/form/AddFormComponent.vue").default); //Axios URL
 //axios.defaults.baseURL="http://127.0.0.1:8000/";
 //Production AXios URL
 
@@ -92648,7 +92693,7 @@ var render = function() {
         },
         [
           _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-md-6" }, [
+            _c("div", { staticClass: "col-md-4" }, [
               _c("div", { staticClass: "form-group" }, [
                 _c("label", [_vm._v("Form Name")]),
                 _vm._v(" "),
@@ -92692,7 +92737,7 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col-md-6" }, [
+            _c("div", { staticClass: "col-md-4" }, [
               _c("div", { staticClass: "form-group" }, [
                 _c("label", [_vm._v("Form Description")]),
                 _vm._v(" "),
@@ -92732,6 +92777,82 @@ var render = function() {
                     staticClass: "help-block"
                   },
                   [_vm._v("Please enter a description")]
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-md-4" }, [
+              _c("div", { staticClass: "form-group" }, [
+                _c("label", [_vm._v("Form Type")]),
+                _vm._v(" "),
+                _c("div", { staticClass: "radio-inline" }, [
+                  _c("label", { staticClass: "radio" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.form_type,
+                          expression: "form_type"
+                        }
+                      ],
+                      attrs: {
+                        type: "radio",
+                        name: "some-radios",
+                        value: "shift"
+                      },
+                      domProps: { checked: _vm._q(_vm.form_type, "shift") },
+                      on: {
+                        change: function($event) {
+                          _vm.form_type = "shift"
+                        }
+                      }
+                    }),
+                    _vm._v("Shift\n                            "),
+                    _c("span")
+                  ]),
+                  _vm._v(" "),
+                  _c("label", { staticClass: "radio" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.form_type,
+                          expression: "form_type"
+                        }
+                      ],
+                      attrs: {
+                        type: "radio",
+                        name: "some-radios",
+                        value: "regular"
+                      },
+                      domProps: { checked: _vm._q(_vm.form_type, "regular") },
+                      on: {
+                        change: function($event) {
+                          _vm.form_type = "regular"
+                        }
+                      }
+                    }),
+                    _vm._v("Regular\n                            "),
+                    _c("span")
+                  ])
+                ]),
+                _vm._v(" "),
+                _c(
+                  "span",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.errors.description,
+                        expression: "errors.description"
+                      }
+                    ],
+                    staticClass: "help-block"
+                  },
+                  [_vm._v("Please enter a Form")]
                 )
               ])
             ])
@@ -93281,7 +93402,7 @@ var render = function() {
         },
         [
           _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-md-6" }, [
+            _c("div", { staticClass: "col-md-4" }, [
               _c("div", { staticClass: "form-group" }, [
                 _c("label", [_vm._v("Form Name")]),
                 _vm._v(" "),
@@ -93325,7 +93446,7 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col-md-6" }, [
+            _c("div", { staticClass: "col-md-4" }, [
               _c("div", { staticClass: "form-group" }, [
                 _c("label", [_vm._v("Form Description")]),
                 _vm._v(" "),
@@ -93365,6 +93486,90 @@ var render = function() {
                     staticClass: "help-block"
                   },
                   [_vm._v("Please enter a description")]
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-md-4" }, [
+              _c("div", { staticClass: "form-group" }, [
+                _c("label", [_vm._v("Form Type")]),
+                _vm._v(" "),
+                _c("div", { staticClass: "radio-inline" }, [
+                  _c("label", { staticClass: "radio" }, [
+                    _vm.form_type === "shift"
+                      ? _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form_type,
+                              expression: "form_type"
+                            }
+                          ],
+                          attrs: {
+                            type: "radio",
+                            name: "some-radios",
+                            value: "shift",
+                            checked: ""
+                          },
+                          domProps: { checked: _vm._q(_vm.form_type, "shift") },
+                          on: {
+                            change: function($event) {
+                              _vm.form_type = "shift"
+                            }
+                          }
+                        })
+                      : _vm._e(),
+                    _vm._v("Shift\n                            "),
+                    _c("span")
+                  ]),
+                  _vm._v(" "),
+                  _c("label", { staticClass: "radio" }, [
+                    _vm.form_type === "regular"
+                      ? _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form_type,
+                              expression: "form_type"
+                            }
+                          ],
+                          attrs: {
+                            type: "radio",
+                            name: "some-radios",
+                            value: "regular",
+                            checked: ""
+                          },
+                          domProps: {
+                            checked: _vm._q(_vm.form_type, "regular")
+                          },
+                          on: {
+                            change: function($event) {
+                              _vm.form_type = "regular"
+                            }
+                          }
+                        })
+                      : _vm._e(),
+                    _vm._v("Regular\n                            "),
+                    _c("span")
+                  ])
+                ]),
+                _vm._v(" "),
+                _c(
+                  "span",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.errors.description,
+                        expression: "errors.description"
+                      }
+                    ],
+                    staticClass: "help-block"
+                  },
+                  [_vm._v("Please enter a Form")]
                 )
               ])
             ])

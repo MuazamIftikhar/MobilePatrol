@@ -18,7 +18,7 @@ class UserRoleSeeder extends Seeder
         //
         $user = new User();
         $user->name = 'Demo Admin';
-        $user->email = 'zohaibazhar359@gmail.com';
+        $user->email = 'test@gmail.com';
         $user->password = md5('1234567');
         $user->save();
         //creating Role

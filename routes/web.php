@@ -162,7 +162,7 @@ Route::middleware(['auth', 'cors'])->group(function () {
         ->name('reports_by_schedule_attendance')->middleware('role:manager');
     Route::get('manager/manage/qr/reports/by/schedule/{schedule_id}/{hash}', [App\Http\Controllers\Manager\ReportController::class, 'qr_reports_by_schedule'])
         ->name('qr_reports_by_schedule')->middleware('role:manager');
-    Route::get('manager/manage/reports/by/schedule/form/{form_id}', [App\Http\Controllers\Manager\ReportController::class, 'reports_by_schedule_forms'])
+    Route::get('manager/manage/reports/by/schedule/form/{form_id}/{schedule_id}', [App\Http\Controllers\Manager\ReportController::class, 'reports_by_schedule_forms'])
         ->name('reports_by_schedule_forms')->middleware('role:manager');
 
 

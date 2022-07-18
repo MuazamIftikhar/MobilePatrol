@@ -45,16 +45,11 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 Vue.component('schedule-component', require('./components/schedule/ScheduleComponent.vue').default);
 Vue.component('form-component', require('./components/form/AddFormComponent.vue').default);
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
 
 //Axios URL
 //axios.defaults.baseURL="http://127.0.0.1:8000/";
 //Production AXios URL
- axios.defaults.baseURL="https://mobilepatrol.cybermeteorshosting.com/";
+axios.defaults.baseURL="https://mobilepatrol.cybermeteorshosting.com/";
 //Data Table
 
 import { VuejsDatatableFactory} from 'vuejs-datatable';

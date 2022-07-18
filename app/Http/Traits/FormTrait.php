@@ -11,10 +11,11 @@ trait FormTrait {
 
     use PhpFunctionsTrait;
 
-    public function create_form($admin_id,$form_name,$description,$form_element){
+    public function create_form($admin_id,$form_name,$description,$form_type,$form_element){
         $save = new Form();
         $save->admin_id = $admin_id;
         $save->name = $form_name;
+        $save->form_type = $form_type;
         $save->slug = \Str::slug($form_name);
         $save->description = $description;
         $save->form_element = json_encode($form_element);
@@ -37,9 +38,10 @@ trait FormTrait {
 
     }
 
-    public function update_forms($id,$form_name,$description,$form_element){
+    public function update_forms($id,$form_name,$description,$form_type,$form_element){
         $update = Form::where('id',$id)->update([
             "name" => $form_name,
+            "form_type" => $form_type,
             "description" => $description,
             "form_element" => $form_element
         ]);
