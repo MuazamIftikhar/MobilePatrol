@@ -26,8 +26,12 @@ Route::get('/test', function () {
 
 Route::post('/login', [App\Http\Controllers\Api\LoginController::class, 'index'])->name('login');
 
+
 Route::middleware(['auth:api','cors'])->group(function () {
-    Route::post('/check_token',[\App\Http\Controllers\Api\LoginController::class,'check_token'])->name('check_token');
+    Route::post('/check_token',[\App\Http\Controllers\Api\LoginController::class,'check_token'])
+        ->name('check_token');
+    Route::post('/dashboard_values',[\App\Http\Controllers\Api\LoginController::class,'dashboard_values'])
+        ->name('dashboard_values');
     Route::post('get_guard_schedules',[\App\Http\Controllers\Api\ScheduleController::class,'get_guard_schedules'])
         ->name('get_guard_schedules');
     Route::post('create_guard_attendance',[\App\Http\Controllers\Api\AttendanceController::class,'save_guard_attendance'])
