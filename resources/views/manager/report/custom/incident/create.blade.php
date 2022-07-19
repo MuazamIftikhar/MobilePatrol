@@ -28,7 +28,7 @@
                                 !</strong> {{session('message')['result']}}</span>
                     </div>
                 @endif
-                <form method="post" action="{{route('save_incident_report',['schedule_id'=>request()->schedule_id])}}"
+                <form method="post" action="{{route('save_incident_report',['schedule_id'=>request()->schedule_id,'timezone'=>$timezone])}}"
                       enctype="multipart/form-data">
                     @csrf
                     <!--begin::Row-->
@@ -155,6 +155,15 @@
                                                         <strong>{{ $message }}</strong>
                                                     </span>
                                                         @enderror
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-lg-4">
+                                                    <div class="form-group">
+                                                        <label>Date</label>
+                                                        <input type="datetime-local"  class="form-control" name="date">
                                                     </div>
                                                 </div>
                                             </div>

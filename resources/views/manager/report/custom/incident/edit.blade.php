@@ -28,7 +28,7 @@
                                 !</strong> {{session('message')['result']}}</span>
                     </div>
                 @endif
-                <form method="post" action="{{route('edit_incident_report',['incident_id'=>request()->incident_id])}}"
+                <form method="post" action="{{route('edit_incident_report',['incident_id'=>request()->incident_id,'timezone'=>$timezone])}}"
                       enctype="multipart/form-data">
                     @csrf
                     <!--begin::Row-->
@@ -150,10 +150,6 @@
                                                         <label>Images</label>
                                                         <input type="file" multiple class="form-control"
                                                                name="photos[]">
-                                                        <br>
-                                                        @foreach($incident->incident_report_images as $i)
-                                                        <a href="{{$i->images}}"><img src="{{$i->images}}" width="100px"></a> &nbsp; &nbsp;
-                                                        @endforeach
                                                         @error('images')
                                                         <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -164,7 +160,26 @@
                                             </div>
 
                                             <div class="row">
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-4">
+                                                    <div class="form-group">
+                                                        <label>Date</label>
+                                                        <input type="datetime-local"  class="form-control"
+                                                               name="date" value="{{$incident->local_date}}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4">
+
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    @foreach($incident->incident_report_images as $i)
+                                                        <a href="{{$i->images}}"><img src="{{$i->images}}" width="100px"></a> &nbsp; &nbsp;
+                                                    @endforeach
+                                                </div>
+                                            </div>
+
+
+                                            <div class="row">
+                                                <div class="col-lg-12">
                                                     <div class="form-group">
                                                         <label>Information</label>
                                                         <textarea class="form-control" name="information"

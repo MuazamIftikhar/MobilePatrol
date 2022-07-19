@@ -60,8 +60,8 @@
                                         <tbody>
                                         @foreach($form as $f)
                                             <tr>
-                                                @foreach(json_decode($f->form_element) as $f)
-                                                    <td>{{$f->value}}</td>
+                                                @foreach(json_decode($f->form_element) as $element)
+                                                    <td>{{$element->value}}</td>
                                                 @endforeach
                                                 <td>     <a href="{{route('delete_form_report',['form_id'=>$f->id])}}" onclick="return confirm('Are you sure?')" class="btn btn-danger btn-sm">
                                                         <i class="fa fa-trash fa-1x"></i></a>

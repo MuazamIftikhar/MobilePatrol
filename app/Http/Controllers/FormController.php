@@ -119,8 +119,7 @@ class FormController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function delete_form_report(Request $request){
-        dd($request->all());
-        FormValue::where('id',$id)->update(['status'=>0]);
+        FormValue::where('id',$request->form_id)->update(['status'=>0]);
         return back();
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Traits;
 
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 trait ImageUplaodTrait {
 
@@ -13,13 +14,13 @@ trait ImageUplaodTrait {
             $filenamewithextension = $image->getClientOriginalName();
 
             //get filename without extension
-            $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+        //    $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
 
             //get file extension
             $extension = $image->getClientOriginalExtension();
 
             //filename to store
-            $filenametostore = $filename . '_' . uniqid() . '.' . $extension;
+            $filenametostore = Str::random(40). '_' . uniqid() . '.' . $extension;
 
             //Upload File to external server
             Storage::disk('ftp')->put($filenametostore, fopen($image, 'r+'));

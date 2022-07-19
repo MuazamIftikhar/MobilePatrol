@@ -33,24 +33,24 @@ trait FormTrait {
     }
 
     public function showAllGuardForm($form_id,$client_id){
-        $form=FormValue::where('form_id',$form_id)->where('client_id',$client_id)->paginate(10);
+        $form=FormValue::where('form_id',$form_id)->where('client_id',$client_id)->where('status',1)->paginate(10);
         return $form;
     }
 
     public function showFormReportByGuardID($guard_id, $from,$to, $client_id,$form_id){
         $form=FormValue::where('guard_id',$guard_id)->where('client_id',$client_id)->where('form_id',$form_id)
-            ->whereDate('created_at','>=',$from)->whereDate('created_at','<=',$to)->paginate(10);
+            ->whereDate('created_at','>=',$from)->whereDate('created_at','<=',$to)->where('status',1)->paginate(10);
         return $form;
     }
 
     public function getAllGuardForm($form_id,$client_id){
-        $form=FormValue::where('form_id',$form_id)->where('client_id',$client_id)->get();
+        $form=FormValue::where('form_id',$form_id)->where('client_id',$client_id)->where('status',1)->get();
         return $form;
     }
 
     public function getFormReportByGuardID($guard_id, $from,$to, $client_id,$form_id){
         $form=FormValue::where('guard_id',$guard_id)->where('client_id',$client_id)->where('form_id',$form_id)
-            ->whereDate('created_at','>=',$from)->whereDate('created_at','<=',$to)->get();
+            ->whereDate('created_at','>=',$from)->whereDate('created_at','<=',$to)->where('status',1)->get();
         return $form;
     }
 

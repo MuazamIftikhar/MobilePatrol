@@ -249,7 +249,7 @@ Route::middleware(['auth', 'cors'])->group(function () {
         ->name('delete_qr_report');
 
     #------------------------------Dynamic Form ----------------------------------------------------------#
-    Route::get('manager/form/report/delete', [\App\Http\Controllers\FormController::class, 'delete_form_report'])
+    Route::get('manager/report/form/delete/{form_id}', [\App\Http\Controllers\FormController::class, 'delete_form_report'])
         ->name('delete_form_report');
 
 });

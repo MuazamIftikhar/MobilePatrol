@@ -11,7 +11,7 @@ trait IncidentTrait {
     use PhpFunctionsTrait;
 
     public function save_incident_report_trait($guard_id, $client_id, $schedule_id, $admin_id, $nature_of_complaint,
-                    $police_called, $anyone_interested, $property_damaged, $witness,$information){
+                    $police_called, $anyone_interested, $property_damaged, $witness,$information,$date){
 
         $save=new Incident();
         $save->guard_id=$guard_id;
@@ -24,7 +24,7 @@ trait IncidentTrait {
         $save->property_damaged=$property_damaged;
         $save->witness=$witness;
         $save->information=$information;
-        $save->date=$this->convertHtmlDateToDbFormat(Carbon::now(),Carbon::now()->timezone);
+        $save->created_at=$date;
         $save->save();
         return $save;
 
@@ -57,8 +57,8 @@ trait IncidentTrait {
         $admin_id = $this->getAdminID(Auth::user()->id);
         $incident = Incident::whereHas('admin',function ($query) use ($admin_id){
             $query->where('id',$admin_id);
-        })->with(array('admin'))->where('guard_id',$guard_id)->whereBetween('date', [$from, $to])
-            ->where('client_id',$client_id)->where('status',1)->paginate(10);
+        })->with(array('admin'))->where('guard_id',$guard_id)->where('client_id',$client_id)
+            ->whereDate('created_at','>=',$from)->whereDate('created_at','<=',$to)->where('status',1)->paginate(10);
         return $incident;
     }
 
@@ -82,15 +82,16 @@ trait IncidentTrait {
         $admin_id = $this->getAdminID(Auth::user()->id);
         $incident = Incident::whereHas('admin',function ($query) use ($admin_id){
             $query->where('id',$admin_id);
-        })->with(array('admin','incident_report_images'))->where('guard_id',$guard_id)->whereBetween('date', [$from, $to])
-            ->where('client_id',$client_id)->where('status',1)->get();
+        })->with(array('admin','incident_report_images'))->where('guard_id',$guard_id)->where('client_id',$client_id)
+            ->whereDate('created_at','>=',$from)->whereDate('created_at','<=',$to)->where('status',1)->get();
         return $incident;
     }
 
     public function update_incident($incident_id,$police_called,$anyone_arrested,$property_damaged,
-        $witness,$nature_of_complaint,$information){
+        $witness,$nature_of_complaint,$information,$date){
         $incident=Incident::where('id',$incident_id)->update(['police_called'=>$police_called,'anyone_interested'=>$anyone_arrested,
-            'property_damaged'=>$property_damaged,'witness'=>$witness,'nature_of_complaint'=>$nature_of_complaint,'information'=>$information]);
+            'property_damaged'=>$property_damaged,'witness'=>$witness,'nature_of_complaint'=>$nature_of_complaint,'information'=>$information,
+            'created_at'=>$date]);
         return $incident;
     }
 

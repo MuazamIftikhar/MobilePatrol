@@ -150,7 +150,6 @@ class ReportController extends Controller
         } else {
             $form = $this->showAllGuardForm($request->form_id,$request->client_id);
         }
-        dd($form);
         $guard = $this->getAdminGuard();
         return view('manager.report.clients.forms', ['form_input' => $form_input, 'form' => $form, 'guard' => $guard])
             ->with('title', 'Manage Reports');

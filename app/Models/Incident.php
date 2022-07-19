@@ -2,15 +2,22 @@
 
 namespace App\Models;
 
+use App\Http\Traits\PhpFunctionsTrait;
+use App\Http\Traits\ScheduleTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Incident extends Model
 {
-    use HasFactory;
+    use HasFactory,PhpFunctionsTrait,ScheduleTrait;
+    public $appends = ['local_date'];
 
-    public function incident_report_images(){
-        return $this->hasMany(IncidentImages::class);
+    public function getLocalDateAttribute(){
+        if($this->created_at != null) {
+            return $this->convertDateTimeToDbFormat($this->convertWithRespectToTimeZone($this->created_at, $this->admin_id));
+        }else{
+            return NULL;
+        }
     }
 
     public function guards(){
@@ -27,5 +34,8 @@ class Incident extends Model
 
     public function schedule(){
         return $this->belongsTo(Schedule::class);
+    }
+    public function incident_report_images(){
+        return $this->hasMany(IncidentImages::class);
     }
 }

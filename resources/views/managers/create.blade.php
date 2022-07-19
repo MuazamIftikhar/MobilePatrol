@@ -86,6 +86,17 @@
                                             @enderror
                                         </div>
                                         <div class="form-group">
+                                            <label>Manager Phone</label>
+                                            <input type="tel" name="manager_phone" required
+                                                   class="telephone form-control @error('manager_phone') is-invalid @enderror"
+                                                   value="{{old('manager_phone')}}">
+                                            @error('manager_phone')
+                                            <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                            @enderror
+                                        </div>
+                                        <div class="form-group">
                                             <label>Demo account valid till</label>
                                             <input type="date" name="account_valid_till" required
                                                    class="form-control @error('account_valid_till') is-invalid @enderror"
@@ -125,5 +136,6 @@
         <!--end::Entry-->
     </div>
 @endsection
-
+@section('script')
+@endsection
 

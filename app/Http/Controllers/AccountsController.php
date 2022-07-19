@@ -7,7 +7,6 @@ use App\Http\Traits\CompanySettingTrait;
 use App\Http\Traits\ResponseTrait;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class AccountsController extends Controller
 {
@@ -18,7 +17,6 @@ class AccountsController extends Controller
     }
 
     public function save_manager_account(Request $request){
-        //dd($request->email);
         $this->validate($request, [
             'name' => ['required', 'string', 'max:255'],
             'email' => 'required|string|email|max:255',
@@ -29,8 +27,7 @@ class AccountsController extends Controller
             if($this->check_email_duplication_for_save_in_user_table($request->email)){
                 $user = $this->create_account_in_user($request->name,$request->email,$request->password);
                 $this->attach_role_to_user($user,2);
-                $admin = $this->save_as_admin($user->id,$request->name,$request->email);
-                //$this->addDemoCompanyDetails($admin->id);
+                $admin = $this->save_as_admin($user->id,$request->name,$request->email,$request->phone);
                 return $this->returnWebResponse('Manager created successfully', 'success');
             }else {
                 return $this->returnWebResponse('Someone with this email already present', 'warning');

@@ -53,11 +53,12 @@ trait AccountsTrait {
         return $status;
     }
 
-    public function save_as_admin($user_id,$name,$email){
+    public function save_as_admin($user_id,$name,$email,$phone){
         $save = new Admin();
         $save->user_id = $user_id;
         $save->name = $name;
         $save->email = $email;
+        $save->phone = $phone;
         $save->save();
         return $save;
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Traits;
 
 use App\Models\Admin;
+use App\Models\Client;
 use App\Models\CompanySetting;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -98,6 +99,8 @@ trait CompanySettingTrait {
         $getRoleName = $user->roles()->first()->name;
         if($getRoleName == 'manager'){
             return Admin::where('user_id',$user_id)->first()->id;
+        }elseif($getRoleName == 'client'){
+            return Client::where('user_id',$user_id)->first()->admin_id;
         }
     }
 
