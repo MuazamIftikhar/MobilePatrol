@@ -85,19 +85,6 @@
                                             <div class="row">
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
-                                                        <label>Date</label>
-                                                        <input type="text" name="date" required
-                                                               class="form-control  @error('date') is-invalid @enderror"
-                                                               value="{{old('date')}}" id="kt_datepicker_4_3">
-                                                        @error('date')
-                                                        <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                        @enderror
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
                                                         <label>Client</label>
                                                         <select class="form-control" name="client_id" required>
                                                            @foreach($client as $c)

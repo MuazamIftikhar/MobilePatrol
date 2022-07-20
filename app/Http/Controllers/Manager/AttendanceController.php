@@ -12,7 +12,6 @@ use App\Models\Client;
 use App\Models\Guard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 
 class AttendanceController extends Controller
 {
@@ -49,20 +48,20 @@ class AttendanceController extends Controller
     public function attendance(Request $request)
     {
         $user_id = $request->id;
-        $time_zone = Session::get('timezone');
         $admin_id = $this->getAdminID(Auth::user()->id);
+        $timezone = $this->getAdminCompanyDetails($admin_id)->company_time_zone;
         $client = Client::where('id',$admin_id)->get();
-        return view('manager.guard.attendance.create', ['user_id' => $user_id, 'timezone' => $time_zone,'client'=>$client])->with('title', 'Create Attendance');
+        return view('manager.guard.attendance.create', ['user_id' => $user_id, 'timezone' => $timezone,'client'=>$client])->with('title', 'Create Attendance');
     }
 
 
     public function edit_timing(Request $request)
     {
         $attendance = Attendance::where('id', $request->id)->get();
-        $time_zone = Session::get('timezone');
         $admin_id = $this->getAdminID(Auth::user()->id);
+        $timezone = $this->getAdminCompanyDetails($admin_id)->company_time_zone;
         $client = Client::where('id',$admin_id)->get();
-        return view('manager.guard.attendance.edit', ['attendance' => $attendance, 'timezone' => $time_zone,'client'=>$client])->with('title', 'Edit Attendance');
+        return view('manager.guard.attendance.edit', ['attendance' => $attendance, 'timezone' => $timezone,'client'=>$client])->with('title', 'Edit Attendance');
     }
 
     public function save_guard_attendance(Request $request)

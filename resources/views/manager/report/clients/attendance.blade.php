@@ -97,7 +97,6 @@
                                             <th>Guard Email</th>
                                             <th>Time In</th>
                                             <th>Time Out</th>
-                                            <th>Date</th>
                                             <th>Action</th>
                                         </tr>
                                         </thead>
@@ -108,7 +107,6 @@
                                                 <td>{{$g->guards->guard_email}}</td>
                                                 <td>{{$g->local_time_in}}</td>
                                                 <td>{{$g->local_time_out}}</td>
-                                                <td>{{$g->date}}</td>
                                                 <td>
                                                     <a href="{{route('edit_timing',['id' => $g->id,'hash' => md5($g->id)])}}" class="btn btn-warning btn-sm"><i class="fa fa-edit fa-1x"></i></a>
                                                     <a href="{{route('delete_timing',['id' => $g->id,'hash' => md5($g->id)])}}" class="btn btn-danger btn-sm"><i class="fa fa-trash fa-1x"></i></a>
