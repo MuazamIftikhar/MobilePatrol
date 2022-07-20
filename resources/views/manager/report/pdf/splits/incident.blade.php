@@ -10,8 +10,8 @@
                 <p style="font-size: 10px"><b>Location</b>: {{$i->client->client_address}}</p>
                 <p style="font-size: 10px"><b>Client</b>: {{$i->client->client_name}}</p>
                 <p style="font-size: 10px"><b>Guard</b>: {{$i->guards->guard_name}}</p>
-                <p style="font-size: 10px"><b>Time</b>: {{\Carbon\Carbon::parse($i->created_at)->format('h:i a')}}</p>
-                <p style="font-size: 10px"><b>Date</b>: {{$i->date}}</p>
+                <p style="font-size: 10px"><b>Time</b>: {{$i->local_time}}</p>
+                <p style="font-size: 10px"><b>Date</b>: {{$i->local_date}}</p>
             </td>
             <td style="width: 40%">
                 <p style="font-size: 10px;text-decoration: underline"><b>Nature of complaint:</b></p>

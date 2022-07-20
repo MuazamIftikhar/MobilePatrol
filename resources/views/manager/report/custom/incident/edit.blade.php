@@ -164,7 +164,7 @@
                                                     <div class="form-group">
                                                         <label>Date</label>
                                                         <input type="datetime-local"  class="form-control"
-                                                               name="date" value="{{$incident->local_date}}">
+                                                               name="date" value="{{$incident->local_date_time}}">
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-4">

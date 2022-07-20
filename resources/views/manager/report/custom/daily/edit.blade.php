@@ -28,7 +28,7 @@
                                 !</strong> {{session('message')['result']}}</span>
                     </div>
                 @endif
-                <form method="post" action="{{route('edit_daily_report',['daily_report_id'=>$daily_report->id])}}"
+                <form method="post" action="{{route('edit_daily_report',['daily_report_id'=>$daily_report->id,'timezone'=>$timezone])}}"
                       enctype="multipart/form-data">
                     @csrf
                     <!--begin::Row-->
@@ -87,15 +87,27 @@
                                                         <label>Images</label>
                                                         <input type="file"  class="form-control" name="photos[]">
                                                         <br>
-                                                        @foreach($daily_report->daily_report_images as $i)
-                                                            <a href="{{$i->images}}"><img src="{{$i->images}}" width="100px"></a> &nbsp; &nbsp;
-                                                        @endforeach
                                                         @error('photos')
                                                         <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
                                                         @enderror
                                                     </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label>Date</label>
+                                                        <input type="datetime-local"  class="form-control"
+                                                               name="date" value="{{$daily_report->local_date_time}}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    @foreach($daily_report->daily_report_images as $i)
+                                                        <a href="{{$i->images}}"><img src="{{$i->images}}" width="100px"></a> &nbsp; &nbsp;
+                                                    @endforeach
                                                 </div>
                                             </div>
 

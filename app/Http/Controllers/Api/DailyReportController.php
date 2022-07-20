@@ -17,7 +17,7 @@ class DailyReportController extends Controller
     public function save_daily_report(Request $request){
         try{
         $guard=$this->get_guard_table_row($request->user()->id);
-        $report = $this->save_daily_report_trait($guard->id,$request->client_id,$request->schedule_id,$guard->admin_id,$request->description);
+        $report = $this->save_daily_report_trait($guard->id,$request->client_id,$request->schedule_id,$guard->admin_id,$request->description,$request->date);
         if($request->hasFile('photos')){
             foreach ($request->photos as $photo){
                 $image = $this->uploadImage($photo);

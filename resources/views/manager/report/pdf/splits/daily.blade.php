@@ -11,7 +11,8 @@
                 <p style="font-size: 10px"><b>Location</b>: {{$d->client->client_address}}</p>
                 <p style="font-size: 10px"><b>Client</b>: {{$d->client->client_name}}</p>
                 <p style="font-size: 10px"><b>Guard</b>: {{$d->guards->guard_name}}</p>
-                <p style="font-size: 10px"><b>Date</b>: {{$d->date}}</p>
+                <p style="font-size: 10px"><b>Time</b>: {{$d->local_time}}</p>
+                <p style="font-size: 10px"><b>Date</b>: {{$d->local_date}}</p>
             </td>
             <td style="width: 40%">
                 <p style="font-size: 10px;text-decoration: underline"><b>Information:</b></p>

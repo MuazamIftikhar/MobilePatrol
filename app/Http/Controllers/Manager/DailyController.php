@@ -3,41 +3,47 @@
 namespace App\Http\Controllers\Manager;
 
 use App\Http\Controllers\Controller;
+use App\Http\Traits\CompanySettingTrait;
 use App\Http\Traits\DailyReportTrait;
 use App\Http\Traits\ImageUplaodTrait;
 use App\Http\Traits\ResponseTrait;
 use App\Http\Traits\ScheduleTrait;
 use App\Models\DailyReport;
-use App\Models\Incident;
-use App\Models\Schedule;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DailyController extends Controller
 {
-    use ScheduleTrait, DailyReportTrait, ResponseTrait, ImageUplaodTrait;
+    use ScheduleTrait, DailyReportTrait, ResponseTrait, ImageUplaodTrait, CompanySettingTrait;
 
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      */
     public function create_daily_report(Request $request)
     {
         $schedule = $this->getFirstSchedule($request->schedule_id);
-        return view('manager.report.custom.daily.create', ['schedule' => $schedule])->with('title', 'Create Daily Report');
+        $admin_id = $this->getAdminID(Auth::user()->id);
+        $timezone = $this->getAdminCompanyDetails($admin_id)->company_time_zone;
+        return view('manager.report.custom.daily.create', ['schedule' => $schedule, 'timezone' => $timezone])->with('title', 'Create Daily Report');
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function save_daily_report(Request $request)
     {
         try {
             $schedule = $this->getFirstSchedule($request->schedule_id);
+            $date = $this->convertHtmlDateTimeToDbFormat($request->date, $request->timezone);
             $report = $this->save_daily_report_trait($schedule->guard_id, $schedule->client_id, $schedule->id,
-                $schedule->admin_id, $request->description);
+                $schedule->admin_id, $request->description, $date);
             if ($request->hasFile('photos')) {
                 foreach ($request->photos as $photo) {
                     $image = $this->uploadImage($photo);
@@ -54,13 +60,16 @@ class DailyController extends Controller
     public function update_daily_report(Request $request)
     {
         $daily_report = DailyReport::where('id', $request->daily_report_id)->first();
-        return view('manager.report.custom.daily.edit', ['daily_report' => $daily_report])->with('title', 'Edit Daily Report');
+        $admin_id = $this->getAdminID(Auth::user()->id);
+        $timezone = $this->getAdminCompanyDetails($admin_id)->company_time_zone;
+        return view('manager.report.custom.daily.edit', ['daily_report' => $daily_report, 'timezone' => $timezone])->with('title', 'Edit Daily Report');
     }
 
     public function edit_daily_report(Request $request)
     {
         try {
-            DailyReport::where('id', $request->daily_report_id)->update(['description' => $request->description]);
+            $date = $this->convertHtmlDateTimeToDbFormat($request->date, $request->timezone);
+            DailyReport::where('id', $request->daily_report_id)->update(['description' => $request->description,'created_at'=>$date]);
             if ($request->hasFile('photos')) {
                 foreach ($request->photos as $photo) {
                     $image = $this->uploadImage($photo);
@@ -79,22 +88,5 @@ class DailyController extends Controller
     {
         DailyReport::where('id', $request->daily_report_id)->update(['status' => '0']);
         return back();
-    }
-
-
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

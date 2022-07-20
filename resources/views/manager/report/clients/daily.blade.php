@@ -102,7 +102,6 @@
                                         <tr>
                                             <th>Guard Name</th>
                                             <th>Description</th>
-                                            <th>Date</th>
                                             <th>Action</th>
                                         </tr>
                                         </thead>
@@ -111,7 +110,6 @@
                                             <tr>
                                                 <td>{{$s->guards->guard_name}}</td>
                                                 <td>{{$s->description}}</td>
-                                                <td>{{$s->date}}</td>
                                                 <td>
                                                     <a href="{{route('update_daily_report',['daily_report_id' => $s->id,'hash' => md5($s->id),'type'=> 'client'])}}"
                                                        class="btn btn-warning btn-sm"><i class="fa fa-edit fa-1x"></i></a>

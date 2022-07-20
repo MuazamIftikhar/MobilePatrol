@@ -44,7 +44,7 @@
                                         </div>
                                         <div class="card-body p-5">
                                             <div class="row">
-                                                <div class="col-lg-6">
+                                                <div class="col-lg-4">
                                                     <div class="form-group">
                                                         <label>Client</label>
                                                         <input type="text" readonly="readonly" class="form-control"
@@ -56,7 +56,7 @@
                                                         @enderror
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-6">
+                                                <div class="col-lg-4">
                                                     <div class="form-group">
                                                         <label>Guard</label>
                                                         <input type="text" readonly="readonly" class="form-control"
@@ -68,20 +68,27 @@
                                                         @enderror
                                                     </div>
                                                 </div>
+                                                <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label>Schedule </label>
+                                                    <input type="text" readonly="readonly" class="form-control"
+                                                           value="{{$schedule->local_from_date_time}} | {{$schedule->local_to_date_time}}">
+                                                    @error('date')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                    @enderror
+                                                </div>
+                                            </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
-                                                        <label>Schedule </label>
-                                                        <input type="text" readonly="readonly" class="form-control"
-                                                               value="{{$schedule->local_from_date_time}} | {{$schedule->local_to_date_time}}">
-                                                        @error('date')
-                                                        <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                        @enderror
+                                                        <label>Date</label>
+                                                        <input type="datetime-local"  class="form-control" name="date">
                                                     </div>
                                                 </div>
+
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
                                                         <label>Images</label>

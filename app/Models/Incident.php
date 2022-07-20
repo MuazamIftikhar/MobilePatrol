@@ -10,11 +10,27 @@ use Illuminate\Database\Eloquent\Model;
 class Incident extends Model
 {
     use HasFactory,PhpFunctionsTrait,ScheduleTrait;
-    public $appends = ['local_date'];
+    public $appends = ['local_date_time','local_date','local_time'];
+
+    public function getLocalDateTimeAttribute(){
+        if($this->created_at != null) {
+            return $this->convertDateTimeToDbFormat($this->convertWithRespectToTimeZone($this->created_at, $this->admin_id));
+        }else{
+            return NULL;
+        }
+    }
 
     public function getLocalDateAttribute(){
         if($this->created_at != null) {
-            return $this->convertDateTimeToDbFormat($this->convertWithRespectToTimeZone($this->created_at, $this->admin_id));
+            return $this->convertDateToDbFormat($this->convertWithRespectToTimeZone($this->created_at, $this->admin_id));
+        }else{
+            return NULL;
+        }
+    }
+
+    public function getLocalTimeAttribute(){
+        if($this->created_at != null) {
+            return $this->convertTimeToDbFormat($this->convertWithRespectToTimeZone($this->created_at, $this->admin_id));
         }else{
             return NULL;
         }

@@ -309,7 +309,7 @@ class ReportController extends Controller
             'company_setting' => $company_setting
         ];
         $pdf = PDF::loadView('manager.report.pdf.incident', $data);
-        return $pdf->download(Carbon::now()->toFormattedDateString() . '-IncidentReport.pdf');
+        return $pdf->download(Carbon::now()->toFormattedDateString().'-IncidentReport.pdf');
     }
 
     public function generate_client_incident_report_pdf(Request $request)
