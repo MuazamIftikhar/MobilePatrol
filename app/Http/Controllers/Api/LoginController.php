@@ -43,8 +43,8 @@ class LoginController extends Controller
             $today = Carbon::now()->format('Y-m-d h:m:s');
             $guard = $this->get_guard_table_row($request->user()->id);
             $attendance = Attendance::select('*', DB::raw("HOUR(SEC_TO_TIME(sum(TIME_TO_SEC(TIMEDIFF(time_out,time_in)))) ) as 'total'"))
-                ->where('guard_id', $guard->id)->where('status', 1)->get();
-            $hours = $attendance->first->total;
+                ->where('guard_id', 1)->where('status', 1)->get();
+            $hours = $attendance->first()->total;
             $schedul = Schedule::where('guard_id', $guard->id)->get();
             $total_schedule = count($schedul);
             $total_time_in = count($attendance);
