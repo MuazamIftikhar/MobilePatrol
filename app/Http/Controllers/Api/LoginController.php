@@ -48,7 +48,8 @@ class LoginController extends Controller
             $schedul = Schedule::where('guard_id', $guard->id)->get();
             $total_schedule = count($schedul);
             $total_time_in = count($attendance);
-            $next_schedule = Schedule::where('guard_id', 1)->where('from_date_time', '>=', $today)->first();
+            $next_schedule = Schedule::where('guard_id', 1)->where('from_date_time', '>=', $today)
+                ->with(array('client'))->first();
             return $this->returnApiResponse(200, 'success', array('hours' => $hours, 'total_schedule' => $total_schedule, 'total_tim_in' => $total_time_in,
                 'next_schedule' => $next_schedule));
         } catch (\Exception $e) {

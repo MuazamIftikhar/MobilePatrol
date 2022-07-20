@@ -41,7 +41,6 @@ class Schedule extends Model
     public function admin(){
         return $this->belongsTo(Admin::class);
     }
-    //Carbon::parse($request->ShootDateTime)->timezone('America/Los_Angeles');
 
     public function getLocalFromDateTimeAttribute(){
         return $this->convertDateTimeToDbFormat($this->convertWithRespectToTimeZone($this->from_date_time,$this->admin_id));
