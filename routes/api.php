@@ -26,7 +26,8 @@ Route::get('/test', function () {
 
 Route::post('/login', [App\Http\Controllers\Api\LoginController::class, 'index'])->name('login');
 
-
+Route::post('sos',[\App\Http\Controllers\Api\LoginController::class,'sos'])
+    ->name('sos');
 Route::middleware(['auth:api','cors'])->group(function () {
     Route::post('/check_token',[\App\Http\Controllers\Api\LoginController::class,'check_token'])
         ->name('check_token');
@@ -91,6 +92,8 @@ Route::middleware(['auth:api','cors'])->group(function () {
 
     Route::post('save_yard_report',[\App\Http\Controllers\Api\YardController::class,'save_yard_report'])
         ->name('save_yard_report');
+
+
 
 });
 

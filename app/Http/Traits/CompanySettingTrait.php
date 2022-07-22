@@ -5,6 +5,7 @@ namespace App\Http\Traits;
 use App\Models\Admin;
 use App\Models\Client;
 use App\Models\CompanySetting;
+use App\Models\Guard;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -101,6 +102,8 @@ trait CompanySettingTrait {
             return Admin::where('user_id',$user_id)->first()->id;
         }elseif($getRoleName == 'client'){
             return Client::where('user_id',$user_id)->first()->admin_id;
+        }elseif($getRoleName == 'guard'){
+            return Guard::where('user_id',$user_id)->first()->admin_id;
         }
     }
 

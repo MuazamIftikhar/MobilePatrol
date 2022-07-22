@@ -10,6 +10,7 @@ use App\Http\Traits\ScheduleTrait;
 use App\Http\Traits\VisitorTrait;
 use App\Models\Visitor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class VisitorController extends Controller
 {
@@ -25,7 +26,7 @@ class VisitorController extends Controller
     {
         try {
             $schedule = $this->getFirstSchedule($request->schedule_id);
-            $admin_info =$this->getAdminCompanyDetails($schedule->admin_id);
+            $admin_info =$this->getCompanyDetails(Auth::user()->id);
             $report = $this->save_visitor_report_trait($schedule->guard_id, $schedule->client_id, $schedule->id, $schedule->admin_id,
                 $request->visitor_name, $request->purpose, $request->company, $request->time_in, $request->time_out,$admin_info->company_time_zone);
             if ($request->hasFile('photos')) {

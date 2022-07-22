@@ -11,7 +11,7 @@ trait AttendanceTrait{
 
     use PhpFunctionsTrait,CompanySettingTrait;
 
-    public function create_guard_attendance($guard_id,$client_id,$schedule_id,$admin_id,$time_in,$time_out,$date,$timezone){
+    public function create_guard_attendance($guard_id,$client_id,$schedule_id,$admin_id,$time_in,$time_out,$timezone){
         $attendance=new Attendance();
         $attendance->guard_id=$guard_id;
         $attendance->client_id=$client_id;
@@ -19,22 +19,22 @@ trait AttendanceTrait{
         $attendance->admin_id=$admin_id;
         $attendance->time_in=$this->convertHtmlDateTimeToDbFormat($time_in,$timezone);
         $attendance->time_out=$this->convertHtmlDateTimeToDbFormat($time_out,$timezone);
-        $attendance->date=$this->convertDateToDbFormat($date);
+        $attendance->date= $this->convertDateToDbFormat($time_in);
         $attendance->save();
         return back();
     }
-    public function update_guard_attendance($id,$client_id, $time_in, $time_out, $date, $timezone){
+    public function update_guard_attendance($id,$client_id, $time_in, $time_out, $timezone){
         Attendance::where('id',$id)->update([
             "client_id"=>$client_id,
             "time_in"=>$this->convertHtmlDateTimeToDbFormat($time_in,$timezone),
             "time_out"=>$this->convertHtmlDateTimeToDbFormat($time_out,$timezone),
-            "date"=>$this->convertDateToDbFormat($date),
+            "date"=>$this->convertDateToDbFormat($time_in),
         ]);
         return back();
     }
-    public function calculateTimeAttendance($user_id,$date){
+    public function calculateTimeAttendance($guard_id,$date){
         $attendance=Attendance::select('*', DB::raw("SEC_TO_TIME(sum(TIME_TO_SEC(TIMEDIFF(time_out,time_in) )) ) as 'total'"))
-            ->where('guard_id',$user_id)->where('date',$date)->where('status',1)->first();
+            ->where('guard_id',$guard_id)->where('date',$date)->where('status',1)->first();
         return $attendance->total;
     }
 

@@ -28,7 +28,7 @@
                                 !</strong> {{session('message')['result']}}</span>
                     </div>
                 @endif
-                <form method="post" action="{{route('edit_qr_report',['checkpoint_hitory_id'=>$checkpoint_history->id,'hash'=>md5($checkpoint_history->id)])}}"
+                <form method="post" action="{{route('edit_qr_report',['checkpoint_hitory_id'=>$checkpoint_history->id,'hash'=>md5($checkpoint_history->id),'timezone'=>$timezone])}}"
                       enctype="multipart/form-data">
                     @csrf
                     <!--begin::Row-->
@@ -115,12 +115,8 @@
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
                                                         <label>Date</label>
-                                                        <input type="date" name="date" class="form-control" value="{{$checkpoint_history->date}}">
-                                                        @error('photos')
-                                                        <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                        @enderror
+                                                        <input type="datetime-local"  class="form-control"
+                                                                name="date" value="{{$checkpoint_history->local_date_time}}">
                                                     </div>
                                                 </div>
                                             </div>

@@ -9,10 +9,6 @@
                 <div class="d-flex align-items-center flex-wrap mr-2">
                     <!--begin::Page Title-->
                     <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">{{$title}}</h5>
-                    <!--end::Page Title-->
-                    <!--begin::Actions-->
-
-                    <!--end::Actions-->
                 </div>
                 <!--end::Info-->
                 <!--begin::Toolbar-->
@@ -64,7 +60,7 @@
                                                 <td>{{$a->date}}</td>
                                                 <td>{{$a->local_time}}</td>
                                                 <td>
-                                                    <a href="{{route('view_timing',['id' => $a->guard_id,'hash' => md5($a->guard_id),'date' => $a->date])}}" class="btn btn-warning btn-sm"><i class="fa fa-edit fa-1x"></i></a>
+                                                    <a href="{{route('view_timing',['id' => $a->guard_id,'hash' => md5($a->guard_id),'date' => $a->date])}}" class="btn btn-warning btn-sm"><i class="fa fa-eye fa-1x"></i></a>
                                                 </td>
 
                                             </tr>

@@ -25,8 +25,7 @@ class IncidentController extends Controller
     public function create_incident_report(Request $request)
     {
         $schedule=$this->getFirstSchedule($request->schedule_id);
-        $admin_id = $this->getAdminID(Auth::user()->id);
-        $timezone = $this->getAdminCompanyDetails($admin_id)->company_time_zone;
+        $timezone = $this->getCompanyDetails(Auth::user()->id)->company_time_zone;
         return view('manager.report.custom.incident.create',['schedule'=>$schedule,'timezone'=>$timezone])->with('title','Create Incident Report');
     }
 
@@ -52,8 +51,7 @@ class IncidentController extends Controller
 
     public function update_incident_report(Request $request){
         $incident = Incident::where('id',$request->incident_id)->with(array('admin','incident_report_images'))->first();
-        $admin_id = $this->getAdminID(Auth::user()->id);
-        $timezone = $this->getAdminCompanyDetails($admin_id)->company_time_zone;
+        $timezone = $this->getCompanyDetails(Auth::user()->id)->company_time_zone;
         return view('manager.report.custom.incident.edit',['incident'=>$incident,'timezone'=>$timezone])->with('title','Edit Incident Report');
     }
 

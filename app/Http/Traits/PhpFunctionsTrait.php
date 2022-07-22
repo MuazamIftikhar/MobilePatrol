@@ -27,18 +27,19 @@ trait PhpFunctionsTrait {
     public function convertHtmlDateTimeToDbFormat($datetime,$timezone){
         return Carbon::parse($datetime, $timezone)->setTimezone('UTC')->format('Y-m-d H:i');
     }
-    public function convertHtmlDateToDbFormat($datetime,$timezone){
-        return Carbon::parse($datetime, $timezone)->setTimezone('UTC')->format('Y-m-d');
-    }
+
     public function convertDateTimeToDbFormat($datetime){
         return Carbon::parse($datetime)->format('Y-m-d H:i');
     }
+
     public function convertDateToDbFormat($date){
         return Carbon::parse($date)->format('Y-m-d');
     }
+
     public function convertTimeToDbFormat($date){
         return Carbon::parse($date)->format('H:i');
     }
+
     public function convertDateTimeToDbFormatPlus1($datetime){
         return Carbon::parse($datetime)->addMinute(1)->format('Y-m-d H:i');
     }
@@ -47,6 +48,7 @@ trait PhpFunctionsTrait {
         $title  = Carbon::parse($from_time)->format('H:i')." - ".Carbon::parse($to_time)->format('H:i');
         return $status == 0 ? $title." (Deleted)" :$title;
     }
+
     public function convertAndParseToISOString($date){
         $dateC = Carbon::parse($date)->toDateString();
         $time = Carbon::parse($date)->format('H:i');
@@ -56,8 +58,6 @@ trait PhpFunctionsTrait {
     public function convertDateTimeToReadableDayTimeFormat($datetime){
         $readableDay =  Carbon::parse($datetime)->toFormattedDateString();
         $readabletime =  Carbon::parse($datetime)->format('H:i');
-
         return $readableDay." ".$readabletime;
     }
-
 }

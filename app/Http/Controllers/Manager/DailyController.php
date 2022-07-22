@@ -27,8 +27,7 @@ class DailyController extends Controller
     public function create_daily_report(Request $request)
     {
         $schedule = $this->getFirstSchedule($request->schedule_id);
-        $admin_id = $this->getAdminID(Auth::user()->id);
-        $timezone = $this->getAdminCompanyDetails($admin_id)->company_time_zone;
+        $timezone = $this->getCompanyDetails(Auth::user()->id)->company_time_zone;
         return view('manager.report.custom.daily.create', ['schedule' => $schedule, 'timezone' => $timezone])->with('title', 'Create Daily Report');
     }
 
@@ -60,8 +59,7 @@ class DailyController extends Controller
     public function update_daily_report(Request $request)
     {
         $daily_report = DailyReport::where('id', $request->daily_report_id)->first();
-        $admin_id = $this->getAdminID(Auth::user()->id);
-        $timezone = $this->getAdminCompanyDetails($admin_id)->company_time_zone;
+        $timezone = $this->getCompanyDetails(Auth::user()->id)->company_time_zone;
         return view('manager.report.custom.daily.edit', ['daily_report' => $daily_report, 'timezone' => $timezone])->with('title', 'Edit Daily Report');
     }
 

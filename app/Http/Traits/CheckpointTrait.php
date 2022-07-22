@@ -29,10 +29,8 @@ trait CheckpointTrait {
         $save->schedule_id = $schedule_id;
         $save->checkpoint_id = $checkpoint_id;
         $save->type = $type;
-        if ($date == ""){
-            $save->date=$this->convertDateToDbFormat(Carbon::now());
-        }else{
-            $save->date=$this->convertDateToDbFormat($date);
+        if ($date != ""){
+            $save->created_at=$date;
         }
         $save->save();
         return $save;
@@ -42,7 +40,7 @@ trait CheckpointTrait {
         $update = CheckpointHistory::where('id',$checkpoint_history_id)->update([
             'checkpoint_id' =>$checkpoint_id,
             'type' =>$type,
-            'date' => $date,
+            'created_at' => $date,
         ]);
         return $update;
     }

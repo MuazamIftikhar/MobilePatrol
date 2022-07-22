@@ -86,8 +86,8 @@ trait ScheduleTrait {
         }
     }
 
-    public function convertWithRespectToTimeZone($date_time,$id){
-        $company_details = $this->getAdminCompanyDetails($id);
+    public function convertWithRespectToTimeZone($date_time,$admin_id){
+        $company_details = $this->getAdminCompanyDetails($admin_id);
         $datetime = Carbon::createFromFormat('Y-m-d H:i:s', $date_time,'UTC');
         $datetime->setTimezone($company_details->company_time_zone);
         return $datetime;

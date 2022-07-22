@@ -61,7 +61,9 @@ class CheckpointController extends Controller
     {
         try {
             $schedule = $this->getFirstSchedule($request->schedule_id);
-            $this->save_check_point_history($schedule->admin_id, $schedule->client_id, $schedule->id, $schedule->guard_id,$request->checkpoint_id,$request->type,$request->date);
+            $timezone = $this->getCompanyDetails(Auth::user()->id)->company_time_zone;
+            $date = $this->convertHtmlDateTimeToDbFormat($request->date, $timezone);
+            $this->save_check_point_history($schedule->admin_id, $schedule->client_id, $schedule->id, $schedule->guard_id,$request->checkpoint_id,$request->type,$date);
             return $this->returnWebResponse('Report created successfully', 'success');
         } catch (\Exception $e) {
             return $this->returnWebResponse($e->getMessage(), 'danger');
@@ -74,7 +76,8 @@ class CheckpointController extends Controller
                 ->with(array('schedule'))->first();
             $admin_id = $this->getAdminID(Auth::user()->id);
             $checkpoint = Checkpoint::where('admin_id', $admin_id)->where('client_id', $checkpoint_history->client_id)->get();
-            return view('manager.report.custom.checkpoint.edit', ['checkpoint_history' => $checkpoint_history,'checkpoint'=>$checkpoint])->with('title', 'Edit QR Report');
+            $timezone = $this->getCompanyDetails(Auth::user()->id)->company_time_zone;
+            return view('manager.report.custom.checkpoint.edit', ['checkpoint_history' => $checkpoint_history,'checkpoint'=>$checkpoint,'timezone'=>$timezone])->with('title', 'Edit QR Report');
         } catch (\Exception $e) {
         return $this->returnWebResponse($e->getMessage(), 'danger');
         }
@@ -82,7 +85,8 @@ class CheckpointController extends Controller
 
     public function edit_qr_report(Request $request){
         try {
-            $this->update_check_point_history($request->checkpoint_history_id,$request->checkpoint_id,$request->type,$request->date);
+            $date = $this->convertHtmlDateTimeToDbFormat($request->date, $request->timezone);
+            $this->update_check_point_history($request->checkpoint_history_id,$request->checkpoint_id,$request->type,$date);
             return $this->returnWebResponse('Report created successfully', 'success');
         } catch (\Exception $e) {
             return $this->returnWebResponse($e->getMessage(), 'danger');

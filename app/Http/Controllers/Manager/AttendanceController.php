@@ -18,7 +18,8 @@ class AttendanceController extends Controller
     //
     use  ResponseTrait, PhpFunctionsTrait, CompanySettingTrait, AttendanceTrait;
 
-    public function index(){
+    public function index()
+    {
         $admin_id = $this->getAdminID(Auth::user()->id);
         $guards = Guard::whereHas('admin', function ($query) use ($admin_id) {
             $query->where('admin_id', $admin_id);
@@ -29,19 +30,20 @@ class AttendanceController extends Controller
     public function view_attendance(Request $request)
     {
         $user_id = $request->id;
-        $attendance = Attendance::where('guard_id', $user_id)->where('status',1)->groupBy('date')->paginate(5);
+        $attendance = Attendance::where('guard_id', $user_id)->where('status', 1)->groupBy('date')->paginate(5);
         return view('manager.guard.attendance.attendance', ['attendance' => $attendance, 'user_id' => $user_id])->with('title', 'Guard Attendance');
     }
 
     public function view_timing(Request $request)
     {
         $user_id = $request->id;
-        $attendance = Attendance::where('guard_id', $user_id)->where('status',1)->where('date', $request->date)->paginate(5);
+        $attendance = Attendance::where('guard_id', $user_id)->where('status', 1)->where('date', $request->date)->paginate(5);
         return view('manager.guard.attendance.timing', ['attendance' => $attendance, 'user_id' => $user_id])->with('title', 'Guard Attendance');
     }
 
-    public function delete_timing(Request $request){
-        Attendance::where('id',$request->id)->update(['status' => 0]);
+    public function delete_timing(Request $request)
+    {
+        Attendance::where('id', $request->id)->update(['status' => 0]);
         return back();
     }
 
@@ -49,9 +51,9 @@ class AttendanceController extends Controller
     {
         $user_id = $request->id;
         $admin_id = $this->getAdminID(Auth::user()->id);
-        $timezone = $this->getAdminCompanyDetails($admin_id)->company_time_zone;
-        $client = Client::where('id',$admin_id)->get();
-        return view('manager.guard.attendance.create', ['user_id' => $user_id, 'timezone' => $timezone,'client'=>$client])->with('title', 'Create Attendance');
+        $timezone = $this->getCompanyDetails(Auth::user()->id)->company_time_zone;
+        $client = Client::where('id', $admin_id)->get();
+        return view('manager.guard.attendance.create', ['user_id' => $user_id, 'timezone' => $timezone, 'client' => $client])->with('title', 'Create Attendance');
     }
 
 
@@ -59,25 +61,27 @@ class AttendanceController extends Controller
     {
         $attendance = Attendance::where('id', $request->id)->get();
         $admin_id = $this->getAdminID(Auth::user()->id);
-        $timezone = $this->getAdminCompanyDetails($admin_id)->company_time_zone;
-        $client = Client::where('id',$admin_id)->get();
-        return view('manager.guard.attendance.edit', ['attendance' => $attendance, 'timezone' => $timezone,'client'=>$client])->with('title', 'Edit Attendance');
+        $timezone = $this->getCompanyDetails(Auth::user()->id)->company_time_zone;
+        $client = Client::where('id', $admin_id)->get();
+        return view('manager.guard.attendance.edit', ['attendance' => $attendance, 'timezone' => $timezone, 'client' => $client])->with('title', 'Edit Attendance');
     }
 
     public function save_guard_attendance(Request $request)
     {
         try {
-            $guard = Guard::where('id',$request->guard_id)->first();
-            $this->create_guard_attendance($request->guard_id,$request->client_id,$request->schedule_id,$guard->admin_id, $request->time_in, $request->time_out, $request->date, $request->timezone);
+            $guard = Guard::where('id', $request->guard_id)->first();
+            $this->create_guard_attendance($request->guard_id, $request->client_id, $request->schedule_id, $guard->admin_id, $request->time_in, $request->time_out, $request->timezone);
             return $this->returnWebResponse('Guard Attendance created successfully', 'success');
         } catch (\Exception $e) {
             return $this->returnWebResponse($e->getMessage(), 'danger');
         }
 
-    } public function edit_guard_attendance(Request $request)
+    }
+
+    public function edit_guard_attendance(Request $request)
     {
         try {
-            $this->update_guard_attendance($request->id,$request->client_id,$request->time_in, $request->time_out, $request->date, $request->timezone);
+            $this->update_guard_attendance($request->id, $request->client_id, $request->time_in, $request->time_out, $request->timezone);
             return $this->returnWebResponse('Guard Attendance edit successfully', 'success');
         } catch (\Exception $e) {
             return $this->returnWebResponse($e->getMessage(), 'danger');

@@ -54,7 +54,6 @@
                                             <th>Guard Email</th>
                                             <th>CheckPoint Name</th>
                                             <th>Type</th>
-                                            <th>Date</th>
                                             <th>Action</th>
                                         </tr>
                                         </thead>
@@ -65,7 +64,6 @@
                                                 <td>{{$c->guards->guard_email}}</td>
                                                 <td>{{$c->checkpoint->checkpoint_name}}</td>
                                                 <td>{{$c->type}}</td>
-                                                <td>{{$c->date}}</td>
                                                 <td>
                                                     <a href="{{route('update_qr_report',['checkpoint_hitory_id' => $c->id,'hash' => md5($c->id),'type'=>'schedule'])}}"
                                                        class="btn btn-warning btn-sm"><i class="fa fa-edit fa-1x"></i></a>

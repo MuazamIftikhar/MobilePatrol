@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Traits\AccountsTrait;
+use App\Http\Traits\CompanySettingTrait;
 use App\Http\Traits\GuardTrait;
 use App\Http\Traits\ResponseTrait;
 use App\Models\Attendance;
@@ -11,11 +12,13 @@ use App\Models\Form;
 use App\Models\Schedule;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Twilio\Rest\Client;
 
 class LoginController extends Controller
 {
-    use ResponseTrait, AccountsTrait;
+    use ResponseTrait, AccountsTrait, CompanySettingTrait;
 
     public function index(Request $request)
     {
@@ -55,6 +58,18 @@ class LoginController extends Controller
         } catch (\Exception $e) {
             return $this->returnApiResponse(401, 'danger', array('error' => $e->getMessage()));
         }
+    }
 
+    public function sos(Request $request){
+        $sid = "ACde8d20059d3698903fa6ba4f4bae5302";
+        $token = "971691d53b01a7f7b5835be32706a687";
+        $twilio = new Client($sid, $token);
+        $user_id=$request->user()->id;
+        $company_phone=$this->getCompanyDetails($user_id)->company_phone_number_for_sms;
+        $guard_name=$request->user()->name;
+        $string = "$guard_name has an emergency.";
+        $message = $twilio->messages->create("$company_phone",
+                ["body" => $string, "from" => "+15874053478"]
+            );
     }
 }
